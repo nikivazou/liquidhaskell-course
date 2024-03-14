@@ -1,0 +1,29 @@
+name: liquidhaskell-tutorial
+version: '0.2.0.0'
+synopsis: Source for "Liquid Haskell Lectures"
+category: Web
+author: Niki Vazou
+maintainer: niki.vazou@imdea.org
+copyright: Niki Vazou
+license: MIT
+homepage: https://github.com/ucsd-progsys/liquidhaskell-tutorial
+extra-source-files:
+- README.md
+dependencies:
+- base
+- liquid-vector
+- liquidhaskell
+
+library:
+  ghc-options: -fdefer-type-errors 
+  
+  source-dirs:
+    - src
+
+  exposed-modules:
+    - Lecture_01_RefinementTypes
+    - Lecture_02_DataTypes
+    - Lecture_03_CaseStudy_InsertionSort
+    - Lecture_04_AbstractRefinementTypes 
+    - Lecture_05_TheoremProving
+    - Lecture_06_DataPropositions

@@ -1,0 +1,21 @@
+resolver: nightly-2020-06-25
+packages:
+  - .
+extra-deps:
+  - git: https://github.com/ucsd-progsys/liquidhaskell
+    commit: 269dd34ad90699f5d09752c8aa3a99d589f8668b
+    subdirs:
+      - .
+      - liquid-base
+      - liquid-vector
+      - liquid-bytestring
+      - liquid-containers
+      - liquid-ghc-prim 
+  - git: https://github.com/ucsd-progsys/liquid-fixpoint
+    commit: d0a6619f97aa605b4b57e3bc8d261186182ebf84
+  - hslua-1.1.2
+  - jira-wiki-markup-1.3.2
+  - pandoc-2.10
+  - pandoc-citeproc-0.17.0.2@sha256:39c5c60a5eca2c1cb50ae9a00dc7093ca1baac78ad5be4e222505de257dce456,8737
+  - template-0.2.0.10
+  - rfc5051-0.2@sha256:da5d77731f2ac6fe313a67919419b0833e09cd7f1a81869ed82a54dbf8962bf2,1678

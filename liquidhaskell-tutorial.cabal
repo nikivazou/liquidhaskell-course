@@ -1,0 +1,151 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.36.0.
+--
+-- see: https://github.com/sol/hpack
+
+name:           liquidhaskell-tutorial
+version:        0.2.0.0
+synopsis:       Source for "Lectures in Liquid Haskell"
+category:       Web
+homepage:       https://github.com/ucsd-progsys/liquidhaskell-tutorial
+author:         Niki Vazou
+maintainer:     niki.vazou@imdea.org
+copyright:      Niki Vazou
+license:        MIT
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+
+executable filters-codeblock
+  main-is: filters/Codeblock.hs
+  other-modules:
+      Paths_liquidhaskell_tutorial
+  ghc-options: -main-is Codeblock -threaded
+  build-depends:
+      base
+    , bytestring
+    , containers
+    , directory
+    , filepath
+    , pandoc
+    , pandoc-citeproc
+    , pandoc-types
+    , template
+    , text
+    , unix
+  default-language: Haskell2010
+
+executable filters-figures
+  main-is: filters/Figures.hs
+  other-modules:
+      Paths_liquidhaskell_tutorial
+  ghc-options: -main-is Figures -threaded
+  build-depends:
+      base
+    , bytestring
+    , containers
+    , directory
+    , filepath
+    , pandoc
+    , pandoc-citeproc
+    , pandoc-types
+    , template
+    , text
+    , unix
+  default-language: Haskell2010
+
+executable filters-html
+  main-is: filters/Html.hs
+  other-modules:
+      Paths_liquidhaskell_tutorial
+  ghc-options: -main-is Html -threaded
+  build-depends:
+      base
+    , bytestring
+    , containers
+    , directory
+    , filepath
+    , pandoc
+    , pandoc-citeproc
+    , pandoc-types
+    , template
+    , text
+    , unix
+  default-language: Haskell2010
+
+executable filters-latex
+  main-is: filters/Latex.hs
+  other-modules:
+      Paths_liquidhaskell_tutorial
+  ghc-options: -main-is Latex -threaded
+  build-depends:
+      base
+    , bytestring
+    , containers
+    , directory
+    , filepath
+    , pandoc
+    , pandoc-citeproc
+    , pandoc-types
+    , template
+    , text
+    , unix
+  default-language: Haskell2010
+
+executable filters-links
+  main-is: filters/Links.hs
+  other-modules:
+      Paths_liquidhaskell_tutorial
+  ghc-options: -main-is Links -threaded
+  build-depends:
+      base
+    , bytestring
+    , containers
+    , directory
+    , filepath
+    , pandoc
+    , pandoc-citeproc
+    , pandoc-types
+    , template
+    , text
+    , unix
+  default-language: Haskell2010
+
+executable filters-toc
+  main-is: filters/Toc.hs
+  other-modules:
+      Paths_liquidhaskell_tutorial
+  ghc-options: -main-is Toc -threaded
+  build-depends:
+      base
+    , bytestring
+    , containers
+    , directory
+    , filepath
+    , pandoc
+    , pandoc-citeproc
+    , pandoc-types
+    , template
+    , text
+    , unix
+  default-language: Haskell2010
+
+executable toplevel
+  main-is: Main.hs
+  other-modules:
+      Paths_liquidhaskell_tutorial
+  build-depends:
+      base
+    , bytestring
+    , containers
+    , directory
+    , filepath
+    , pandoc
+    , pandoc-citeproc
+    , pandoc-types
+    , template
+    , text
+    , unix
+  default-language: Haskell2010

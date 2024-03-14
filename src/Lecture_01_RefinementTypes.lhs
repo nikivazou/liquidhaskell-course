@@ -72,15 +72,18 @@ from [github](https://github.com/nikivazou/liquidhaskell-course)^[
 
 
 **Note:** This is the first time I am giving these lectures, 
-so I would appreciate any feedback you might have, via pull requests 
-or email at `niki.vazou@imdea.org`.
+so I would appreciate any feedback you might have, via the virtual classroom, 
+pull requests, or email at `niki.vazou@imdea.org`.
 
 
 Basic Refinement Types
 ----------------------
 
 Did you note that `2` is a good argument for the division operator? 
-Then, what is the type of `2`?
+
+But, what is the type of `2`?
+
+
 
 In Haskell `2:Int`, but the same value can have many different refinement types. 
 A basic refinement type has the form 
@@ -143,7 +146,7 @@ This rule states that in an expression, like $2$, that has type $\tau_1$
 and $\tau_1$ is a subtype of $\tau_2$, then $2$ can also have type $\tau_2$.
 
 So, $2 : \{ \texttt{Int} \mid 0 \leq v \}$, 
-because $\{ \texttt{Int} \mid 2 = v  \} \preceq \{ \texttt{Int} \mid 0 <= v \}$. 
+because $\{ \texttt{Int} \mid v = 2  \} \preceq \{ \texttt{Int} \mid 0 \leq v \}$. 
 But, let's see how subtyping is decided. 
 
 
@@ -266,7 +269,7 @@ Most of the syntax of predicates should be familiar to you.
 _Uninterpreted functions_ are essentially logical functions that always return the same value for the same input.
 
 $$
-\forall x y. x = y \Rightarrow f(x) = f(y)
+\forall x\ y. x = y \Rightarrow f(x) = f(y)
 $$
 
 They are essential for program verification because 
@@ -361,7 +364,7 @@ about the return value of the function.
 For example, addition of two odd numbers is guaranteed to be even: 
 
 \begin{code}
-{-@ type Odd = {v:Int | v mod 2 = 1} @-}
+{-@ type Odd  = {v:Int | v mod 2 = 1} @-}
 {-@ type Even = {v:Int | v mod 2 = 0} @-}
 
 {-@ addOdds :: x:Odd -> y:Odd -> Even @-}
@@ -507,6 +510,7 @@ abs x = if x > 0 then x else -x
 \end{code}
 
 **Question:** What is the type of `abs`?
+
 **Question:** What is the verification condition generated?
 
 Refinement types are _branch sensitive_, meaning that the type of the result of a branch

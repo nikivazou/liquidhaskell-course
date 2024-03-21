@@ -405,7 +405,7 @@ $$
   {\text{T-App}}
   { \Gamma \vdash e: (x:\tau_x \rightarrow \tau) \quad 
     \Gamma \vdash y : \tau_x}
-  {\Gamma \vdash e\ y : x:\tau_x \rightarrow \tau [x / y] }
+  {\Gamma \vdash e\ y :  \tau [x / y] }
 $$
 
 **Note:** 
@@ -477,8 +477,13 @@ higher = undefined
 testhigher = higher fNN
 \end{code}
 
+_Intuitively:_ `higher` will use the argument function, so 
+the result type of the function should be stricter, so that its result is used 
+whenever the result of the argument function is required. 
+The argument of the function can be more general, since type checking of `higher`
+ensures that the argument function is used correctly.  
 
-As we should have figured out, the rule says that 
+This intuition is captured in the rule of function subtyping that says that 
 the result type should be a subtype but the argument a subpertype. 
 
 
@@ -757,7 +762,7 @@ $$
   {\text{T-App}}
   { \Gamma \vdash e: (x:\tau_x \rightarrow \tau) \quad 
     \Gamma \vdash y : \tau_x}
-  {\Gamma \vdash e\ y : x:\tau_x \rightarrow \tau [x / y] }
+  {\Gamma \vdash e\ y : \tau [x / y] }
 $$
 $$
 \inferrule

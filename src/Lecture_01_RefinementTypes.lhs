@@ -273,7 +273,9 @@ $$
 $$
 
 They are essential for program verification because 
+
 1. they can be used to encode program functions in the logic and 
+
 2. they can be used to capture ideas not directly implemented. 
 
 For example, in Liquid Haskell, we use the `measure` keyword to define uninterpreted functions.

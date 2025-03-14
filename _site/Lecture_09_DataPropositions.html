@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-106754474-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments)};
+  gtag('js', new Date());
+
+  gtag('config', 'UA-106754474-1');
+</script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Liquid Haskell</title>
+
+    <link href="./css/bootstrap.css" rel="stylesheet">
+    <link href="./css/bootstrap-theme.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./css/rust-book.css">
+    <link rel="stylesheet" type="text/css" href="./css/editor.css">
+
+   
+    <style type="text/css">code{white-space: pre;}
+
+      .dropdown-menu {
+          min-width: 0px;
+      }
+      
+      #checker-status {
+          width: 30;
+          height: 20;
+          padding-top: 2px;
+          padding-right: 10px;
+          position: absolute;
+          top: 0;
+          right: 0;
+          z-index:99;
+      }
+    </style>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+
+
+<!-- <script type="text/javascript" src="js/jquery/jquery-1.7.1.min.js"></script> -->
+<script type="text/javascript" src="./js/jquery/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="./js/angular/angular.js"></script>
+<script type="text/javascript" src="./js/bootstrap/bootstrap.js"></script>
+
+<!-- MATHJAX TEMPLATES GO HERE -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+    extensions: ["color.js"],
+    Macros: {
+      True: "\\mathit{True}",
+      RR:   "{\\bf R}",
+      Int:  "\\mathtt{Int}",
+      Nat:  "\\mathtt{Nat}",
+      Zero: "\\mathtt{Zero}",
+      foo:   ["{\\bf Jhala FOO #1}", 1],
+      kvar:  ["{\\color[rgb]{1,0,0}{K_{#1}({#2})}}", 2],
+      bindx: ["{{#1}\\!:\\!{#2}}", 2],
+      reft:  ["\\{\\bindx{#1}{#2} \\mid {#3}\\}", 3],
+      ereft: ["\\bindx{#1}{\\{#2 \\mid #3\\}}", 3],
+      reftx: ["\\{{#1}\\mid{#2}\\}", 2],
+      inferrule: ["\\frac{#2}{#3}\\;{#1}", 3],
+      tcap:  ["(\\mathtt{intersection}\\ #1\\ #2)", 2],
+      tcup:  ["(\\mathtt{union}\\ #1\\ #2)", 2],
+      tsng:  ["(\\mathtt{singleton}\\ #1)", 1]
+  }
+  }
+});
+</script>
+
+<!-- GITHUB -->
+<script
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+  type="text/javascript"></script>
+  
+<!-- LOCAL 
+
+  <script src="js/MathJax-2.6.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+    type="text/javascript"></script>
+    
+  -->
+  
+
+
+
+
+
+
+
+</head>
+<body class="rustdoc" data-spy="scroll" data-target=".bs-docs-sidebar" ng-app="liquidDemo" ng-controller="LiquidDemoCtrl">
+
+    <div id="nav">
+       <button id="toggle-nav" class="toggle-nav">
+         <span class="sr-only">Toggle navigation</span>
+         <span class="bar"></span>
+         <span class="bar"></span>
+         <span class="bar"></span>
+       </button>
+    </div>
+
+<div id='toc' class='mobile-hidden'>
+<ul class='chapter'>
+<li><a href='Lecture_01_RefinementTypes.html'><b>1.</b>Refinement Types</a></li>
+<ul class='section'>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.1.</b> Installation</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.2.</b> Basic Refinement Types</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.3.</b> Subtyping</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.4.</b> From Subtyping to Verification Conditions</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.5.</b> Verification Conditions</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.6.</b> Primitive Operations</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.7.</b> Function Types</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.8.</b> Branching and Recursion</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.9.</b> Refined Polymorphism</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.10.</b> Putting it all together: Safe Indexing</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.11.</b> Summary</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.12.</b> Further Reading</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.13.</b> Cheatsheet</a></li>
+</ul>
+<li><a href='Lecture_02_DataTypes.html'><b>2.</b>Data Types</a></li>
+<ul class='section'>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.1.</b> Measures</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.2.</b> Multiple Measures</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.3.</b> Recursive Functions</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.4.</b> Higher-Order Functions</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.5.</b> Folding (Indexed Lists)</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.6.</b> Data Invariants: Sparse Vectors</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.7.</b> Ordered Lists</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.8.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_03_Sortedness.html'><b>3.</b>Sortedness &amp; Abstract Refinements</a></li>
+<ul class='section'>
+<li><a href='Lecture_03_Sortedness.html#'><b>3.1.</b> Ordered Lists</a></li>
+<li><a href='Lecture_03_Sortedness.html#'><b>3.2.</b> Abstraction over Sortedness</a></li>
+<li><a href='Lecture_03_Sortedness.html#'><b>3.3.</b> Haskell's Lists</a></li>
+<li><a href='Lecture_03_Sortedness.html#'><b>3.4.</b> Dependent Pairs</a></li>
+<li><a href='Lecture_03_Sortedness.html#'><b>3.5.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_04_Termination.html'><b>4.</b>Termination</a></li>
+<ul class='section'>
+<li><a href='Lecture_04_Termination.html#'><b>4.1.</b> Termination Requires Refinements!</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.2.</b> Termination Metrics</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.3.</b> Lexicographic Termination</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.4.</b> The GCD Example</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.5.</b> Data Types</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.6.</b> User Defined Data Types</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.7.</b> Mutual Recursion</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.8.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_05_ProofsPrograms.html'><b>5.</b>Programs are Proofs</a></li>
+<ul class='section'>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.1.</b> Each Program Proves its type</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.2.</b> Propositions as Refinement Types</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.3.</b> Quantified Theorems</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.4.</b> Theorems about Haskell Functions</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.5.</b> Reusing Proofs, the "because" combinator</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.6.</b> Quantified Proofs</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.7.</b> Monotonicity of the Fibonacci Function</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.8.</b> Generalizing the Monotonicity Proof</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.9.</b> Proofs By Natural Induction</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.10.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_06_StructuralInduction.html'><b>6.</b>Structural Induction</a></li>
+<ul class='section'>
+<li><a href='Lecture_06_StructuralInduction.html#'><b>6.1.</b> Structural Induction on Lists</a></li>
+<li><a href='Lecture_06_StructuralInduction.html#'><b>6.2.</b> Map Fusion</a></li>
+<li><a href='Lecture_06_StructuralInduction.html#'><b>6.3.</b> Monoid Laws for Lists</a></li>
+<li><a href='Lecture_06_StructuralInduction.html#'><b>6.4.</b> Using Proved Lemma</a></li>
+<li><a href='Lecture_06_StructuralInduction.html#'><b>6.5.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_07_CaseStudyMapReduce.html'><b>7.</b>Case Study: Map Reduce</a></li>
+<ul class='section'>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.1.</b> Map Reduce Explained</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.2.</b> Map Reduce "Library" Functions:</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.3.</b> Map Reduce "Client" Functions: Summing a List</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.4.</b> Proving Code Equivalence: <code>sum</code> and <code>psum</code></a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.5.</b> Chunk Definition:</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.6.</b> Higher Order Theorem: <code>mRTheorem</code></a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.7.</b> Lemmata for <code>mRTheorem</code> on plus</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.8.</b> Summary</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.9.</b> Appendix: List Manipulation Functions</a></li>
+</ul>
+<li><a href='Lecture_08_NaturalDeduction.html'><b>8.</b>Natural Deduction</a></li>
+<ul class='section'>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.1.</b> Logical Properties</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.2.</b> Native Terms</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.3.</b> Conjunction</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.4.</b> Disjunction</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Negation</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Forall</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Exists</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.9.</b> Example 1: existsAll</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.10.</b> Example 2: Distributing Qualifiers</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.11.</b> Example 3: List Properties</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.12.</b> Example 4: Natural Induction</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.13.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_09_DataPropositions.html'><b>9.</b>Data Propositions</a></li>
+<ul class='section'>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.1.</b> Even Numbers</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.2.</b> Construction of Even Numbers</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.3.</b> Functions on Even Numbers</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.4.</b> Metatheory of Programming Languages</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.5.</b> Evaluation of Expressions</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.6.</b> Typing of Expressions</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.7.</b> Soundness = Progress + Preservation</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.8.</b> Summary</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.9.</b> Appendix: The rest of the Code</a></li>
+</ul>
+</ul>
+
+</div>
+      
+       <div id="checker-status">
+         <!-- Verifying ... -->
+         <button class="btn btn-xs btn-link actbutton" type="button" style="font-size:30px; z-index:1"
+                ng-show="isChecking" ng-click="verifySource()">
+          <span class="glyphicon glyphicon-hourglass"></span>
+         </button>
+
+        
+         <!-- Safe -->
+         <button class="btn btn-xs btn-link actbutton" type="button" style="font-size:30px; color:green; z-index:1"
+                 ng-show="isSafe">
+           <span class="glyphicon glyphicon-ok"></span>
+         </button>
+
+         <div class="dropdown" ng-show="isBad">
+             <button class="btn btn-xs btn-link dropdown-toggle"
+                     type="button"
+                     id="errorblockdropdown"
+                     data-toggle="dropdown"
+                     style="font-size:30px; color:red; z-index:1">
+               <span class="glyphicon glyphicon-remove" style="vertical-align:middle"></span><font size="4">{{errorBlocks.length}}</font>
+               </span>
+             </button>
+             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+               <li ng-repeat="err in errorBlocks">
+                 <a tabindex="-1" ng-href="#program-{{err.data}}">{{err.index}}</a>
+               </li>
+             </ul>
+         </div>
+       </div>
+       
+
+<div id='page-wrapper'>
+<div id='page'>
+
+<section id="data-propositions" class="level1">
+<h1>Data Propositions</h1>
+<div id="program-pane-0" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-0" class="programbox">{- OPTIONS_GHC -fplugin=LiquidHaskell #-}
+{-# LANGUAGE GADTs                    #-}
+
+module Lecture_09_DataPropositions where
+
+{-@ LIQUID "--reflection" @-}
+{-@ LIQUID "--ple"        @-}
+import Language.Haskell.Liquid.ProofCombinators
+import Data.Set </div>
+</div>
+
+<p>We saw that using the refinement types of Liquid Haskell, we can encode any predicate in higher order logic (using functions and dependent pairs, respectively for universal and existential quantification). Further using reflection we saw that we can encode in the refinement logic any terminating Haskell function.</p>
+<p>Thus, the only thing that remains to encode is no terminating functions.</p>
+<p>In this lecture, we will see how to encode such functions, using data propositions.</p>
+<section id="even-numbers" class="level2">
+<h2>Even Numbers</h2>
+<p>Data propositions essentially axiomatize the behavior of predicates in the data type definitions, without actually giving a Haskell definition.</p>
+<p>They are very similar to Coq’s <a href="http://adam.chlipala.net/cpdt/html/Predicates.html">inductive predicates</a>. Thus, let’s look at the using the textbook example of even numbers.</p>
+<p>First, we define the data type of natural numbers.</p>
+<div id="program-pane-1" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-1" class="programbox">data N = Z | S N </div>
+</div>
+
+<p>Then, we <em>axiomatize</em> the proposition that a number is even.</p>
+<div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-2" class="programbox">data EVEN where 
+    E0 :: EVEN 
+    E2 :: N -> EVEN -> EVEN
+
+data Eveness = EVEN N 
+
+{-@ data EVEN where 
+     E0 :: Prop (EVEN Z)
+   | E2 :: n:N -> Prop (EVEN n) -> Prop (EVEN (S (S n))) @-}</div>
+</div>
+
+<p>The two constructors <code>E0</code> and <code>E2</code> axiomatize the evenness of numbers. <code>E0</code> states that <code>Z</code> is even, and <code>E2</code> states that if <code>n</code> is even, then <code>S (S n)</code> is also even.</p>
+<p>The definition is using the <code>Prop</code> type, defined in the <code>Language.Haskell.Liquid.ProofCombinators</code> module, that converts expressions into proof objects. Further, it requires the unrefined <code>Even</code> Haskell definition as well as an <code>EVEN</code> data constructor.</p>
+<p>There are two important points in this construction.</p>
+<ul>
+<li><p>First, there is no function that computes evens, thus there is <em>no termination check</em>, meaning, that using data propositions one can encode non-terminating computations.</p></li>
+<li><p>Second, the data proposition <code>EVEN</code> is a proof object, thus an <code>Even</code> value, gives us information how the proof was constructed.</p></li>
+</ul>
+</section>
+<section id="construction-of-even-numbers" class="level2">
+<h2>Construction of Even Numbers</h2>
+<p>Let’s construct some even numbers using the <code>EVEN</code> data proposition.</p>
+<div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-3" class="programbox">even0, even2, even4 :: EVEN
+{-@ even0 :: Prop (EVEN Z) @-}
+even0 = undefined 
+
+{-@ even2 :: Prop (EVEN (S (S Z))) @-}
+even2 = undefined
+
+{-@ even4 :: Prop (EVEN (S (S (S (S Z))))) @-}
+even4 = undefined</div>
+</div>
+
+<p><strong>Question:</strong> Fill in the above definitions to construct the even numbers <code>0</code>, <code>2</code>, and <code>4</code>.</p>
+<p>Since <code>EVEN</code> is a proof object one can inspect it, to, for example, show contradictions.</p>
+<div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-4" class="programbox">even1_false :: EVEN -> () 
+{-@ even1_false :: Prop (EVEN (S Z)) -> {v:() | false} @-}
+even1_false _ = undefined</div>
+</div>
+
+<p><strong>Question:</strong> Show that <code>S Z</code> is not even, by inspection.</p>
+</section>
+<section id="functions-on-even-numbers" class="level2">
+<h2>Functions on Even Numbers</h2>
+<p>Let’s now show that each even number, other than <code>0</code>, can be written as <code>2 + n</code>, for some <code>n</code>.</p>
+<div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-5" class="programbox">even_plus_2 :: N -> EVEN -> (N,()) 
+{-@ even_plus_2 :: n:{N | n /= Z} 
+                -> Prop (EVEN n) 
+                -> (m::N, {v:() | n == S (S m)}) @-}
+even_plus_2 _ _ = undefined </div>
+</div>
+
+<p>As a final exercise, let’s show that the sum of two even numbers is also even.</p>
+<p>To do so, we first define the <code>plus</code> function:</p>
+<div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-6" class="programbox">{-@ reflect plus @-}
+plus :: N -> N -> N
+plus Z     m = m
+plus (S n) m = S (plus n m)</div>
+</div>
+
+<p><strong>Question:</strong> Fill in the definition of the <code>even_plus</code> function.</p>
+<div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-7" class="programbox">even_plus :: N -> N -> EVEN -> EVEN -> EVEN 
+{-@ even_plus :: n:N -> m:N 
+              -> Prop (EVEN n) -> Prop (EVEN m) 
+              -> Prop (EVEN (plus n m)) @-}
+even_plus _ _ _ _ = undefined </div>
+</div>
+
+</section>
+<section id="metatheory-of-programming-languages" class="level2">
+<h2>Metatheory of Programming Languages</h2>
+<p>In the theory of programming languages, we often use theorem provers, like Liquid Haskell or Coq, to mechanize the proof of properties of programs.</p>
+<p>Such proofs usually talk about <em>program evaluation</em>.</p>
+<p>Due to the <a href="https://en.wikipedia.org/wiki/Halting_problem">halting problem</a> we cannot prove, in general that program evaluation terminates, thus such concepts are encoded as data propositions (or inductive predicates).</p>
+<p>As a simplification, let’s consider the simply typed lambda calculus, with integers and functions.</p>
+<div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-8" class="programbox">data Expr = EApp  Expr Expr 
+          | ELam  Type Expr 
+          | EBVar BVar | EFVar Var 
+          | EInt  Int 
+
+data Type =  TInt | TFun Type Type 
+  deriving Eq </div>
+</div>
+
+</section>
+<section id="evaluation-of-expressions" class="level2">
+<h2>Evaluation of Expressions</h2>
+<p>We use data proposition to axiomatize the step relation of the language. That is, <code>Step e e'</code> defines the relation <code>e -&gt; e'</code>.</p>
+<div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-9" class="programbox">{-@ 
+data Step where 
+    SAppPL :: e1:Expr -> e1':Expr -> e2:Expr 
+           -> Prop (Step e1 e1')          
+           -> Prop (Step (EApp e1 e2) (EApp e1' e2)) 
+  | SAppPR :: e1:Expr -> e2:Expr -> e2':Expr 
+           -> Prop (Step e2 e2')
+           -> Prop (Step (EApp e1 e2) (EApp e1 e2')) 
+  | SAppE  :: e:Expr -> ex:Expr -> tx:Type 
+           -> Prop (Step (EApp (ELam tx e) ex) (subst e ex)) 
+  @-}</div>
+</div>
+
+<p>Evaluation of an expression is defined as the transitive closure of the step relation. That is <code>Evals e e'</code> defines the relation <code>e -&gt;* e'</code>, which, in general is not terminating.</p>
+<div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-10" class="programbox">{-@ 
+data Evals where 
+    ERefl :: e:Expr -> Prop {Evals e e}
+  | EStep :: e1:{Expr | lc e1 } -> e2:{Expr | lc e2} -> e3:Expr
+          -> Prop (Step  e1 e2)
+          -> Prop (Evals e2 e3) 
+          -> Prop (Evals e1 e3)  
+  @-}</div>
+</div>
+
+</section>
+<section id="typing-of-expressions" class="level2">
+<h2>Typing of Expressions</h2>
+<p>We use data propositions to axiomatize the typing relation of the language. That is, <code>HasType g e t</code> defines the relation <span class="math inline">\(\Gamma \vdash e : \tau\)</span>, where <span class="math inline">\(\Gamma\)</span> is the typing environment, <span class="math inline">\(e\)</span> is the expression and <span class="math inline">\(\tau\)</span> is the type.</p>
+<div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-11" class="programbox">{-@ data HasType where 
+       TApp :: g:Env -> e:Expr -> ex:Expr -> t:Type -> tx:Type 
+            -> Prop (HasType g e (TFun tx t)) 
+            -> Prop (HasType g ex tx)
+            -> Prop (HasType g (EApp e ex) t) 
+     | TLam :: g:Env -> e:Expr -> tx:Type -> t:Type 
+            -> x:{Var | not (member x (dom g)) && not (member x (freeVars e))} 
+            -> Prop (HasType (EBind x tx g) (subst e (EFVar x)) t) 
+            -> Prop (HasType g (ELam tx e) (TFun tx t)) 
+     | TVar :: g:Env -> x:{Var | member x (dom g)} 
+            -> Prop (HasType g (EFVar x) (lookupEnv g x))
+     | TTInt :: g:Env -> i:Int
+            -> Prop (HasType g (EInt i) TInt)
+ @-}</div>
+</div>
+
+</section>
+<section id="soundness-progress-preservation" class="level2">
+<h2>Soundness = Progress + Preservation</h2>
+<p>Having defined both the typing and evaluation relations, we can connect them to show that our type system is sound. To show soundness, following the <a href="https://www.cis.upenn.edu/~bcpierce/tapl/index.html">tradition of programming languages</a>, we prove the progress and preservation properties.</p>
+<p><strong>Progress</strong> states that a well-typed expression is either a value or can take a step:</p>
+<div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-12" class="programbox">{-@ progress :: e:Expr -> t:Type -> ht:Prop (HasType EEmp e t) 
+                 -> Either {v:() | isValue e} (Expr, Step)<{\e' p -> prop p = Step e e'}> 
+                 / [hasTypeSize ht] @-}</div>
+</div>
+
+<p><strong>Preservation</strong> states that if an expression takes a step, then the resulting expression is also well-typed:</p>
+<div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-13" class="programbox">{-@ preservation :: e:{Expr | lc e} -> t:Type -> hs:Prop (HasType EEmp e t) 
+                 -> e':Expr -> Prop (Step e e') 
+                 -> Prop (HasType EEmp e' t) 
+                 /  [hasTypeSize hs] @-}</div>
+</div>
+
+<p>Soundness combines progress and preservation to inductively show that a well-typed expression evaluates to some expression that is either a value or can take a step.</p>
+<div id="program-pane-14" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-14" class="programbox">soundness :: Expr -> Type -> Expr -> HasType -> Evals -> Either () (Expr, Step) 
+{-@ soundness :: eo:{Expr | lc eo } -> t:Type -> e:Expr
+              -> Prop (HasType EEmp eo t) 
+              -> Prop (Evals eo e)
+              -> Either {v:() | isValue e} (Expr, Step)<{\e' p -> prop p = Step e e'}> @-}
+soundness eo t e eo_has_t eo_evals_e = case eo_evals_e of 
+    ERefl _ -> progress eo t eo_has_t 
+    EStep _eo e1 _e eo_step_e1 e1_eval_e -> 
+        soundness e1 t e (preservation eo t eo_has_t e1 eo_step_e1) e1_eval_e</div>
+</div>
+
+</section>
+<section id="summary" class="level2">
+<h2>Summary</h2>
+<p>In this lecture, we saw data propositions, which are used to axiomatize the behavior of predicates in the data type definitions. Data propositions have two major uses. First, they are used to encode non-terminating functions, like the evaluation function of a programming language. Second, they construct proof objects, whose inspection can facilitate proof developments. These two features allow the mechanization of sophisticated proofs, like metatheory of programming languages, in theorem provers like Liquid Haskell.</p>
+</section>
+<section id="appendix-the-rest-of-the-code" class="level2">
+<h2>Appendix: The rest of the Code</h2>
+<div id="program-pane-15" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-15" class="programbox">preservation :: Expr -> Type -> HasType -> Expr -> Step -> HasType 
+preservation _ _ _ _ _ = undefined
+progress :: Expr -> Type -> HasType -> Either () (Expr, Step)  
+progress _ _ _ = undefined
+
+{-@ data Env = EEmp 
+             | EBind { eVar  :: Var
+                     , eType :: Type
+                     , eTail :: {g:Env | not (member eVar (dom g)) } 
+                     } @-}
+
+{-@ measure dom @-}
+dom :: Env -> Set Var 
+dom (EBind x _ g) = singleton x `union` dom g 
+dom EEmp          = empty 
+
+
+{-@ reflect lookupEnv @-}
+lookupEnv :: Env -> Var -> Type 
+{-@ lookupEnv :: g:Env -> {x:Var | member x (dom g)} -> Type  @-} 
+lookupEnv (EBind x t g) y
+  | x == y    = t 
+  | otherwise = lookupEnv g y 
+
+
+{-@ reflect eAppend @-}
+{-@ eAppend :: g1:Env -> g2:{Env | disjoined (dom g1) (dom g2) } 
+            -> {g:Env | dom g == union (dom g1) (dom g2) } @-}
+eAppend :: Env -> Env -> Env 
+eAppend EEmp            g2 = g2 
+eAppend (EBind x tx g1) g2 = EBind x tx (eAppend g1 g2)
+
+
+{-@ inline disjoined @-}
+disjoined :: Ord a => Set a -> Set a -> Bool 
+disjoined g1 g2 = intersection g1 g2 == empty
+
+-- Define Proposition as the predicates you want to reason about.  
+
+data Proposition 
+  = HasType Env  Expr Type -- g |- e :: t 
+  | Step    Expr Expr      -- e ->  e'
+  | Evals   Expr Expr      -- e ->* e'
+
+
+
+-- | Hastype Axiomatization (typing rules). 
+-- | Prop (HasType g e t) defines g |- e : t
+
+
+
+
+-- Proof Debugging 
+
+{-@ assertProp :: p:Proposition  -> Prop p -> Prop p @-}
+assertProp :: Proposition -> a -> a 
+assertProp _ x = x 
+
+
+-- | Measure for termination proofs 
+
+hasTypeSize :: HasType -> Int  
+{-@ hasTypeSize :: HasType -> {v:Int | 0 < v } @-}
+{-@ measure hasTypeSize @-}
+hasTypeSize (TTInt _ _)              = 1 
+hasTypeSize (TVar _ _)               = 1 
+hasTypeSize (TLam _ _ _ _ _ ht)      = hasTypeSize ht  + 1 
+hasTypeSize (TApp _ _ _ _ _ ht1 ht2) = hasTypeSize ht1 + hasTypeSize ht2 + 1 
+
+
+-- Haskell Definitions 
+
+data Step where 
+  SAppPL :: Expr  -> Expr -> Expr -> Step -> Step 
+  SAppPR :: Expr  -> Expr -> Expr -> Step -> Step 
+  SAppE  :: Expr  -> Expr -> Type -> Step 
+  
+  
+
+
+data HasType where 
+     TApp  :: Env -> Expr -> Expr -> Type -> Type -> HasType -> HasType -> HasType
+     TLam  :: Env -> Expr -> Type -> Type -> Var -> HasType -> HasType
+     TVar  :: Env -> Var ->  HasType
+     TTInt :: Env -> Int -> HasType 
+
+
+
+
+
+
+
+data Evals where 
+  ERefl :: Expr -> Evals 
+  EStep :: Expr -> Expr -> Expr -> Step -> Evals -> Evals  </div>
+</div>
+
+<div id="program-pane-16" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-16" class="programbox">
+{-@ measure isValue @-}
+isValue :: Expr -> Bool 
+isValue (EApp _ _) = False 
+isValue (ELam _ _) = True 
+isValue (EBVar _)  = False 
+isValue (EFVar _)  = False 
+isValue (EInt  _)  = True 
+
+
+{-@ measure freeVars @-}
+freeVars :: Expr -> Set Var  
+freeVars (EApp e1 e2) = freeVars e1 `union` freeVars e2 
+freeVars (ELam _ e)   = freeVars e
+freeVars (EFVar x)    = singleton x 
+freeVars (EBVar x)    = empty
+freeVars (EInt  _)    = empty
+
+
+{-@ measure boundVars @-}
+boundVars :: Expr -> Set Var 
+boundVars (EApp e1 e2) = boundVars e1 `union` boundVars e2
+boundVars (ELam _ e)   = boundVars e 
+boundVars (EBVar x)    = singleton x 
+boundVars (EFVar _)    = empty 
+boundVars (EInt  _)    = empty
+ 
+
+{-@ reflect subst @-}
+{-@ subst :: e:Expr -> ex:Expr 
+         -> {s:Expr | freeVars s = freeVars e || freeVars s = union (freeVars e) (freeVars ex) } @-} 
+subst :: Expr -> Expr -> Expr 
+subst e u = substBound e 0 u 
+
+{-@ reflect substBound @-}
+{-@ substBound :: e:Expr -> BVar -> ex:Expr 
+               -> {s:Expr | freeVars s = freeVars e || freeVars s = union (freeVars e) (freeVars ex)} @-} 
+substBound :: Expr -> BVar -> Expr -> Expr 
+substBound (EApp e1 e2) x ex 
+  = EApp (substBound e1 x ex) (substBound e2 x ex)
+substBound (ELam t e) x ex 
+  = ELam t (substBound e (x+1) ex)
+substBound (EFVar y) _ _   
+  =  EFVar y   
+substBound (EInt i) _ _   
+  =  EInt i    
+substBound (EBVar y) x ex 
+  | x == y    = ex 
+  | otherwise = EBVar y  
+
+
+{-@ reflect lc @-}
+lc :: Expr -> Bool
+lc e = lc_at 0 e 
+
+{-@ reflect lc_at @-}
+lc_at :: BVar -> Expr -> Bool 
+lc_at k (EBVar i)    = i < k 
+lc_at k (EFVar _)    = True 
+lc_at k (EInt  _)    = True 
+lc_at k (EApp e1 e2) = lc_at k e1 && lc_at k e2 
+lc_at k (ELam _ e)   = lc_at (k+1) e 
+
+
+
+type  Var = Int 
+type BVar = Int 
+
+{-@ type BVar = {i:Int | 0 <= i} @-} 
+  
+
+{-@ measure isTFun @-}
+isTFun :: Type -> Bool 
+isTFun (TFun _ _) = True 
+isTFun _          = False 
+
+{-@ typeSize :: Type -> Nat @-}
+{-@ measure typeSize @-}
+typeSize :: Type -> Int 
+typeSize TInt        = 1
+typeSize (TFun tx t) = 1 + typeSize tx + typeSize t 
+
+data Env = EEmp | EBind Var Type Env
+  deriving Eq</div>
+</div>
+
+</section>
+</section>
+
+</div>
+</div>
+
+<div class="hidden">
+<!--Site Meter -->
+  <script type="text/javascript" src="//s23.sitemeter.com/js/counter.js?site=s23liquidtypes"></script>
+  <noscript>
+    <a href="http://s23.sitemeter.com/stats.asp?site=s23liquidtypes" 
+      target="_top">
+      <img src="http://s23.sitemeter.com/meter.asp?site=s23liquidtypes" 
+      alt="Site Meter" border="0"/></a>
+  </noscript>
+  <!-- Copyright (c)2009 Site Meter -->
+</div>
+
+
+
+
+
+<!-- JavaScript below! ============================================== -->
+
+  <script src="./js/ace/ace.js" type="text/javascript" charset="utf-8"></script> 
+  <script src="./js/ace/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/ace/mode-haskell.js"  type="text/javascript" charset="utf-8"></script>
+  <script src="./js/liquid/tooltip.js"></script> 
+  <script src="./js/liquid/annot.js"></script> 
+  <script src="./js/liquid/config.js"></script> 
+  <script src="./js/liquid/liquid.js"></script>
+
+  <script type="text/javascript">
+    var queryServerURL = "https://liquidhaskell.goto.ucsd.edu/" ;
+  </script>
+  
+  <!-- rust nav JS --> 
+  <script type="text/javascript">
+    window.playgroundUrl = "";
+  </script>
+  
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+
+ document.getElementById("toggle-nav").onclick = toggleNav;
+
+  function toggleNav() {
+    var toc         = document.getElementById("toc");
+    var pagewrapper = document.getElementById("page-wrapper");
+    var status      = document.getElementById("checker-status");
+
+    toggleClass(toc,         "mobile-hidden");
+    // toggleClass(status,      "mobile-hidden");
+    toggleClass(pagewrapper, "mobile-hidden");
+  };
+
+  function toggleClass(el, className) {
+     // from http://youmightnotneedjquery.com/
+     if (el.classList) {
+       el.classList.toggle(className);
+     } else {
+       var classes = el.className.split(' ');
+       var existingIndex = classes.indexOf(className);
+
+       if (existingIndex >= 0) {
+         classes.splice(existingIndex, 1);
+       } else {
+         classes.push(className);
+       }
+       el.className = classes.join(' ');
+     }
+  }
+});
+</script>
+</body>
+</html>

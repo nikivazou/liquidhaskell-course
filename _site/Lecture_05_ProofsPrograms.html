@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-106754474-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments)};
+  gtag('js', new Date());
+
+  gtag('config', 'UA-106754474-1');
+</script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Liquid Haskell</title>
+
+    <link href="./css/bootstrap.css" rel="stylesheet">
+    <link href="./css/bootstrap-theme.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./css/rust-book.css">
+    <link rel="stylesheet" type="text/css" href="./css/editor.css">
+
+   
+    <style type="text/css">code{white-space: pre;}
+
+      .dropdown-menu {
+          min-width: 0px;
+      }
+      
+      #checker-status {
+          width: 30;
+          height: 20;
+          padding-top: 2px;
+          padding-right: 10px;
+          position: absolute;
+          top: 0;
+          right: 0;
+          z-index:99;
+      }
+    </style>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+
+
+<!-- <script type="text/javascript" src="js/jquery/jquery-1.7.1.min.js"></script> -->
+<script type="text/javascript" src="./js/jquery/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="./js/angular/angular.js"></script>
+<script type="text/javascript" src="./js/bootstrap/bootstrap.js"></script>
+
+<!-- MATHJAX TEMPLATES GO HERE -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+    extensions: ["color.js"],
+    Macros: {
+      True: "\\mathit{True}",
+      RR:   "{\\bf R}",
+      Int:  "\\mathtt{Int}",
+      Nat:  "\\mathtt{Nat}",
+      Zero: "\\mathtt{Zero}",
+      foo:   ["{\\bf Jhala FOO #1}", 1],
+      kvar:  ["{\\color[rgb]{1,0,0}{K_{#1}({#2})}}", 2],
+      bindx: ["{{#1}\\!:\\!{#2}}", 2],
+      reft:  ["\\{\\bindx{#1}{#2} \\mid {#3}\\}", 3],
+      ereft: ["\\bindx{#1}{\\{#2 \\mid #3\\}}", 3],
+      reftx: ["\\{{#1}\\mid{#2}\\}", 2],
+      inferrule: ["\\frac{#2}{#3}\\;{#1}", 3],
+      tcap:  ["(\\mathtt{intersection}\\ #1\\ #2)", 2],
+      tcup:  ["(\\mathtt{union}\\ #1\\ #2)", 2],
+      tsng:  ["(\\mathtt{singleton}\\ #1)", 1]
+  }
+  }
+});
+</script>
+
+<!-- GITHUB -->
+<script
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+  type="text/javascript"></script>
+  
+<!-- LOCAL 
+
+  <script src="js/MathJax-2.6.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+    type="text/javascript"></script>
+    
+  -->
+  
+
+
+
+
+
+
+
+</head>
+<body class="rustdoc" data-spy="scroll" data-target=".bs-docs-sidebar" ng-app="liquidDemo" ng-controller="LiquidDemoCtrl">
+
+    <div id="nav">
+       <button id="toggle-nav" class="toggle-nav">
+         <span class="sr-only">Toggle navigation</span>
+         <span class="bar"></span>
+         <span class="bar"></span>
+         <span class="bar"></span>
+       </button>
+    </div>
+
+<div id='toc' class='mobile-hidden'>
+<ul class='chapter'>
+<li><a href='Lecture_01_RefinementTypes.html'><b>1.</b>Refinement Types</a></li>
+<ul class='section'>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.1.</b> Installation</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.2.</b> Basic Refinement Types</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.3.</b> Subtyping</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.4.</b> From Subtyping to Verification Conditions</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.5.</b> Verification Conditions</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.6.</b> Primitive Operations</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.7.</b> Function Types</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.8.</b> Branching and Recursion</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.9.</b> Refined Polymorphism</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.10.</b> Putting it all together: Safe Indexing</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.11.</b> Summary</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.12.</b> Further Reading</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.13.</b> Cheatsheet</a></li>
+</ul>
+<li><a href='Lecture_02_DataTypes.html'><b>2.</b>Data Types</a></li>
+<ul class='section'>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.1.</b> Measures</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.2.</b> Multiple Measures</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.3.</b> Recursive Functions</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.4.</b> Higher-Order Functions</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.5.</b> Folding (Indexed Lists)</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.6.</b> Data Invariants: Sparse Vectors</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.7.</b> Ordered Lists</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.8.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_03_Sortedness.html'><b>3.</b>Sortedness &amp; Abstract Refinements</a></li>
+<ul class='section'>
+<li><a href='Lecture_03_Sortedness.html#'><b>3.1.</b> Ordered Lists</a></li>
+<li><a href='Lecture_03_Sortedness.html#'><b>3.2.</b> Abstraction over Sortedness</a></li>
+<li><a href='Lecture_03_Sortedness.html#'><b>3.3.</b> Haskell's Lists</a></li>
+<li><a href='Lecture_03_Sortedness.html#'><b>3.4.</b> Dependent Pairs</a></li>
+<li><a href='Lecture_03_Sortedness.html#'><b>3.5.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_04_Termination.html'><b>4.</b>Termination</a></li>
+<ul class='section'>
+<li><a href='Lecture_04_Termination.html#'><b>4.1.</b> Termination Requires Refinements!</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.2.</b> Termination Metrics</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.3.</b> Lexicographic Termination</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.4.</b> The GCD Example</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.5.</b> Data Types</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.6.</b> User Defined Data Types</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.7.</b> Mutual Recursion</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.8.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_05_ProofsPrograms.html'><b>5.</b>Programs are Proofs</a></li>
+<ul class='section'>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.1.</b> Each Program Proves its type</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.2.</b> Propositions as Refinement Types</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.3.</b> Quantified Theorems</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.4.</b> Theorems about Haskell Functions</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.5.</b> Reusing Proofs, the "because" combinator</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.6.</b> Quantified Proofs</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.7.</b> Monotonicity of the Fibonacci Function</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.8.</b> Generalizing the Monotonicity Proof</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.9.</b> Proofs By Natural Induction</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.10.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_06_StructuralInduction.html'><b>6.</b>Structural Induction</a></li>
+<ul class='section'>
+<li><a href='Lecture_06_StructuralInduction.html#'><b>6.1.</b> Structural Induction on Lists</a></li>
+<li><a href='Lecture_06_StructuralInduction.html#'><b>6.2.</b> Map Fusion</a></li>
+<li><a href='Lecture_06_StructuralInduction.html#'><b>6.3.</b> Monoid Laws for Lists</a></li>
+<li><a href='Lecture_06_StructuralInduction.html#'><b>6.4.</b> Using Proved Lemma</a></li>
+<li><a href='Lecture_06_StructuralInduction.html#'><b>6.5.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_07_CaseStudyMapReduce.html'><b>7.</b>Case Study: Map Reduce</a></li>
+<ul class='section'>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.1.</b> Map Reduce Explained</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.2.</b> Map Reduce "Library" Functions:</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.3.</b> Map Reduce "Client" Functions: Summing a List</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.4.</b> Proving Code Equivalence: <code>sum</code> and <code>psum</code></a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.5.</b> Chunk Definition:</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.6.</b> Higher Order Theorem: <code>mRTheorem</code></a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.7.</b> Lemmata for <code>mRTheorem</code> on plus</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.8.</b> Summary</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.9.</b> Appendix: List Manipulation Functions</a></li>
+</ul>
+<li><a href='Lecture_08_NaturalDeduction.html'><b>8.</b>Natural Deduction</a></li>
+<ul class='section'>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.1.</b> Logical Properties</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.2.</b> Native Terms</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.3.</b> Conjunction</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.4.</b> Disjunction</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Negation</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Forall</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Exists</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.9.</b> Example 1: existsAll</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.10.</b> Example 2: Distributing Qualifiers</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.11.</b> Example 3: List Properties</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.12.</b> Example 4: Natural Induction</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.13.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_09_DataPropositions.html'><b>9.</b>Data Propositions</a></li>
+<ul class='section'>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.1.</b> Even Numbers</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.2.</b> Construction of Even Numbers</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.3.</b> Functions on Even Numbers</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.4.</b> Metatheory of Programming Languages</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.5.</b> Evaluation of Expressions</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.6.</b> Typing of Expressions</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.7.</b> Soundness = Progress + Preservation</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.8.</b> Summary</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.9.</b> Appendix: The rest of the Code</a></li>
+</ul>
+</ul>
+
+</div>
+      
+       <div id="checker-status">
+         <!-- Verifying ... -->
+         <button class="btn btn-xs btn-link actbutton" type="button" style="font-size:30px; z-index:1"
+                ng-show="isChecking" ng-click="verifySource()">
+          <span class="glyphicon glyphicon-hourglass"></span>
+         </button>
+
+        
+         <!-- Safe -->
+         <button class="btn btn-xs btn-link actbutton" type="button" style="font-size:30px; color:green; z-index:1"
+                 ng-show="isSafe">
+           <span class="glyphicon glyphicon-ok"></span>
+         </button>
+
+         <div class="dropdown" ng-show="isBad">
+             <button class="btn btn-xs btn-link dropdown-toggle"
+                     type="button"
+                     id="errorblockdropdown"
+                     data-toggle="dropdown"
+                     style="font-size:30px; color:red; z-index:1">
+               <span class="glyphicon glyphicon-remove" style="vertical-align:middle"></span><font size="4">{{errorBlocks.length}}</font>
+               </span>
+             </button>
+             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+               <li ng-repeat="err in errorBlocks">
+                 <a tabindex="-1" ng-href="#program-{{err.data}}">{{err.index}}</a>
+               </li>
+             </ul>
+         </div>
+       </div>
+       
+
+<div id='page-wrapper'>
+<div id='page'>
+
+<section id="programs-are-proofs" class="level1">
+<h1>Programs are Proofs</h1>
+<div id="program-pane-0" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-0" class="programbox">{- OPTIONS_GHC -fplugin=LiquidHaskell #-}
+module Lecture_05_ProofsPrograms where
+
+import Language.Haskell.Liquid.ProofCombinators</div>
+</div>
+
+<p>Each time you write a program, you are actually writing a proof.</p>
+<p>What are the programs prooving? The <a href="https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence">Curry-Howard correspondence</a>, independently developed by Curry (1934) and Howard (1969), tells us that programs are proofs of theorems.</p>
+<p>In this and the next lectures we will explore this correspondence in more detail and see how to use it to both write correct programs and prove theorems.</p>
+<section id="each-program-proves-its-type" class="level2">
+<h2>Each Program Proves its type</h2>
+<p>For example, an identity function on integers, <code>idInt</code>, is a proof that for all integers <code>x</code>, <code>idInt x</code> is also an integer.</p>
+<div id="program-pane-1" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-1" class="programbox">idInt :: Int -> Int
+idInt x = x</div>
+</div>
+
+<p>The standard identity polymorphic function, <code>id</code>, is a proof that for all types <code>a</code>, <code>id x</code> is also of type <code>a</code>.</p>
+<div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-2" class="programbox">id :: a -> a
+id x = x</div>
+</div>
+
+<p>Polymorphism is very commonly used in <em>implicitely</em> proving theorems about the programs, as described in <a href="https://people.mpi-sws.org/~dreyer/tor/papers/wadler.pdf">theorems for free</a>.</p>
+<p>Let’s now try to to define a function that states that for each integer, there exists an <code>a</code>:</p>
+<div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-3" class="programbox">intToA :: Int -> a
+intToA x = error "Define me!"</div>
+</div>
+
+<p><strong>Question:</strong> Can you define the function above?</p>
+<p>The only way to define the above function is via divergence. Thus, note that when a polymorphic type appears only in the result of your function, then most probably your function is not terminating… The property that it is “proving” does not hold.</p>
+<p>Programs as proofs when they are <em>well formed</em> meaning, they are terminating and total.</p>
+</section>
+<section id="propositions-as-refinement-types" class="level2">
+<h2>Propositions as Refinement Types</h2>
+<p>In Liquid Haskell, we can write propositions as refinement types. Concretely, we use refinement types to express theorems and define their Haskell functions as proofs of these theorems.</p>
+<p>For example, below we prove that <code>1 + 1 = 2</code> by defining a function <code>onePlusOne</code></p>
+<div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-4" class="programbox">{-@ onePlusOne :: () -> {v:() | 1 + 1 = 2 } @-}
+onePlusOne :: () -> ()
+onePlusOne _ = () </div>
+</div>
+
+<p>The result of the function <code>onePlusOne</code> is just a unit. Thus the function has <em>no computational content</em>. But, its result type is define to state a theorem. The proof of the theorem is performed <em>just</em> by the SMT solver that knows linear arithmetic.</p>
+<p>Liquid Haskell come with the <a href="https://hackage.haskell.org/package/liquidhaskell-0.8.0.5/docs/src/Language-Haskell-Liquid-ProofCombinators.html">proof combinators</a> library that allows to make the proofs more readable.</p>
+<p>As a first simplification step, Liquid Haskell allows to abbreviate the type <code>{v:T | p }</code> into just <code>{p}</code>, when <code>v</code> is not used in the type.</p>
+<div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-5" class="programbox">{-@ onePlusOne1 :: () -> { 1 + 1 = 2 } @-}
+onePlusOne1 :: () -> ()
+onePlusOne1 _ = () </div>
+</div>
+
+<p>As a second simplification, the proof combinators library defines various functions that allow to make the proofs more readable. For example, it define the following proof combinators:</p>
+<pre class=".{spec}"><code>-- Defined at Language.Haskell.Liquid.ProofCombinators
+
+type Proof = () -- Proof is just a unit
+
+trivial :: Proof
+trivial = ()
+
+data QED = QED
+
+(***) :: a -&gt; QED -&gt; Proof
+_ *** _ = ()</code></pre>
+<p>With these, we can put the famous</p>
+<blockquote>
+<p><code>QED</code>: quod erat demonstrandum (which was to be demonstrated)</p>
+</blockquote>
+<p>at the end of the proof.</p>
+<div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-6" class="programbox">{-@ onePlusOne2 :: () -> { 1 + 1 = 2 } @-}
+onePlusOne2 :: () -> Proof 
+onePlusOne2 _ = trivial *** QED </div>
+</div>
+
+<p>Thus, using the Proof Combinator library, in Liquid Haskell, we can prove, <em>for free</em> theorems that the SMT knows how to prove.</p>
+<p><strong>Question:</strong> Can you name another trivial theorem that you can prove using Liquid Haskell?</p>
+<div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-7" class="programbox">{-@ trivialThm :: () -> { true } @-}
+trivialThm :: () -> Proof 
+trivialThm _ = trivial *** QED </div>
+</div>
+
+</section>
+<section id="quantified-theorems" class="level2">
+<h2>Quantified Theorems</h2>
+<p>Quantified theorems (e.g., <span class="math inline">\(\forall x . \dots\)</span>) can also be expressed in Liquid Haskell, by using functional arguments as the universal quantifiers.</p>
+<p>For example, we can prove that addition is commutative:</p>
+<div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-8" class="programbox">{-@ propPlusAccum :: x:Int -> y:Int -> { x + y = y + x } @-}
+propPlusAccum :: Int -> Int -> Proof
+propPlusAccum x y = trivial *** QED</div>
+</div>
+
+<p>Note, function arguments work as universal quantifiers, and also, due to currin, we use function abstraction to express existential quantifiers.</p>
+</section>
+<section id="theorems-about-haskell-functions" class="level2">
+<h2>Theorems about Haskell Functions</h2>
+<p>Next, we will see how we can use Liquid Haskell to prove theorems about Haskell functions.</p>
+<p>To do so, first, we need to turn on the <code>reflection</code> flag of Liquid Haskell.</p>
+<div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-9" class="programbox">{-@ LIQUID "--reflection" @-}</div>
+</div>
+
+<p>This flag let us <code>reflect</code> Haskell functions into the predicate logic of Liquid Haskell. For example, we can reflect the <code>fibonacci</code> function as follows:</p>
+<div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-10" class="programbox">{-@ reflect fib @-}
+{-@ fib :: Nat -> Nat @-}
+fib :: Int -> Int
+fib 0 = 0
+fib 1 = 1
+fib n = fib (n-1) + fib (n-2)</div>
+</div>
+
+<p>The <code>reflect</code> annotation:</p>
+<ol type="1">
+<li>Generates a logical uninterpreted function <code>fib</code> that can be used in the predicates of Liquid Haskell.</li>
+<li>Gives a singleton refinement type for <code>fib</code> that exactly captures the function definition.</li>
+</ol>
+<pre class=".{spec}"><code>
+{-@ fib :: n:Nat -&gt; {v:Nat | v = fib n &amp;&amp; 
+  v = if n == 0 then 0 
+      else if n == 1 then 1
+      else fib (n-1) + fib (n-2) } @-}</code></pre>
+<p>Thus, now we can prove properties about the <code>fib</code> function.</p>
+<div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-11" class="programbox">{-@ fibTwo :: () -> { fib 2 = 1 } @-}
+fibTwo :: () -> Proof
+fibTwo _ =   fib 2 
+         === fib 1 + fib 0
+         *** QED</div>
+</div>
+
+<p>where <code>===</code> is a proof combinator function used for equational reasoning (in the style of <a href="https://link.springer.com/chapter/10.1007/978-3-642-54108-7_9">Dafny’s calculations</a>). It’s type first checks that the first two arguments are equal and then returns the second, to keep working on the proof.</p>
+<pre class=".{spec}"><code>(===) :: x:a -&gt; y:{a| x = y}   -&gt; {v:a | v = y }
+(=&lt;=) :: x:a -&gt; y:{a | x &lt;= y} -&gt; {v:a | v == y} 
+(=&gt;=) :: x:a -&gt; y:{a | x &gt;= y} -&gt; {v:a | v == y}</code></pre>
+<p>Similarly, the <code>=&lt;=</code> and <code>=&gt;=</code> proof combinators are used for inequalities.</p>
+</section>
+<section id="reusing-proofs-the-because-combinator" class="level2">
+<h2>Reusing Proofs, the “because” combinator</h2>
+<p>Let’s now prove that <code>fib 3 = 2</code>:</p>
+<div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-12" class="programbox">{-@ fibThree :: () -> { fib 3 = 2 } @-}
+fibThree :: () -> Proof
+fibThree _ = undefined </div>
+</div>
+
+<p><strong>Question:</strong> Can you complete the proof above?</p>
+<p>If you have completed the proof you might have duplicated the proof of <code>fibTwo</code>. In Liquid Haskell, we can reuse proofs by using the <code>because</code> combinator. The proof combinators library defines the <code>because</code> combinator as follows:</p>
+<pre class=".{spec}"><code>(?) :: a -&gt; b -&gt; a
+x ? _ = x </code></pre>
+<p>Thus, essentially introducing the it’s second argument as a <em>fact</em> in the proof.</p>
+<p><strong>Question:</strong> Let’s now complete the proof of <code>fibThree</code> using the <code>because</code> combinator.</p>
+</section>
+<section id="quantified-proofs" class="level2">
+<h2>Quantified Proofs</h2>
+<p>Now that we have introduced all the vocabulary of the proof combinators library, let’s prove a more interesting theorem about the <code>fib</code> function. Let’s prove that <code>fib</code> is increasing.</p>
+<div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-13" class="programbox">{-@ fibUp :: n:Nat -> { fib n <= fib (n+1) } @-}
+fibUp :: Int -> Proof
+fibUp 0 =   fib 0 
+        =<= fib 1
+        *** QED
+fibUp 1 =   fib 1 
+        =<= fib 1 + fib 0
+        =<= fib 2
+        *** QED
+fibUp n =   fib n 
+        === fib (n-1) + fib (n-2)
+        =<= fib n + fib (n-2) ? fibUp (n-1)
+        =<= fib n + fib (n-2) 
+        -- Complete the missing steps here
+        =<= fib (n+1)
+        *** QED</div>
+</div>
+
+<p><strong>Question:</strong> Can you complete the proof above?</p>
+<p>To simplify proofs, Liquid Haskell has a tactic, called <code>ple</code> (Proof by Logical Equivalence) that automates most equational reasoning steps, but still requires the case splitting and the lemma invocations.</p>
+Thus, turning on the <code>ple</code> flag, we can simplify the proof of <code>fibUp</code>.
+<div id="program-pane-14" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-14" class="programbox">{- LIQUID "--ple" @-}</div>
+</div>
+
+</section>
+<section id="monotonicity-of-the-fibonacci-function" class="level2">
+<h2>Monotonicity of the Fibonacci Function</h2>
+<p>Let’s now prove that the Fibonacci function is monotonic:</p>
+<div id="program-pane-15" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-15" class="programbox">{-@ fibMonotonic :: x:Nat -> y:{Nat | x < y } 
+                 -> {fib x <= fib y} @-}
+fibMonotonic :: Int -> Int -> Proof
+fibMonotonic x y
+  | y == x + 1
+  =   fib x     ? () {- Call to the fibUp lemma goes here   -}
+  =<= fib (x+1) 
+  =<= fib y
+  *** QED
+  | x < y - 1
+  =   fib x     ? () {- Inductive Hypothesis call goes here -}
+  =<= fib (y-1) ? () {- Call to the fibUp lemma goes here   -}
+  =<= fib y     
+  *** QED</div>
+</div>
+
+<p><strong>Question:</strong> Can you complete the proof above? Concretely, complete the missing calls to the <code>fibUp</code> lemma and the inductive hypothesis and the termination metric of the proof.</p>
+</section>
+<section id="generalizing-the-monotonicity-proof" class="level2">
+<h2>Generalizing the Monotonicity Proof</h2>
+<p>Looking for closely at the monotonicity proof of the Fibonacci function, we can see that the proof is not actually using the definition of the Fibonacci function, but only the fact that it is increasing. Thus, we can turn the proof into a generic proof of the monotonicity of any function <code>f</code> that is increasing.</p>
+<div id="program-pane-16" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-16" class="programbox">{-@ fMonotonic :: f:(Nat -> Int) 
+               -> fUp:(z:Nat -> {f z <= f (z+1)})
+               -> x:Nat -> y:{Nat | x < y } -> {f x <= f y} / [y] @-}
+fMonotonic :: (Int -> Int) -> (Int -> ()) -> Int -> Int -> Proof
+fMonotonic f fUp x y
+  | y == x + 1
+  =   fib x     ? fibUp x
+  =<= fib (x+1) 
+  =<= fib y
+  *** QED
+  | x < y - 1
+  =   fib x     ? fMonotonic f fUp x (y-1)
+  =<= fib (y-1) ? fibUp (y-1)
+  =<= fib y     
+  *** QED</div>
+</div>
+
+<p><strong>Question:</strong> Can you complete the proof above?</p>
+<p>Once we have the general (a.k.a. higher-order) proof that increasing functions are monotonic, we can use it to prove the monotonicity of the Fibonacci function.</p>
+<div id="program-pane-17" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-17" class="programbox">{-@ fibMono  :: x:Nat -> y:{Nat | x < y } -> {fib x <= fib y} @-}
+fibMono :: Int -> Int -> Proof
+fibMono = fMonotonic fib fibUp</div>
+</div>
+
+</section>
+<section id="proofs-by-natural-induction" class="level2">
+<h2>Proofs By Natural Induction</h2>
+<p>The proofs we did so far are essentially proofs by natural induction. Let’s prove the textbook theorem that the sum of the first <code>n</code> natural numbers is <code>n*(n+1)/2</code>.</p>
+<p>For that, we first define the <code>sumTo</code> function that computes the sum of the first <code>n</code> natural numbers.</p>
+<div id="program-pane-18" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-18" class="programbox">{-@ reflect sumTo @-}
+{-@ sumTo :: lo:Nat -> hi:{Nat | lo <= hi} -> Nat / [hi]@-}
+sumTo :: Int -> Int -> Int 
+sumTo lo hi = if lo == hi then 0 else hi + sumTo lo (hi-1) </div>
+</div>
+
+<p>Next, we prove that the <code>sumTo</code> function is computing the sum of the first <code>n</code> natural numbers.</p>
+<div id="program-pane-19" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-19" class="programbox">{-@ sumToN :: n:Nat -> { sumTo 0 n = n * (n + 1) / 2 } @-}
+sumToN :: Int -> Proof
+sumToN = undefined </div>
+</div>
+
+<p><strong>Question:</strong> Can you complete the proof above? Hint, the Haskell function <code>div</code> is the integer division.</p>
+<p>Next, we will see how the concept of natural induction can be generalized to prove properties of data types as structural induction.</p>
+</section>
+<section id="summary" class="level2">
+<h2>Summary</h2>
+<p>In this lecture we have seen how to use Liquid Haskell to prove theorems about Haskell functions. We have seen how to use the proof combinators library to make the proofs more readable, by expressing equational reasoning steps and the because operator. We saw that using the <code>reflection</code> flag we can turn Haskell functions into predicates of Liquid Haskell and the <code>ple</code> flag we can simplify proofs. Finally, we saw that proofs are higher-order functions that can be reused to prove other theorems.</p>
+</section>
+</section>
+
+</div>
+</div>
+
+<div class="hidden">
+<!--Site Meter -->
+  <script type="text/javascript" src="//s23.sitemeter.com/js/counter.js?site=s23liquidtypes"></script>
+  <noscript>
+    <a href="http://s23.sitemeter.com/stats.asp?site=s23liquidtypes" 
+      target="_top">
+      <img src="http://s23.sitemeter.com/meter.asp?site=s23liquidtypes" 
+      alt="Site Meter" border="0"/></a>
+  </noscript>
+  <!-- Copyright (c)2009 Site Meter -->
+</div>
+
+
+
+
+
+<!-- JavaScript below! ============================================== -->
+
+  <script src="./js/ace/ace.js" type="text/javascript" charset="utf-8"></script> 
+  <script src="./js/ace/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/ace/mode-haskell.js"  type="text/javascript" charset="utf-8"></script>
+  <script src="./js/liquid/tooltip.js"></script> 
+  <script src="./js/liquid/annot.js"></script> 
+  <script src="./js/liquid/config.js"></script> 
+  <script src="./js/liquid/liquid.js"></script>
+
+  <script type="text/javascript">
+    var queryServerURL = "https://liquidhaskell.goto.ucsd.edu/" ;
+  </script>
+  
+  <!-- rust nav JS --> 
+  <script type="text/javascript">
+    window.playgroundUrl = "";
+  </script>
+  
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+
+ document.getElementById("toggle-nav").onclick = toggleNav;
+
+  function toggleNav() {
+    var toc         = document.getElementById("toc");
+    var pagewrapper = document.getElementById("page-wrapper");
+    var status      = document.getElementById("checker-status");
+
+    toggleClass(toc,         "mobile-hidden");
+    // toggleClass(status,      "mobile-hidden");
+    toggleClass(pagewrapper, "mobile-hidden");
+  };
+
+  function toggleClass(el, className) {
+     // from http://youmightnotneedjquery.com/
+     if (el.classList) {
+       el.classList.toggle(className);
+     } else {
+       var classes = el.className.split(' ');
+       var existingIndex = classes.indexOf(className);
+
+       if (existingIndex >= 0) {
+         classes.splice(existingIndex, 1);
+       } else {
+         classes.push(className);
+       }
+       el.className = classes.join(' ');
+     }
+  }
+});
+</script>
+</body>
+</html>

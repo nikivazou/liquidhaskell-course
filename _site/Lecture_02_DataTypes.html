@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-106754474-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments)};
+  gtag('js', new Date());
+
+  gtag('config', 'UA-106754474-1');
+</script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Liquid Haskell</title>
+
+    <link href="./css/bootstrap.css" rel="stylesheet">
+    <link href="./css/bootstrap-theme.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./css/rust-book.css">
+    <link rel="stylesheet" type="text/css" href="./css/editor.css">
+
+   
+    <style type="text/css">code{white-space: pre;}
+
+      .dropdown-menu {
+          min-width: 0px;
+      }
+      
+      #checker-status {
+          width: 30;
+          height: 20;
+          padding-top: 2px;
+          padding-right: 10px;
+          position: absolute;
+          top: 0;
+          right: 0;
+          z-index:99;
+      }
+    </style>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+
+
+<!-- <script type="text/javascript" src="js/jquery/jquery-1.7.1.min.js"></script> -->
+<script type="text/javascript" src="./js/jquery/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="./js/angular/angular.js"></script>
+<script type="text/javascript" src="./js/bootstrap/bootstrap.js"></script>
+
+<!-- MATHJAX TEMPLATES GO HERE -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+    extensions: ["color.js"],
+    Macros: {
+      True: "\\mathit{True}",
+      RR:   "{\\bf R}",
+      Int:  "\\mathtt{Int}",
+      Nat:  "\\mathtt{Nat}",
+      Zero: "\\mathtt{Zero}",
+      foo:   ["{\\bf Jhala FOO #1}", 1],
+      kvar:  ["{\\color[rgb]{1,0,0}{K_{#1}({#2})}}", 2],
+      bindx: ["{{#1}\\!:\\!{#2}}", 2],
+      reft:  ["\\{\\bindx{#1}{#2} \\mid {#3}\\}", 3],
+      ereft: ["\\bindx{#1}{\\{#2 \\mid #3\\}}", 3],
+      reftx: ["\\{{#1}\\mid{#2}\\}", 2],
+      inferrule: ["\\frac{#2}{#3}\\;{#1}", 3],
+      tcap:  ["(\\mathtt{intersection}\\ #1\\ #2)", 2],
+      tcup:  ["(\\mathtt{union}\\ #1\\ #2)", 2],
+      tsng:  ["(\\mathtt{singleton}\\ #1)", 1]
+  }
+  }
+});
+</script>
+
+<!-- GITHUB -->
+<script
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+  type="text/javascript"></script>
+  
+<!-- LOCAL 
+
+  <script src="js/MathJax-2.6.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+    type="text/javascript"></script>
+    
+  -->
+  
+
+
+
+
+
+
+
+</head>
+<body class="rustdoc" data-spy="scroll" data-target=".bs-docs-sidebar" ng-app="liquidDemo" ng-controller="LiquidDemoCtrl">
+
+    <div id="nav">
+       <button id="toggle-nav" class="toggle-nav">
+         <span class="sr-only">Toggle navigation</span>
+         <span class="bar"></span>
+         <span class="bar"></span>
+         <span class="bar"></span>
+       </button>
+    </div>
+
+<div id='toc' class='mobile-hidden'>
+<ul class='chapter'>
+<li><a href='Lecture_01_RefinementTypes.html'><b>1.</b>Refinement Types</a></li>
+<ul class='section'>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.1.</b> Installation</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.2.</b> Basic Refinement Types</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.3.</b> Subtyping</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.4.</b> From Subtyping to Verification Conditions</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.5.</b> Verification Conditions</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.6.</b> Primitive Operations</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.7.</b> Function Types</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.8.</b> Branching and Recursion</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.9.</b> Refined Polymorphism</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.10.</b> Putting it all together: Safe Indexing</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.11.</b> Summary</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.12.</b> Further Reading</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.13.</b> Cheatsheet</a></li>
+</ul>
+<li><a href='Lecture_02_DataTypes.html'><b>2.</b>Data Types</a></li>
+<ul class='section'>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.1.</b> Measures</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.2.</b> Multiple Measures</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.3.</b> Recursive Functions</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.4.</b> Higher-Order Functions</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.5.</b> Folding (Indexed Lists)</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.6.</b> Data Invariants: Sparse Vectors</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.7.</b> Ordered Lists</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.8.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_03_Sortedness.html'><b>3.</b>Sortedness &amp; Abstract Refinements</a></li>
+<ul class='section'>
+<li><a href='Lecture_03_Sortedness.html#'><b>3.1.</b> Ordered Lists</a></li>
+<li><a href='Lecture_03_Sortedness.html#'><b>3.2.</b> Abstraction over Sortedness</a></li>
+<li><a href='Lecture_03_Sortedness.html#'><b>3.3.</b> Haskell's Lists</a></li>
+<li><a href='Lecture_03_Sortedness.html#'><b>3.4.</b> Dependent Pairs</a></li>
+<li><a href='Lecture_03_Sortedness.html#'><b>3.5.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_04_Termination.html'><b>4.</b>Termination</a></li>
+<ul class='section'>
+<li><a href='Lecture_04_Termination.html#'><b>4.1.</b> Termination Requires Refinements!</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.2.</b> Termination Metrics</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.3.</b> Lexicographic Termination</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.4.</b> The GCD Example</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.5.</b> Data Types</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.6.</b> User Defined Data Types</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.7.</b> Mutual Recursion</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.8.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_05_ProofsPrograms.html'><b>5.</b>Programs are Proofs</a></li>
+<ul class='section'>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.1.</b> Each Program Proves its type</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.2.</b> Propositions as Refinement Types</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.3.</b> Quantified Theorems</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.4.</b> Theorems about Haskell Functions</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.5.</b> Reusing Proofs, the "because" combinator</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.6.</b> Quantified Proofs</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.7.</b> Monotonicity of the Fibonacci Function</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.8.</b> Generalizing the Monotonicity Proof</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.9.</b> Proofs By Natural Induction</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.10.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_06_StructuralInduction.html'><b>6.</b>Structural Induction</a></li>
+<ul class='section'>
+<li><a href='Lecture_06_StructuralInduction.html#'><b>6.1.</b> Structural Induction on Lists</a></li>
+<li><a href='Lecture_06_StructuralInduction.html#'><b>6.2.</b> Map Fusion</a></li>
+<li><a href='Lecture_06_StructuralInduction.html#'><b>6.3.</b> Monoid Laws for Lists</a></li>
+<li><a href='Lecture_06_StructuralInduction.html#'><b>6.4.</b> Using Proved Lemma</a></li>
+<li><a href='Lecture_06_StructuralInduction.html#'><b>6.5.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_07_CaseStudyMapReduce.html'><b>7.</b>Case Study: Map Reduce</a></li>
+<ul class='section'>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.1.</b> Map Reduce Explained</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.2.</b> Map Reduce "Library" Functions:</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.3.</b> Map Reduce "Client" Functions: Summing a List</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.4.</b> Proving Code Equivalence: <code>sum</code> and <code>psum</code></a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.5.</b> Chunk Definition:</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.6.</b> Higher Order Theorem: <code>mRTheorem</code></a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.7.</b> Lemmata for <code>mRTheorem</code> on plus</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.8.</b> Summary</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.9.</b> Appendix: List Manipulation Functions</a></li>
+</ul>
+<li><a href='Lecture_08_NaturalDeduction.html'><b>8.</b>Natural Deduction</a></li>
+<ul class='section'>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.1.</b> Logical Properties</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.2.</b> Native Terms</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.3.</b> Conjunction</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.4.</b> Disjunction</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Negation</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Forall</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Exists</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.9.</b> Example 1: existsAll</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.10.</b> Example 2: Distributing Qualifiers</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.11.</b> Example 3: List Properties</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.12.</b> Example 4: Natural Induction</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.13.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_09_DataPropositions.html'><b>9.</b>Data Propositions</a></li>
+<ul class='section'>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.1.</b> Even Numbers</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.2.</b> Construction of Even Numbers</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.3.</b> Functions on Even Numbers</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.4.</b> Metatheory of Programming Languages</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.5.</b> Evaluation of Expressions</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.6.</b> Typing of Expressions</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.7.</b> Soundness = Progress + Preservation</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.8.</b> Summary</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.9.</b> Appendix: The rest of the Code</a></li>
+</ul>
+</ul>
+
+</div>
+      
+       <div id="checker-status">
+         <!-- Verifying ... -->
+         <button class="btn btn-xs btn-link actbutton" type="button" style="font-size:30px; z-index:1"
+                ng-show="isChecking" ng-click="verifySource()">
+          <span class="glyphicon glyphicon-hourglass"></span>
+         </button>
+
+        
+         <!-- Safe -->
+         <button class="btn btn-xs btn-link actbutton" type="button" style="font-size:30px; color:green; z-index:1"
+                 ng-show="isSafe">
+           <span class="glyphicon glyphicon-ok"></span>
+         </button>
+
+         <div class="dropdown" ng-show="isBad">
+             <button class="btn btn-xs btn-link dropdown-toggle"
+                     type="button"
+                     id="errorblockdropdown"
+                     data-toggle="dropdown"
+                     style="font-size:30px; color:red; z-index:1">
+               <span class="glyphicon glyphicon-remove" style="vertical-align:middle"></span><font size="4">{{errorBlocks.length}}</font>
+               </span>
+             </button>
+             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+               <li ng-repeat="err in errorBlocks">
+                 <a tabindex="-1" ng-href="#program-{{err.data}}">{{err.index}}</a>
+               </li>
+             </ul>
+         </div>
+       </div>
+       
+
+<div id='page-wrapper'>
+<div id='page'>
+
+<section id="data-types" class="level1">
+<h1>Data Types</h1>
+<div id="program-pane-0" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-0" class="programbox">{- OPTIONS_GHC -fplugin=LiquidHaskell #-}
+{- LIQUID "--no-termination" @-}
+module Lecture_02_DataTypes where
+
+import Data.List    (foldl')
+import Prelude hiding (head, tail, (!!), map, zipWith, zip, take, drop, reverse)
+import Data.Maybe   (fromJust)
+
+main :: IO ()
+main = return ()</div>
+</div>
+
+<p>In last lecture, we saw refinement types on primitive values and functions and the language of the predicates that includes arithmetic, boolean, and uninterpreted functions. Today, we will see how to use refinement types on data types. Concretely,</p>
+<ol type="1">
+<li>We will define new and use new logical functions on user defined data types.</li>
+<li>We use refinements on definitions of data types to specify invariants.</li>
+<li>We will see how to use LiquidHaskell to reason about Haskell’s lists.</li>
+</ol>
+<section id="measures" class="level2">
+<h2>Measures</h2>
+<p>We will start with the most famous data type, the list and see how we can use refinement types for safe indexing in lists, e.g., to</p>
+<ol type="1">
+<li><em>define</em> the length of a list,</li>
+<li><em>compute</em> the length of a list, and</li>
+<li><em>restrict</em> the indexing of lists to valid indices.</li>
+</ol>
+<p>Here is the standard list data type in Haskell:</p>
+<div id="program-pane-1" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-1" class="programbox">data List a = Nil | Cons a (List a)</div>
+</div>
+
+<p>We use the <em>measure</em> definition to define the length of a list.</p>
+<div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-2" class="programbox">{-@ measure llen @-}
+{-@ llen :: List a -> Nat @-}
+llen :: List a -> Int
+llen Nil        = 0
+llen (Cons x l) = 1 + llen l</div>
+</div>
+
+<p><em>Note:</em> The <code>measure</code> keyword has two uses in LiquidHaskell.</p>
+<ol type="1">
+<li>Last time we saw that the <code>measure</code> keyword is used to define an uninterpreted SMT function.</li>
+<li>Used without a type signature with the same name as a Haskell function, the <code>measure</code> keyword is used to lift the Haskell function to the refinement logic.</li>
+</ol>
+<p>Concretely, a “measure” is a function that has <em>one</em> argument which is a Algebraic Data Type (ADT), like a list. The one argument restriction is very important because it allows LiquidHaskell to automate the verification.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The measure definition “lifts” the Haskell function to the refinement logic, by refining the types of the data constructors with the exact definition of the function.</p>
+<p>For example, the <code>llen</code> measure definition refines the type of the lists constructor to be:</p>
+<pre class="spec"><code>Nil  :: {v:List a | llen v = 0}
+Cons :: x:a -&gt; l:List a -&gt; {v:List a | llen v = 1 + llen l}</code></pre>
+<p>With these refinements, verification can reason about the length of lists:</p>
+<div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-3" class="programbox">
+{-@ twoElems :: {v:List Int | llen v == 2} @-}
+twoElems :: List Int 
+twoElems = Cons 4 (Cons 2 Nil)</div>
+</div>
+
+<p>Type checking <code>twoElems</code>, using ANF, looks like this:</p>
+<pre class="spec"><code>
+let l0 = Nil        :: {v:List a | llen v = 0}
+    l1 = Cons 2 l0  :: {v:List a | llen v = 1 + llen l0}
+in Cons 4 l1        :: {v:List a | llen v = 1 + llen l1}</code></pre>
+</section>
+<section id="multiple-measures" class="level2">
+<h2>Multiple Measures</h2>
+<p>We can define multiple measures for the same data type, in which case, the refinements are <em>conjoined</em> together.</p>
+<p>For example, we can define a measure that checks empiness of a list.</p>
+<div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-4" class="programbox">{-@ measure isempty @-}
+isempty :: List a -> Bool
+isempty Nil = True
+isempty _   = False</div>
+</div>
+
+<p>With these two measure definitions, the types of the list constructors are refined to:</p>
+<pre class="spec"><code>Nil  :: {v:List a | llen v = 0 &amp;&amp; isempty v}
+Cons :: x:a -&gt; l:List a -&gt; {v:List a | llen v = 1 + llen l &amp;&amp; not (isempty v)}</code></pre>
+<p><strong>Question:</strong> Let’s define the <code>head</code> and <code>tail</code> functions for lists.</p>
+<div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-5" class="programbox">
+head :: List a -> a
+head = undefined </div>
+</div>
+
+<div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-6" class="programbox">
+tail :: List a -> List a
+tail = undefined </div>
+</div>
+
+<p><strong>Question:</strong> Can you give a strong engouth type for tail to verify length of result?</p>
+<div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-7" class="programbox">
+{- oneElem :: {v:List Int | llen v == 1} @-}
+oneElem :: List Int 
+oneElem = tail twoElems</div>
+</div>
+
+<p><strong>Question:</strong> Let’s now define a safe indexing function for lists.</p>
+<div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-8" class="programbox">
+{-@ (!!) :: xs:List a -> {i:Int | 0 <= i && i < llen xs } -> a @-}
+(!!) :: List a -> Int -> a
+(!!) = undefined</div>
+</div>
+
+<p><strong>Question:</strong> Let’s now define a safe lookup function for lists, using the case sensitivity of refinement types.</p>
+<div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-9" class="programbox">safeLookup :: List a -> Int -> Maybe a
+safeLookup = undefined</div>
+</div>
+
+</section>
+<section id="recursive-functions" class="level2">
+<h2>Recursive Functions</h2>
+<p>Let’s write a recursive function that adds up the values of an integer list.</p>
+<div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-10" class="programbox">listSum :: List Int -> Int
+listSum xs = go 0 0 
+  where 
+    go acc i  
+      | i < llen xs = go (acc + (xs !! i)) (i+1)
+      | otherwise   = acc</div>
+</div>
+
+<p><strong>Question:</strong> What happens if you <em>replace</em> the guard with <code>i &lt;= llen xs</code>?</p>
+<p><strong>Question:</strong> Write a variant of the above function that computes the <code>absuluteSum</code> of the list, i.e., the sum of the absolute values of the elements.</p>
+<div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-11" class="programbox">{-@ absSum :: List Int -> Int @-}
+absSum :: List Int -> Int
+absSum = undefined </div>
+</div>
+
+<p>LiquidHaskell verifies <code>listSum</code>, or to be precise the safety of list indexing. The verification works because Liquid Haskell is able to <em>automatically infer</em></p>
+<pre class="spec"><code>go :: Int -&gt; {v:Int | 0 &lt;= v &amp;&amp; v &lt;= llen xs} -&gt; Int</code></pre>
+<p>which states that the second parameter <code>i</code> is between 0 and the length of the list (inclusive). LiquidHaskell uses this and the test that <code>i &lt; llen xs</code> to verify that the indexing is safe.</p>
+<p><em>Note:</em> LiquidHaskell automatically tests the termination of recursive functions. The default termination metric for the above functions fail. Later, we will see how to fix this. But for now, we can disable termination checking, but declaring functions as <code>lazy</code>.</p>
+<div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-12" class="programbox">{-@ lazy listSum @-}
+{-@ lazy absSum @-}</div>
+</div>
+
+<p><strong>Question:</strong> Why does the type of <code>go</code> has <code>v &lt;= llen xs</code> and not <code>v &lt; llen xs</code>?</p>
+</section>
+<section id="higher-order-functions" class="level2">
+<h2>Higher-Order Functions</h2>
+<p>We already used the <code>go</code> structure twice, so let’s generalize the common pattern! Let’s refactor the above low-level recursive function into a generic higher-order <code>loop</code>.</p>
+<div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-13" class="programbox">{-@ lazy loop @-}
+loop :: Int -> Int -> a -> (Int -> a -> a) -> a
+loop lo hi base f =  go base lo
+  where
+    go acc i
+      | i < hi    = go (f i acc) (i + 1)
+      | otherwise = acc</div>
+</div>
+
+<p>We can now use <code>loop</code> to implement <code>listSum</code>:</p>
+<div id="program-pane-14" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-14" class="programbox">{-@ lazy listSum' @-}
+listSum'      :: List Int -> Int
+listSum' xs  = loop 0 n 0 body
+  where
+    body i acc  = acc + (xs !! i)
+    n           = llen xs</div>
+</div>
+
+<p><br />
+<strong>Inference</strong> is a convenient option. LiquidHaskell finds:</p>
+<div id="program-pane-15" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-15" class="programbox">{-@ type Btwn Lo Hi = {v:Int | Lo <= v && v < Hi} @-}
+{-@ loop :: lo:Nat -> hi:{Nat|lo <= hi} -> a 
+         -> (Btwn lo hi -> a -> a) -> a @-}</div>
+</div>
+
+<p>In English, the above type states that</p>
+<ul>
+<li><code>lo</code> the loop <em>lower</em> bound is a non-negative integer</li>
+<li><code>hi</code> the loop <em>upper</em> bound is a greater then or equal to <code>lo</code>,</li>
+<li><code>f</code> the loop <em>body</em> is only called with integers between <code>lo</code> and <code>hi</code>.</li>
+</ul>
+<p> It can be tedious to have to keep typing things like the above. If we wanted to make <code>loop</code> a public or exported function, we could use the inferred type to generate an explicit signature.</p>
+<p>At the call <code>loop 0 n 0 body</code> the parameters <code>lo</code> and <code>hi</code> are instantiated with <code>0</code> and <code>n</code> respectively, which, by the way is where the inference engine deduces non-negativity. Thus LiquidHaskell concludes that <code>body</code> is only called with values of <code>i</code> that are <em>between</em> <code>0</code> and <code>(llen xs)</code>, which verifies the safety of the call <code>xs !! i</code>.</p>
+<p><strong>Question:</strong> Complete the implementation of <code>absoluteSum'</code> below. When you are done, what is the type that is inferred for <code>body</code>?</p>
+<div id="program-pane-16" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-16" class="programbox">{-@ absoluteSum' :: List Int -> Nat @-}
+absoluteSum' :: List Int -> Int
+absoluteSum' xs = loop 0 n 0 body
+  where
+    body i acc   = undefined
+    n            = llen xs</div>
+</div>
+
+<p><strong>Question:</strong> The following uses <code>loop</code> to compute <code>dotProduct</code>s. Why does LiquidHaskell flag an error? Fix the code or specification so that LiquidHaskell accepts it.</p>
+<div id="program-pane-17" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-17" class="programbox">{-@ ignore dotProduct @-}
+-- >>> dotProduct ([1,2,3]) ( [4,5,6])
+-- 32
+{-@ dotProduct :: x:List Int -> y:List Int  -> Int @-}
+dotProduct :: List Int -> List Int -> Int
+dotProduct x y = loop 0 sz 0 body
+  where
+    body i acc = acc + (x !! i)  *  (y !! i)
+    sz         = llen x</div>
+</div>
+
+</section>
+<section id="folding-indexed-lists" class="level2">
+<h2>Folding (Indexed Lists)</h2>
+<p>Let’s now use lists to represent sparse vectors, meaning vectors with many zeros.</p>
+<div id="program-pane-18" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-18" class="programbox">{-@ type SparseN a N = [(Btwn 0 N, a)] @-}</div>
+</div>
+
+<p>Implicitly, all indices <em>other</em> than those in the list have the value <code>0</code> (or the equivalent value for the type <code>a</code>).</p>
+<p><br />
+<strong>The Alias</strong> <code>SparseN</code> is just a shorthand for the (longer) type on the right, it does not <em>define</em> a new type. If you are familiar with the <em>index-style</em> length encoding e.g. as found in <a href="https://en.wikipedia.org/wiki/Dependent_ML">DML</a> or <a href="http://code.haskell.org/Agda/examples/Vec.agda">Agda</a>, then note that despite appearances, our <code>Sparse</code> definition is <em>not</em> indexed.</p>
+<p>Let’s write a function to compute a sparse product</p>
+<div id="program-pane-19" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-19" class="programbox">{-@ sparseProduct  :: x:List Int -> SparseN Int (llen x) -> Int @-}
+sparseProduct :: List Int -> [(Int, Int)] -> Int
+sparseProduct x y   = go 0 y
+  where
+    go n []         = n
+    go n ((i,v):y') = go (n + (x!!i) * v) y'</div>
+</div>
+
+<p>LiquidHaskell verifies the above by using the specification to conclude that for each tuple <code>(i, v)</code> in the list <code>y</code>, the value of <code>i</code> is within the bounds of the list <code>x</code>, thereby proving <code>x !! i</code> safe.</p>
+<p>The sharp reader will have undoubtedly noticed that the sparse product can be more cleanly expressed as a <a href="https://hackage.haskell.org/package/base-4.18.0.0/docs/Data-List.html#v:foldl">fold</a>:</p>
+<pre class="spec"><code>foldl&#39; :: (a -&gt; b -&gt; a) -&gt; a -&gt; [b] -&gt; a</code></pre>
+<p>We can simply fold over the sparse vector, accumulating the <code>sum</code> as we go along</p>
+<div id="program-pane-20" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-20" class="programbox">{-@ sparseProduct'  :: x:List Int -> SparseN Int (llen x) -> Int @-}
+sparseProduct' :: List Int -> [(Int, Int)] -> Int
+sparseProduct' x y  = foldl' body 0 y
+  where
+    body sum (i, v) = sum + (x !! i) * v</div>
+</div>
+
+<p> LiquidHaskell digests this without difficulty. The main trick is in how the polymorphism of <code>foldl'</code> is instantiated.</p>
+<ol type="1">
+<li><p>GHC infers that at this site, the type variable <code>b</code> from the signature of <code>foldl'</code> is instantiated to the Haskell type <code>(Int, a)</code>.</p></li>
+<li><p>Correspondingly, LiquidHaskell infers that in fact <code>b</code> can be instantiated to the <em>refined</em> <code>(Btwn 0 (vlen x), a)</code>.</p></li>
+</ol>
+<p>Thus, the inference mechanism saves us a fair bit of typing and allows us to reuse existing polymorphic functions over containers and such without ceremony.</p>
+</section>
+<section id="data-invariants-sparse-vectors" class="level2">
+<h2>Data Invariants: Sparse Vectors</h2>
+<p>Liquid Haskell allows to write invariants on data types. As an example, let’s revisit the sparse vector representation that we saw earlier. The <code>SparseN</code> type alias we used got the job done, but is not pleasant to work with because we have no way of determining the <em>dimension</em> of the sparse vector. Instead, let’s create a new datatype to represent such vectors:</p>
+<div id="program-pane-21" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-21" class="programbox">data Sparse a = SP { spDim   :: Int
+                   , spElems :: [(Int, a)] }</div>
+</div>
+
+<p> Thus, a sparse vector is a pair of a dimension and a list of index-value tuples. Implicitly, all indices <em>other</em> than those in the list have the value <code>0</code> or the equivalent value type <code>a</code>.</p>
+<p><code>Sparse</code> vectors satisfy two crucial properties. First, the dimension stored in <code>spDim</code> is non-negative. Second, every index in <code>spElems</code> must be valid, i.e. between <code>0</code> and the dimension. Unfortunately, Haskell’s type system does not make it easy to ensure that <em>illegal vectors are not representable</em>.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p><br />
+<strong>Data Invariants</strong> LiquidHaskell lets us enforce these invariants with a refined data definition:</p>
+<div id="program-pane-22" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-22" class="programbox">{-@ data Sparse a = SP { spDim   :: Nat
+                       , spElems :: [(Btwn 0 spDim, a)]} @-}</div>
+</div>
+
+<p><br />
+<strong>Refined Data Constructors</strong> The refined data definition is internally converted into refined types for the data constructor <code>SP</code>:</p>
+<pre class="spec"><code>-- Generated Internal representation
+data Sparse a where
+  SP :: spDim:Nat
+     -&gt; spElems:[(Btwn 0 spDim, a)]
+     -&gt; Sparse a</code></pre>
+<p>In other words, by using refined input types for <code>SP</code> we have automatically converted it into a <em>smart</em> constructor that ensures that <em>every</em> instance of a <code>Sparse</code> is legal. Consequently, LiquidHaskell verifies:</p>
+<div id="program-pane-23" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-23" class="programbox">okSP :: Sparse String
+okSP = SP 5 [ (0, "cat")
+            , (3, "dog") ]</div>
+</div>
+
+<p>but rejects, due to the invalid index:</p>
+<div id="program-pane-24" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-24" class="programbox">{-@ ignore badSP @-}
+badSP :: Sparse String
+badSP = SP 5 [ (0, "cat")
+             , (6, "dog") ]</div>
+</div>
+
+<p><br />
+<strong>Field Measures</strong> It is convenient to write an alias for sparse vectors of a given size <code>N</code>. We can use the field name <code>spDim</code> as a <em>measure</em>, like <code>llen</code>. That is, we can use <code>spDim</code> inside refinements<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<div id="program-pane-25" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-25" class="programbox">{-@ type SparseIN a N = {v:Sparse a | spDim v == N} @-}</div>
+</div>
+
+<p>Let’s write a function to compute a sparse product</p>
+<div id="program-pane-26" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-26" class="programbox">{-@ dotProd :: x:List Int -> SparseIN Int (llen x) -> Int @-}
+dotProd :: List Int -> Sparse Int -> Int
+dotProd x (SP _ y) = go 0 y
+  where
+    go sum ((i, v) : y') = go (sum + (x !! i) * v) y'
+    go sum []            = sum</div>
+</div>
+
+<p> LiquidHaskell verifies the above by using the specification to conclude that for each tuple <code>(i, v)</code> in the list <code>y</code>, the value of <code>i</code> is within the bounds of the list <code>x</code>, thereby proving <code>x !! i</code> safe.</p>
+<p><br />
+<strong>Folded Product</strong> We can port the <code>fold</code>-based product to our new representation:</p>
+<div id="program-pane-27" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-27" class="programbox">{-@ dotProd' :: x:List Int -> SparseIN Int (llen x) -> Int @-}
+dotProd' :: List Int -> Sparse Int -> Int
+dotProd' x (SP _ y) = foldl' body 0 y
+  where
+    body sum (i, v) = sum + (x !! i)  * v</div>
+</div>
+
+<p>As before, LiquidHaskell checks the above by <a href="#sparsetype">automatically instantiating refinements</a> for the type parameters of <code>foldl'</code>, saving us a fair bit of typing and enabling the use of the elegant polymorphic, higher-order combinators we know and love.</p>
+<div id="Sanitization" class="hwex">
+<p><br />
+<strong>Exercise: (Sanitization): </strong> Invariants are all well and good for data computed <em>inside</em> our programs. The only way to ensure the legality of data coming from <em>outside</em>, i.e. from the “real world”, is to write a sanitizer that will check the appropriate invariants before constructing a <code>Sparse</code> list. Write the specification and implementation of a sanitizer <code>fromList</code>, so that the following typechecks:</p>
+<br />
+<br />
+
+</div>
+<p><strong>Hint: </strong>You need to check that <em>all</em> the indices in <code>elts</code> are less than <code>dim</code>; the easiest way is to compute a new <code>Maybe [(Int, a)]</code> which is <code>Just</code> the original pairs if they are valid, and <code>Nothing</code> otherwise.</p>
+<div id="program-pane-28" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-28" class="programbox">fromList          :: Int   -> [(Int, a)] -> Maybe (Sparse a)
+fromList dim elts = undefined
+
+{- test :: SparseIN String 3 @-}
+test     :: Maybe (Sparse String)
+test     = fromList 3 [(0, "cat"), (2, "mouse")]</div>
+</div>
+
+<div id="Addition" class="hwex">
+<p><br />
+<strong>Exercise: (Addition): </strong>Write the specification and implementation of a function <code>plus</code> that performs the addition of two <code>Sparse</code> vectors of the <em>same</em> dimension, yielding an output of that dimension. When you are done, the following code should typecheck:</p>
+<br />
+<br />
+
+</div>
+<div id="program-pane-29" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-29" class="programbox">plus     :: (Num a) => Sparse a -> Sparse a -> Sparse a
+plus x y = undefined
+
+{- testPlus :: SparseIN Int 3 @-}
+testPlus :: Sparse Int
+testPlus    = plus vec1 vec2
+  where
+    vec1 = SP 3 [(0, 12), (2, 9)]
+    vec2 = SP 3 [(0, 8),  (1, 100)]</div>
+</div>
+
+</section>
+<section id="ordered-lists" class="level2">
+<h2>Ordered Lists</h2>
+<p>As a second example of refined data types, let’s consider a different problem: representing <em>ordered</em> sequences. Here’s a type for sequences that mimics the classical list:</p>
+<div id="program-pane-30" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-30" class="programbox">data IncList a =
+    Emp
+  | (:<) { hd :: a, tl :: IncList a }
+
+infixr 9 :<</div>
+</div>
+
+<p> The Haskell type above does not state that the elements are in order of course, but we can specify that requirement by refining <em>every</em> element in <code>tl</code> to be <em>greater than</em> <code>hd</code>:</p>
+<div id="program-pane-31" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-31" class="programbox">{-@ data IncList a =
+        Emp
+      | (:<) { hd :: a, tl :: IncList {v:a | hd <= v}}  @-}</div>
+</div>
+
+<p><br />
+<strong>Refined Data Constructors</strong> Once again, the refined data definition is internally converted into a “smart” refined data constructor</p>
+<pre class="spec"><code>-- Generated Internal representation
+data IncList a where
+  Emp  :: IncList a
+  (:&lt;) :: hd:a -&gt; tl:IncList {v:a | hd &lt;= v} -&gt; IncList a</code></pre>
+<p>which ensures that we can only create legal ordered lists.</p>
+<div id="program-pane-32" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-32" class="programbox">okList :: IncList Int
+okList  = 1 :< 2 :< 3 :< Emp      -- accepted by LH
+
+{-@ ignore badList @-}
+badList :: IncList Int
+badList = 2 :< 1 :< 3 :< Emp      -- rejected by LH</div>
+</div>
+
+<p> It’s all very well to <em>specify</em> ordered lists. Next, let’s see how it’s equally easy to <em>establish</em> these invariants by implementing several textbook sorting routines.</p>
+<p>First, let’s implement insertion sort, which converts an ordinary list <code>[a]</code> into an ordered list <code>IncList a</code>.</p>
+<div id="program-pane-33" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-33" class="programbox">insertSort        :: (Ord a) => [a] -> IncList a
+insertSort []     = Emp
+insertSort (x:xs) = insert x (insertSort xs)</div>
+</div>
+
+<p>The hard work is done by <code>insert</code> which places an element into the correct position of a sorted list. LiquidHaskell infers that if you give <code>insert</code> an element and a sorted list, it returns a sorted list.</p>
+<div id="program-pane-34" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-34" class="programbox">insert             :: (Ord a) => a -> IncList a -> IncList a
+insert y Emp       = y :< Emp
+insert y (x :< xs)
+  | y <= x         = y :< x :< xs
+  | otherwise      = x :< insert y xs</div>
+</div>
+
+<div id="Insertion Sort" class="hwex">
+<p><br />
+<strong>Exercise: (Insertion Sort): </strong>Complete the implementation of the function below to use <code>foldr</code> to eliminate the explicit recursion in <code>insertSort</code>.</p>
+<br />
+<br />
+
+</div>
+<div id="program-pane-35" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-35" class="programbox">insertSort'     :: (Ord a) => [a] -> IncList a
+insertSort' xs  = foldr f b xs
+  where
+     f          = undefined    -- Fill this in
+     b          = undefined    -- Fill this in</div>
+</div>
+
+<p>We will come back to the concept of increasing lists and see how one can provide such a specification for Haskell’s lists. But for now, let’s study easier properties of lists.</p>
+</section>
+<section id="summary" class="level2">
+<h2>Summary</h2>
+<p>Today we saw how refinement interact with data types. Concretely we saw how to define <em>measures</em> to specify properties of user defined data and how to refine the definitions of data types to specify invariants. Finally, we saw how all these features interact with existing Haskell libraries, and concretely how to use LiquidHaskell to reason about Haskell’s lists.</p>
+</section>
+</section>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p> In a next lecture we will see how one can use reflection to lift in the logic functions with more than one argument, but then verification is no more automated.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>The standard approach is to use abstract types and <a href="https://www.haskell.org/haskellwiki/Smart_constructors">smart constructors</a> but even then there is only the informal guarantee that the smart constructor establishes the right invariants.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p>Note that <em>inside</em> a refined <code>data</code> definition, a field name like <code>spDim</code> refers to the value of the field, but <em>outside</em> it refers to the field selector measure or function.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</div>
+</div>
+
+<div class="hidden">
+<!--Site Meter -->
+  <script type="text/javascript" src="//s23.sitemeter.com/js/counter.js?site=s23liquidtypes"></script>
+  <noscript>
+    <a href="http://s23.sitemeter.com/stats.asp?site=s23liquidtypes" 
+      target="_top">
+      <img src="http://s23.sitemeter.com/meter.asp?site=s23liquidtypes" 
+      alt="Site Meter" border="0"/></a>
+  </noscript>
+  <!-- Copyright (c)2009 Site Meter -->
+</div>
+
+
+
+
+
+<!-- JavaScript below! ============================================== -->
+
+  <script src="./js/ace/ace.js" type="text/javascript" charset="utf-8"></script> 
+  <script src="./js/ace/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/ace/mode-haskell.js"  type="text/javascript" charset="utf-8"></script>
+  <script src="./js/liquid/tooltip.js"></script> 
+  <script src="./js/liquid/annot.js"></script> 
+  <script src="./js/liquid/config.js"></script> 
+  <script src="./js/liquid/liquid.js"></script>
+
+  <script type="text/javascript">
+    var queryServerURL = "https://liquidhaskell.goto.ucsd.edu/" ;
+  </script>
+  
+  <!-- rust nav JS --> 
+  <script type="text/javascript">
+    window.playgroundUrl = "";
+  </script>
+  
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+
+ document.getElementById("toggle-nav").onclick = toggleNav;
+
+  function toggleNav() {
+    var toc         = document.getElementById("toc");
+    var pagewrapper = document.getElementById("page-wrapper");
+    var status      = document.getElementById("checker-status");
+
+    toggleClass(toc,         "mobile-hidden");
+    // toggleClass(status,      "mobile-hidden");
+    toggleClass(pagewrapper, "mobile-hidden");
+  };
+
+  function toggleClass(el, className) {
+     // from http://youmightnotneedjquery.com/
+     if (el.classList) {
+       el.classList.toggle(className);
+     } else {
+       var classes = el.className.split(' ');
+       var existingIndex = classes.indexOf(className);
+
+       if (existingIndex >= 0) {
+         classes.splice(existingIndex, 1);
+       } else {
+         classes.push(className);
+       }
+       el.className = classes.join(' ');
+     }
+  }
+});
+</script>
+</body>
+</html>

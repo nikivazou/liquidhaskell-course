@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-106754474-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments)};
+  gtag('js', new Date());
+
+  gtag('config', 'UA-106754474-1');
+</script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Liquid Haskell</title>
+
+    <link href="./css/bootstrap.css" rel="stylesheet">
+    <link href="./css/bootstrap-theme.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./css/rust-book.css">
+    <link rel="stylesheet" type="text/css" href="./css/editor.css">
+
+   
+    <style type="text/css">code{white-space: pre;}
+
+      .dropdown-menu {
+          min-width: 0px;
+      }
+      
+      #checker-status {
+          width: 30;
+          height: 20;
+          padding-top: 2px;
+          padding-right: 10px;
+          position: absolute;
+          top: 0;
+          right: 0;
+          z-index:99;
+      }
+    </style>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+
+
+<!-- <script type="text/javascript" src="js/jquery/jquery-1.7.1.min.js"></script> -->
+<script type="text/javascript" src="./js/jquery/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="./js/angular/angular.js"></script>
+<script type="text/javascript" src="./js/bootstrap/bootstrap.js"></script>
+
+<!-- MATHJAX TEMPLATES GO HERE -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+    extensions: ["color.js"],
+    Macros: {
+      True: "\\mathit{True}",
+      RR:   "{\\bf R}",
+      Int:  "\\mathtt{Int}",
+      Nat:  "\\mathtt{Nat}",
+      Zero: "\\mathtt{Zero}",
+      foo:   ["{\\bf Jhala FOO #1}", 1],
+      kvar:  ["{\\color[rgb]{1,0,0}{K_{#1}({#2})}}", 2],
+      bindx: ["{{#1}\\!:\\!{#2}}", 2],
+      reft:  ["\\{\\bindx{#1}{#2} \\mid {#3}\\}", 3],
+      ereft: ["\\bindx{#1}{\\{#2 \\mid #3\\}}", 3],
+      reftx: ["\\{{#1}\\mid{#2}\\}", 2],
+      inferrule: ["\\frac{#2}{#3}\\;{#1}", 3],
+      tcap:  ["(\\mathtt{intersection}\\ #1\\ #2)", 2],
+      tcup:  ["(\\mathtt{union}\\ #1\\ #2)", 2],
+      tsng:  ["(\\mathtt{singleton}\\ #1)", 1]
+  }
+  }
+});
+</script>
+
+<!-- GITHUB -->
+<script
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+  type="text/javascript"></script>
+  
+<!-- LOCAL 
+
+  <script src="js/MathJax-2.6.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+    type="text/javascript"></script>
+    
+  -->
+  
+
+
+
+
+
+
+
+</head>
+<body class="rustdoc" data-spy="scroll" data-target=".bs-docs-sidebar" ng-app="liquidDemo" ng-controller="LiquidDemoCtrl">
+
+    <div id="nav">
+       <button id="toggle-nav" class="toggle-nav">
+         <span class="sr-only">Toggle navigation</span>
+         <span class="bar"></span>
+         <span class="bar"></span>
+         <span class="bar"></span>
+       </button>
+    </div>
+
+<div id='toc' class='mobile-hidden'>
+<ul class='chapter'>
+<li><a href='Lecture_01_RefinementTypes.html'><b>1.</b>Refinement Types</a></li>
+<ul class='section'>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.1.</b> Installation</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.2.</b> Basic Refinement Types</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.3.</b> Subtyping</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.4.</b> From Subtyping to Verification Conditions</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.5.</b> Verification Conditions</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.6.</b> Primitive Operations</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.7.</b> Function Types</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.8.</b> Branching and Recursion</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.9.</b> Refined Polymorphism</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.10.</b> Putting it all together: Safe Indexing</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.11.</b> Summary</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.12.</b> Further Reading</a></li>
+<li><a href='Lecture_01_RefinementTypes.html#'><b>1.13.</b> Cheatsheet</a></li>
+</ul>
+<li><a href='Lecture_02_DataTypes.html'><b>2.</b>Data Types</a></li>
+<ul class='section'>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.1.</b> Measures</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.2.</b> Multiple Measures</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.3.</b> Recursive Functions</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.4.</b> Higher-Order Functions</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.5.</b> Folding (Indexed Lists)</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.6.</b> Data Invariants: Sparse Vectors</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.7.</b> Ordered Lists</a></li>
+<li><a href='Lecture_02_DataTypes.html#'><b>2.8.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_03_Sortedness.html'><b>3.</b>Sortedness &amp; Abstract Refinements</a></li>
+<ul class='section'>
+<li><a href='Lecture_03_Sortedness.html#'><b>3.1.</b> Ordered Lists</a></li>
+<li><a href='Lecture_03_Sortedness.html#'><b>3.2.</b> Abstraction over Sortedness</a></li>
+<li><a href='Lecture_03_Sortedness.html#'><b>3.3.</b> Haskell's Lists</a></li>
+<li><a href='Lecture_03_Sortedness.html#'><b>3.4.</b> Dependent Pairs</a></li>
+<li><a href='Lecture_03_Sortedness.html#'><b>3.5.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_04_Termination.html'><b>4.</b>Termination</a></li>
+<ul class='section'>
+<li><a href='Lecture_04_Termination.html#'><b>4.1.</b> Termination Requires Refinements!</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.2.</b> Termination Metrics</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.3.</b> Lexicographic Termination</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.4.</b> The GCD Example</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.5.</b> Data Types</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.6.</b> User Defined Data Types</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.7.</b> Mutual Recursion</a></li>
+<li><a href='Lecture_04_Termination.html#'><b>4.8.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_05_ProofsPrograms.html'><b>5.</b>Programs are Proofs</a></li>
+<ul class='section'>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.1.</b> Each Program Proves its type</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.2.</b> Propositions as Refinement Types</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.3.</b> Quantified Theorems</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.4.</b> Theorems about Haskell Functions</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.5.</b> Reusing Proofs, the "because" combinator</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.6.</b> Quantified Proofs</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.7.</b> Monotonicity of the Fibonacci Function</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.8.</b> Generalizing the Monotonicity Proof</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.9.</b> Proofs By Natural Induction</a></li>
+<li><a href='Lecture_05_ProofsPrograms.html#'><b>5.10.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_06_StructuralInduction.html'><b>6.</b>Structural Induction</a></li>
+<ul class='section'>
+<li><a href='Lecture_06_StructuralInduction.html#'><b>6.1.</b> Structural Induction on Lists</a></li>
+<li><a href='Lecture_06_StructuralInduction.html#'><b>6.2.</b> Map Fusion</a></li>
+<li><a href='Lecture_06_StructuralInduction.html#'><b>6.3.</b> Monoid Laws for Lists</a></li>
+<li><a href='Lecture_06_StructuralInduction.html#'><b>6.4.</b> Using Proved Lemma</a></li>
+<li><a href='Lecture_06_StructuralInduction.html#'><b>6.5.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_07_CaseStudyMapReduce.html'><b>7.</b>Case Study: Map Reduce</a></li>
+<ul class='section'>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.1.</b> Map Reduce Explained</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.2.</b> Map Reduce "Library" Functions:</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.3.</b> Map Reduce "Client" Functions: Summing a List</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.4.</b> Proving Code Equivalence: <code>sum</code> and <code>psum</code></a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.5.</b> Chunk Definition:</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.6.</b> Higher Order Theorem: <code>mRTheorem</code></a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.7.</b> Lemmata for <code>mRTheorem</code> on plus</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.8.</b> Summary</a></li>
+<li><a href='Lecture_07_CaseStudyMapReduce.html#'><b>7.9.</b> Appendix: List Manipulation Functions</a></li>
+</ul>
+<li><a href='Lecture_08_NaturalDeduction.html'><b>8.</b>Natural Deduction</a></li>
+<ul class='section'>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.1.</b> Logical Properties</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.2.</b> Native Terms</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.3.</b> Conjunction</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.4.</b> Disjunction</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Negation</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Forall</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Exists</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.9.</b> Example 1: existsAll</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.10.</b> Example 2: Distributing Qualifiers</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.11.</b> Example 3: List Properties</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.12.</b> Example 4: Natural Induction</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.13.</b> Summary</a></li>
+</ul>
+<li><a href='Lecture_09_DataPropositions.html'><b>9.</b>Data Propositions</a></li>
+<ul class='section'>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.1.</b> Even Numbers</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.2.</b> Construction of Even Numbers</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.3.</b> Functions on Even Numbers</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.4.</b> Metatheory of Programming Languages</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.5.</b> Evaluation of Expressions</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.6.</b> Typing of Expressions</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.7.</b> Soundness = Progress + Preservation</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.8.</b> Summary</a></li>
+<li><a href='Lecture_09_DataPropositions.html#'><b>9.9.</b> Appendix: The rest of the Code</a></li>
+</ul>
+</ul>
+
+</div>
+      
+       <div id="checker-status">
+         <!-- Verifying ... -->
+         <button class="btn btn-xs btn-link actbutton" type="button" style="font-size:30px; z-index:1"
+                ng-show="isChecking" ng-click="verifySource()">
+          <span class="glyphicon glyphicon-hourglass"></span>
+         </button>
+
+        
+         <!-- Safe -->
+         <button class="btn btn-xs btn-link actbutton" type="button" style="font-size:30px; color:green; z-index:1"
+                 ng-show="isSafe">
+           <span class="glyphicon glyphicon-ok"></span>
+         </button>
+
+         <div class="dropdown" ng-show="isBad">
+             <button class="btn btn-xs btn-link dropdown-toggle"
+                     type="button"
+                     id="errorblockdropdown"
+                     data-toggle="dropdown"
+                     style="font-size:30px; color:red; z-index:1">
+               <span class="glyphicon glyphicon-remove" style="vertical-align:middle"></span><font size="4">{{errorBlocks.length}}</font>
+               </span>
+             </button>
+             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+               <li ng-repeat="err in errorBlocks">
+                 <a tabindex="-1" ng-href="#program-{{err.data}}">{{err.index}}</a>
+               </li>
+             </ul>
+         </div>
+       </div>
+       
+
+<div id='page-wrapper'>
+<div id='page'>
+
+<section id="refinement-types" class="level1">
+<h1>Refinement Types</h1>
+<p>Refinement types are types refined with logical predicates that enforce a variety of invariants at compile time. In this course, we will learn the refinement type system of Liquid Haskell.</p>
+<p>If you follow this course via a brouser, you can just click the check button that exists on the code spinnets to run Liquid Haskell on your file. If you follow it on an editor, then compile the code using the Haskell compiler and turn on the `Liquid Haskell plugin``, but uncommenting the following line:</p>
+<div id="program-pane-0" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-0" class="programbox">
+{- OPTIONS_GHC -fplugin=LiquidHaskell #-}
+{-@ LIQUID "--no-termination" @-}
+module Lecture_01_RefinementTypes where
+
+main :: IO ()
+main = return ()</div>
+</div>
+
+<p>Either way, you can now use the <code>Liquid Haskell</code> type checker, for example to check that division by zero is not possible.</p>
+<div id="program-pane-1" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-1" class="programbox">test :: Int -> Int
+test x = 42 `div` 2</div>
+</div>
+
+<p>If we call <code>div</code> with zero, directly or even indirectly via the <code>x</code> argument, then at runtime we will get a division by zero error.</p>
+<pre class="ghci"><code>ghci&gt; test 0
+*** Exception: divide by zero</code></pre>
+<p>Liquid Haskell comes with a refined type for the division operator that specified that the second argument must be non-zero.</p>
+<pre class="spec"><code>div :: Int -&gt; {v:Int | v /= 0} -&gt; Int</code></pre>
+<p>The above type specifies that the second argument must be non-zero and is automatically checked at compile time, using an SMT solver. Today, we will learn how these checks are performed, and how to write and use refined types in Haskell.</p>
+<section id="installation" class="level2">
+<h2>Installation</h2>
+<p>Liquid Haskell exists on <a href="https://hackage.haskell.org/package/liquidhaskell">hackage</a>, which is the Haskell package repository, so you can install it using <code>cabal</code>, <code>stack</code>, or instal it from source:</p>
+<ul>
+<li><a href="https://ucsd-progsys.github.io/liquidhaskell/install/"><code>cabal install liquidhaskell</code></a> will install the Liquid Haskell plugin that you can use in your Haskell projects.</li>
+<li><a href="https://github.com/ucsd-progsys/liquidhaskell?tab=readme-ov-file#running-the-pluging-on-individual-files">Source installation</a> will let you clone Liquid Haskell from github and install it.</li>
+</ul>
+<p>The source code of these class notes can also be downloaded and executed from <a href="https://github.com/nikivazou/liquidhaskell-course">github</a><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p><strong>Note:</strong> This is the first time I am giving these lectures, so I would appreciate any feedback you might have, via the virtual classroom, pull requests, or email at <code>niki.vazou@imdea.org</code>.</p>
+</section>
+<section id="basic-refinement-types" class="level2">
+<h2>Basic Refinement Types</h2>
+<p>Did you note that <code>2</code> is a good argument for the division operator?</p>
+<p>But, what is the type of <code>2</code>?</p>
+<p>In Haskell <code>2:Int</code>, but the same value can have many different refinement types. A basic refinement type has the form</p>
+<p><span class="math display">\[ \{ v:b \mid p \} \]</span> where <span class="math inline">\(b\)</span> is the base type (e.g., <code>Int</code>, <code>Bool</code>, etc.) and <span class="math inline">\(p\)</span> is a logical predicate.</p>
+<p>For example, the logical predicate that refines the type of <code>2</code> can have many different forms:</p>
+<div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-2" class="programbox">
+{-@ type Two      = {v:Int | v == 2}  @-}
+{-@ type FortyTwo = {v:Int | v == 42} @-}
+{-@ type NZero    = {v:Int | v /= 0}  @-}
+{-@ type Pos      = {v:Int | v >  0}  @-}
+{-@ type Neg      = {v:Int | v <  0}  @-}
+{-@ type Nat      = {v:Int | 0 <= v}  @-}
+
+
+two :: Int
+two = 2 </div>
+</div>
+
+<p><strong>Question:</strong> What are good types for <code>two</code>?</p>
+<p><strong>Question:</strong> Can you find more types for <code>two</code>?</p>
+</section>
+<section id="subtyping" class="level2">
+<h2>Subtyping</h2>
+<p>So, what is the type of <code>2</code>? In Liquid Haskell, integers and other constants, e.g., booleans, characters, etc., are given a <em>singleton type</em>, meaning a type that has only one value. So, the typing rule for integers is:</p>
+<p><span class="math display">\[ 
+\inferrule{\texttt{T-Int}}{}{\Gamma \vdash i : \{ \texttt{Int} \mid v = i \}}
+\]</span></p>
+<p>In an unrefined system this would be <em>the only</em> type for <code>2</code>. But refinement types have the notion of <em>subtyping</em>, which can give an expression many different types.</p>
+<p>The rule for subtyping is the following:</p>
+<p><span class="math display">\[
+\inferrule
+  {\texttt{T-Sub}}
+  {
+  \Gamma \vdash e : \tau_1 \quad 
+  \Gamma \vdash \tau_1 \preceq \tau_2
+  }{
+  \Gamma \vdash e : \tau_2
+  }
+\]</span></p>
+<p>This rule states that in an expression, like <span class="math inline">\(2\)</span>, that has type <span class="math inline">\(\tau_1\)</span> and <span class="math inline">\(\tau_1\)</span> is a subtype of <span class="math inline">\(\tau_2\)</span>, then <span class="math inline">\(2\)</span> can also have type <span class="math inline">\(\tau_2\)</span>.</p>
+<p>So, <span class="math inline">\(2 : \{ \texttt{Int} \mid 0 \leq v \}\)</span>, because <span class="math inline">\(\{ \texttt{Int} \mid v = 2 \} \preceq \{ \texttt{Int} \mid 0 \leq v \}\)</span>. But, let’s see how subtyping is decided.</p>
+</section>
+<section id="from-subtyping-to-verification-conditions" class="level2">
+<h2>From Subtyping to Verification Conditions</h2>
+<p>The subtyping rule for base types, e.g., integers, booleans, etc., is the following:</p>
+<p><span class="math display">\[
+\inferrule
+  {\texttt{Sub-Base}}
+  {
+   \Gamma \vdash \forall v:b. p_1 \Rightarrow p_2
+  }{
+  \Gamma \vdash \{ v:\texttt{b} \mid p_1 \} \preceq \{ v:\texttt{b} \mid p_2 \}
+  }
+\]</span></p>
+<p>Meaning that <span class="math inline">\(\{ v:\texttt{b} \mid p_1 \} \preceq \{ v:\texttt{b} \mid p_2 \}\)</span>, if <span class="math inline">\(p_1\)</span> “implies” <span class="math inline">\(p_2\)</span> for all values <span class="math inline">\(v\)</span> of type <span class="math inline">\(\texttt{b}\)</span>. To check implications, we use the below two implication rules that are based on the SMT solver<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<p><span class="math display">\[
+\inferrule
+  {\texttt{I-Emp}}
+  {
+    \texttt{SmtValid}(c)
+  }{
+    \emptyset \vdash c 
+  }
+\qquad 
+\inferrule
+  {\texttt{I-Ext}}
+  {
+    \Gamma \vdash \forall x.  p \Rightarrow c 
+  }{
+    \Gamma, x:\{ x:\texttt{b} \mid p \} \vdash c 
+  }
+\]</span></p>
+<p><strong>Example:</strong> When we check that <span class="math inline">\(2\)</span> is indeed a natural number, the following derivation takes place</p>
+<p><span class="math display">\[
+\inferrule
+  {\texttt{T-Sub}}
+  {
+    \inferrule
+    {\texttt{T-Int}}
+    {}
+    {\emptyset \vdash 2 : \{v: \texttt{Int} \mid 2 = v \}}
+    \quad
+    \inferrule
+    {\texttt{Sub-Base}}
+    { 
+      \inferrule
+      {\texttt{I-Emp}}
+      {\texttt{SmtValid} (\forall v:\texttt{Int}. 2 = v \Rightarrow 0 \leq v)}
+      {
+      \emptyset \vdash \forall v:\texttt{Int}. 2 = v \Rightarrow 0 \leq v
+      }
+    }
+    {\emptyset \vdash \{v: \texttt{Int} \mid 2 = v \} \preceq \{v: \texttt{Int} \mid 0 \leq v \}}
+  }
+  {\emptyset \vdash 2 : \{v: \texttt{Int} \mid 0 \leq v \}}
+\]</span></p>
+<p>So, the type derivation succeeds, because the SMT can indeed decide that the implication <span class="math inline">\(2 = v \Rightarrow 0 \leq v\)</span> is valid.</p>
+<p>In general, we call such implications <em>verification conditions</em> and the main task of a refinement type checker is to reduce the type checking problem to validity of verification conditions.</p>
+</section>
+<section id="verification-conditions" class="level2">
+<h2>Verification Conditions</h2>
+<p>Liquid Haskell takes great care to ensure that type checking is decidable and efficient. To achieve this, it has to be careful to generate verification conditions that are decidable and efficiently checkable by the SMT solver. The rules <span class="math inline">\(\texttt{Sub-Base}\)</span> and <span class="math inline">\(\texttt{I-Ext}\)</span>, presented above, are the main rules that generate verification conditions from the predicates found in the refinement types. Below is the syntax of the predicates and verification conditions:</p>
+<p><span class="math display">\[
+\begin{array}{r r c l l}
+\textbf{Predicates} &amp; p &amp; ::=  &amp; x, y, z &amp; \textit{variables} \\
+                             &amp;   &amp; \mid &amp; \text{true}, \text{false} &amp; \textit{booleans} \\
+                             &amp;   &amp; \mid &amp; 0, -1, 1, \dots           &amp; \textit{numbers} \\
+                             &amp;   &amp; \mid &amp; \lnot p, p_1 \land p_2, p_1 \lor p_2 &amp; \textit{boolean operators} \\
+                             &amp;   &amp; \mid &amp; p_1 = p_2      &amp; \textit{equality} \\
+                             &amp;   &amp; \mid &amp; p_1 + p_2, p_1 - p_2, \dots &amp; \textit{linear arithmetic} \\
+                             &amp;   &amp; \mid &amp; f (p_1, \dots, p_n)            &amp; \textit{uninterp. functions} \\
+                             &amp;   &amp;      &amp; &amp; \\ 
+\textbf{Verification Conditions} &amp; c &amp; ::= &amp; p  &amp; \textit{predicates} \\
+                             &amp;   &amp; \mid &amp; c_1 \land c_2 &amp; \textit{conjunction} \\
+                              &amp;   &amp; \mid &amp; \forall x:b. p \Rightarrow c &amp; \textit{implication} \\
+\end{array}
+\]</span></p>
+<p><em>Verification Conditions</em> can be predicates, as a base case, conjunction, so that many verification conditions can be gathered together, and implications, as generated by the <span class="math inline">\(\texttt{I-Ext}\)</span> rule. Most of the syntax of predicates should be familiar to you.</p>
+<p><strong>Question:</strong> Do we need more boolean operators? Or maybe less?</p>
+<p><em>Uninterpreted functions</em> are essentially logical functions that always return the same value for the same input.</p>
+<p><span class="math display">\[
+\forall x\ y. x = y \Rightarrow f(x) = f(y)
+\]</span></p>
+<p>They are essential for program verification because</p>
+<ol type="1">
+<li><p>they can be used to encode program functions in the logic and</p></li>
+<li><p>they can be used to capture ideas not directly implemented.</p></li>
+</ol>
+<p>For example, in Liquid Haskell, we use the <code>measure</code> keyword to define uninterpreted functions.</p>
+<div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-3" class="programbox">{-@ measure isPrime :: Int -> Bool @-}</div>
+</div>
+
+<p>Given the property of being a function, Liquid Haskell, via SMT, can prove than on same input, <code>isPrime</code> returns the same output.</p>
+<div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-4" class="programbox">
+{-@ uninteprCheck :: x:Int -> y:Int 
+                  -> {v:() | x = y => isPrime x = isPrime y } @-}
+
+uninteprCheck :: Int -> Int -> () 
+uninteprCheck _ _ = () </div>
+</div>
+
+</section>
+<section id="primitive-operations" class="level2">
+<h2>Primitive Operations</h2>
+<p>Up to now, we have seen how type checking (of base types) is reduced to checking of verification conditions. We also saw that constants, like integers and booleans, are given singleton types. But, what about other operations, like addition, subtraction, etc.? Remember that the type of <code>div</code> was refined to ensure that the second argument is non-zero. The same happens for other “primitive” operations, like addition, subtraction, etc. They all come with refined types that essentially map their operations to the SMT primitives.</p>
+<p>So, in Liquid Haskell we have the following refined types for the basic operations:</p>
+<pre class="spec"><code>
+(+)  :: Num a =&gt; x:a -&gt; y:a -&gt; {v:a | v = x + y}
+(-)  :: Num a =&gt; x:a -&gt; y:a -&gt; {v:a | v = x - y}
+(&amp;&amp;) :: x:Bool -&gt; y:Bool -&gt; {v:Bool | v = x &amp;&amp; y }
+(||) :: x:Bool -&gt; y:Bool -&gt; {v:Bool | v = x || y }
+(==) :: Eq a =&gt; x:a -&gt; y:a -&gt; {v:Bool | v = (x = y)}
+</code></pre>
+<p>Such specifications of primitive operators come are <em>trusted</em> assumptions, required to connect the primitives of the programming language to the SMT solver. Thus, the refinement rule for such constants is:</p>
+<p><span class="math display">\[
+\inferrule{\texttt{T-Const}}
+  {}
+  {\Gamma \vdash c : \text{tyConst}(c)}
+\]</span></p>
+<p><strong>Question:</strong> What is the verification condition of the problem below?</p>
+<div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-5" class="programbox">
+{-@ threePlusSix :: {v:Int | 0 <= v} @-}
+threePlusSix :: Int 
+threePlusSix = 3 + 6 </div>
+</div>
+
+<p><strong>Question:</strong> What is the verification condition of the problem below?</p>
+<div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-6" class="programbox">
+{-@ plusSix :: x:Int -> {v:Int | x <= v} @-}
+plusSix :: Int -> Int 
+plusSix x = x + 6 </div>
+</div>
+
+<p><strong>Question:</strong> Can you make the above code return only natural numbers?</p>
+</section>
+<section id="function-types" class="level2">
+<h2>Function Types</h2>
+<p>Refinements on function arguments define <em>preconditions</em>, i.e., assumptions about the arguments of the function, while refinements on the return type define <em>postconditions</em>, i.e., guarantees about the return value of the function.</p>
+<p>For example, addition of two odd numbers is guaranteed to be even:</p>
+<div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-7" class="programbox">{-@ type Odd  = {v:Int | v mod 2 = 1} @-}
+{-@ type Even = {v:Int | v mod 2 = 0} @-}
+
+{-@ addOdds :: x:Odd -> y:Odd -> Even @-}
+addOdds :: Int -> Int -> Int
+addOdds x y = x + y</div>
+</div>
+
+<p>Increasing a positive number is guaranteed to be positive:</p>
+<div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-8" class="programbox">
+{-@ incrPos :: x:Pos -> Pos @-}
+incrPos :: Int -> Int 
+incrPos x = x + 1</div>
+</div>
+
+<p><strong>Question:</strong> What is the verification condition of the problem below?</p>
+<p>So, the verification condition generated when checking the output, puts into the typing context the input and then checks the postcondition:</p>
+<p><span class="math display">\[
+\inferrule
+  {\text{T-Fun}}
+  {\Gamma; x:\tau_x \vdash e : \tau}
+  {\Gamma \vdash \lambda x. e : x:\tau_x \rightarrow \tau}
+\]</span></p>
+<p>When type checking function applications, the subtyping rule is used to <em>weaken</em> the type of the argument into the correct type (e.g., make <span class="math inline">\(2\)</span> a natural number).</p>
+<p><span class="math display">\[
+\inferrule
+  {\text{T-App}}
+  { \Gamma \vdash e: (x:\tau_x \rightarrow \tau) \quad 
+    \Gamma \vdash y : \tau_x}
+  {\Gamma \vdash e\ y :  \tau [x / y] }
+\]</span></p>
+<p><strong>Note:</strong> The type of the result can contain the input variable which is substitute. For example, what is a precise type for <code>incr2</code>?</p>
+<div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-9" class="programbox">
+incr :: Int -> Int 
+{-@ incr :: x:Int -> {v:Int | v = x + 1} @-}
+incr x = x + 1 
+
+
+incr2 :: Int -> Int 
+incr2 x = incr (incr x)</div>
+</div>
+
+<p><strong>Note:</strong> Refinement types assume that application only happens with variables as arguments. This is not a limitation because internally we can always use a let binding to bind the argument to a variable. E.g., the above definition of <code>incr2</code> is equivalent to:</p>
+<pre class="spec"><code>incr2 x = let y = incr x in incr y</code></pre>
+<p>This transformation is called ANF (administrative normal form). Can you think why it is required?</p>
+<p><em>Subtyping</em> exists also on function types and it gets interesting…</p>
+<p><strong>Question:</strong> Which of the following functions can be applied to <code>higher</code>?</p>
+<div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-10" class="programbox">
+fII, fIP, fIN, fPI, fPP, fPN, fNI, fNP, fNN :: Int -> Int 
+higher :: (Int -> Int) -> Int 
+fII = undefined 
+fIP = undefined
+fIN = undefined
+fPI = undefined
+fPP = undefined
+fPN = undefined
+fNI = undefined
+fNP = undefined
+fNN = undefined
+higher = undefined 
+
+
+{-@ fII :: Int -> Int @-}
+{-@ fIP :: Int -> Pos @-}
+{-@ fIN :: Int -> Nat @-}
+{-@ fPI :: Pos -> Int @-}
+{-@ fPP :: Pos -> Pos @-}
+{-@ fPN :: Pos -> Nat @-}
+{-@ fNI :: Nat -> Int @-}
+{-@ fNP :: Nat -> Pos @-}
+{-@ fNN :: Nat -> Nat @-}
+
+
+{-@ higher :: (Nat -> Nat) -> Nat @-}
+
+testhigher = higher fNN</div>
+</div>
+
+<p><em>Intuitively:</em> <code>higher</code> will use the argument function, so the result type of the function should be stricter, so that its result is used whenever the result of the argument function is required. The argument of the function can be more general, since type checking of <code>higher</code> ensures that the argument function is used correctly.</p>
+<p>This intuition is captured in the rule of function subtyping that says that the result type should be a subtype but the argument a subpertype.</p>
+<p><span class="math display">\[
+\inferrule
+  {\texttt{Sub-Fun}}
+  {
+    \Gamma \vdash \tau_{x2} \preceq \tau_{x1} \quad
+    \Gamma; x_2:\tau_{x2} \vdash \tau_1[x_1/x_2] \preceq \tau_2
+  }{
+    \Gamma \vdash x_1:\tau_{x1} \rightarrow \tau_1 \preceq x_2:\tau_{x2} \rightarrow \tau_2
+  }
+\]</span></p>
+<p>We call the above rule on the argument <em>contravariant</em> and on the result <em>covariant</em>. Also, note that the result is checked under a context that contains the strongest argument!</p>
+</section>
+<section id="branching-and-recursion" class="level2">
+<h2>Branching and Recursion</h2>
+<p>Let’s compute the absolute value of a number.</p>
+<div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-11" class="programbox">
+abs :: Int -> Int 
+abs x = if x > 0 then x else -x </div>
+</div>
+
+<p><strong>Question:</strong> What is the type of <code>abs</code>?</p>
+<p><strong>Question:</strong> What is the verification condition generated?</p>
+<p>Refinement types are <em>branch sensitive</em>, meaning that the type of the result of a branch depends on the condition of the branch.</p>
+<p>The typing rule for branches takes this sensitivity into account:</p>
+<p><span class="math display">\[
+\inferrule
+  {\texttt{T-If}}
+  {
+    \Gamma \vdash x : \{v:\texttt{bool} \mid p \} \quad 
+    \Gamma; y:\{y:\texttt{bool} \mid  x  \} \vdash e_1 : \tau \quad 
+    \Gamma; y:\{y:\texttt{bool} \mid  \lnot x  \}  \vdash e_2 : \tau
+  }{
+    \Gamma \vdash \text{if } x \text{ then } e_1 \text{ else } e_2 : \tau
+  }
+\]</span></p>
+<p>Note that the branch is also in ANF, so that it can get into the refinements. The typing uses a fresh variable <span class="math inline">\(y\)</span> to capture the condition of the branch.</p>
+<p>Of course, branching makes more sense when accompanied with recursive functions. Let’s confirm that the sum of the first <span class="math inline">\(n\)</span> natural numbers is greater then <span class="math inline">\(n\)</span>:</p>
+<div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-12" class="programbox">sumN :: Int -> Int 
+sumN n = if n == 0 then 0 else n + sumN (n - 1)</div>
+</div>
+
+<p><strong>Question:</strong> What is the type of <code>sumN</code>?</p>
+<p><strong>Question:</strong> What is the verification condition generated?</p>
+<p>Type checking of recursive functions is itself a recursive process. Meaning, to check the type of <code>sumN</code>, we need to assume that <code>sumN</code> has the correct type!</p>
+<p><span class="math display">\[
+\inferrule
+  {\texttt{T-Rec}}
+  {
+    \Gamma; f:\tau_f \vdash e_f : \tau_f \quad 
+    \Gamma; f:\tau_f \vdash e : \tau 
+  }{
+    \Gamma \vdash \text{let rec } f = e_f \text{ in } e : \tau
+  }
+ \]</span></p>
+</section>
+<section id="refined-polymorphism" class="level2">
+<h2>Refined Polymorphism</h2>
+<p>The truth is polymorphism is a difficult topic in the area of programming languages. But, as a first step let’s only see its great points and for refinement types, the great benefit of polymorphism is that any polymorphic function can be instantiated to refined values. For example, the identity function can be instantiated to propagate natural numbers:</p>
+<div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-13" class="programbox">
+myid :: a -> a 
+myid x = x 
+
+testPoly :: Int 
+{-@ testPoly :: Nat @-}
+testPoly = higher myid</div>
+</div>
+
+<p>This is extremely powerful because it allows us to write generic code to propagate any application specific refinements! Next, we will see how this takes effect when using generic structures (e.g., arrays or in general data types). But now, for completeness, lets see the rules for polymorphism.</p>
+<p>To get a polymorphic system, we need the ability to abstract and instantiate over type variables:</p>
+<p><span class="math display">\[
+\inferrule
+  {\texttt{T-TAbs}}
+  {
+    \Gamma; \alpha \vdash e : \tau
+  } {
+    \Gamma \vdash \Lambda \alpha. e : \forall \alpha. \tau
+  }
+\qquad
+\inferrule
+  {\texttt{T-TInst}}
+  {
+    \Gamma \vdash e : \forall \alpha. \tau 
+  }{
+    \Gamma \vdash e[\tau_\alpha] : \tau[\tau_\alpha/\alpha]
+  }
+\]</span></p>
+<p>Since we allow subtyping, we also need to allow subtyping on polymorphic types. For simplicity, we assume that the type variable is renamed to be the same:</p>
+<p><span class="math display">\[
+\inferrule
+  {\texttt{Sub-Abs}}
+  {
+    \Gamma; \alpha \vdash \tau_1 \preceq \tau_2
+  }{
+    \Gamma \vdash \forall \alpha. \tau_1 \preceq \forall \alpha. \tau_2
+  }
+\]</span></p>
+</section>
+<section id="putting-it-all-together-safe-indexing" class="level2">
+<h2>Putting it all together: Safe Indexing</h2>
+<p>The major application of refinement types is to ensure indexing is safe. So, let’s generate structures of arrays and safely index them. Meaning <code>ArrayN a n</code> is an array of <code>n</code> elements of type <code>a</code> and accessing them with an index less than 0 or greater than <code>n</code> is an out of bounds error.</p>
+<div id="program-pane-14" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-14" class="programbox">type Array a = Int -> a 
+{-@ type ArrayN a N = {i:Nat | i < N} -> a @-}
+
+new :: Int -> a -> Array a 
+{-@ new :: n:Nat -> a -> ArrayN a n @-}
+new n x = \i -> if 0 <= i && i < n then x else error "Out of Bounds"
+
+set :: Int -> Int -> a -> Array a  -> Array a 
+{-@ set :: n:Nat -> i:{Nat | i < n} -> a -> ArrayN a n -> ArrayN a n @-}
+set n i x a = \j -> if i == j then x else a j
+
+get :: Int -> Int -> Array a -> a 
+{-@ get :: n:Nat -> i:{Nat | i < n} -> ArrayN a n -> a @-}
+get n i a = a i </div>
+</div>
+
+Let’s create an array with 42 elements:
+<div id="program-pane-15" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-15" class="programbox">
+{-@ arr42 :: ArrayN Int 42 @-}
+arr42 :: Array Int
+arr42 = new 42 0
+
+getElem :: Int 
+{-@ getElem :: Int @-}
+getElem = get 42 10 arr42</div>
+</div>
+
+<p><strong>Question:</strong> What are good indices of <code>arr42</code>?</p>
+<p>To put now <em>all</em> the features we learnt together, let’s assume a function that checks for primality and use it to generate the next prime number.</p>
+<div id="program-pane-16" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-16" class="programbox">{-@ type Prime = {v:Int | isPrime v } @-}
+
+isPrime :: Int -> Bool 
+{-@ isPrime :: i:Int -> {v:Bool | v <=> isPrime i } @-}
+isPrime = undefined 
+
+nextPrime :: Int -> Int 
+{-@ nextPrime :: Nat -> Prime  @-}
+nextPrime x = if isPrime x then x else nextPrime (x + 1)</div>
+</div>
+
+<p><strong>Question:</strong> Given <code>nextPrime</code> can you generate an array that contains only prime numbers?</p>
+<div id="program-pane-17" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-17" class="programbox">{-@ primes :: n:Nat -> ArrayN Prime n @-}
+primes :: Int -> Array Int
+primes = undefined </div>
+</div>
+
+</section>
+<section id="summary" class="level2">
+<h2>Summary</h2>
+<p>To sum up the most important features of a refinement type system are:</p>
+<ul>
+<li><em>implicit subtyping:</em> the type of <span class="math inline">\(2\)</span> turn into a non zero without any user casts!</li>
+<li><em>branch sensitivity:</em> the type of the result of a branch depends on the condition of the branch!</li>
+<li><em>polymorphism:</em> the type of a function can depend on the type of its arguments!</li>
+</ul>
+<p>We saw the most important rule of a refinement type system! Next, we will look at the data types (so that we can implement more structured arrays) and we will go into more examples on how to use refinement types. But, for completeness, let’s put here the definition of the language that we have seen and the typing and subtyping rules.</p>
+<ul>
+<li>Syntax of the language:</li>
+</ul>
+<p><span class="math display">\[
+\begin{array}{r r c l l}
+\textbf{Basic Types} &amp; \texttt{b} &amp; ::=  &amp; \texttt{Int} \mid \texttt{Bool}, \dots  &amp;  \\
+                             &amp;   &amp;      &amp; &amp; \\ 
+\textbf{Types} &amp; \tau &amp; ::=  &amp; \{ v:\texttt{b} \mid p \} &amp; \textit{base} \\
+                             &amp;   &amp; \mid &amp;x:\tau_{x} \rightarrow \tau &amp; \textit{function} \\
+                             &amp;   &amp; \mid &amp; \forall \alpha. \tau          &amp; \textit{polymorphic} \\
+                             &amp;   &amp;      &amp; &amp; \\ 
+\textbf{Expressions} &amp; e &amp; ::= &amp; x  &amp; \textit{variables} \\
+                             &amp;   &amp; \mid &amp; c &amp; \textit{constants} \\
+                             &amp;   &amp; \mid &amp; \lambda x . e  &amp; \textit{function} \\
+                             &amp;   &amp; \mid &amp; e\ x  &amp; \textit{application} \\
+                             &amp;   &amp; \mid &amp; \text{if } x \text{ then } e \text{ else } e  &amp; \textit{if} \\
+                             &amp;   &amp; \mid &amp; \text{let  } x = e \text{ in } e  &amp; \textit{let} \\
+                             &amp;   &amp; \mid &amp; \text{let rec } f = e \text{ in } e  &amp; \textit{recursion} \\
+                             &amp;   &amp; \mid &amp; \Lambda \alpha. e  &amp; \textit{type abs.} \\
+                             &amp;   &amp; \mid &amp; e[\tau]  &amp; \textit{type appl.} \\
+\end{array}
+\]</span></p>
+<ul>
+<li>Typing rules collected: <span class="math display">\[
+\inferrule
+{\texttt{T-Sub}}
+{
+\Gamma \vdash e : \tau_1 \quad 
+\Gamma \vdash \tau_1 \preceq \tau_2
+}{
+\Gamma \vdash e : \tau_2
+}
+\]</span></li>
+</ul>
+<p><span class="math display">\[
+\inferrule{\texttt{T-Const}}
+  {}
+  {\Gamma \vdash c : \text{tyConst}(c)}
+\quad 
+\inferrule{\texttt{T-Var}}
+  {}
+  {\Gamma \vdash x : \Gamma(x)}
+\]</span> <span class="math display">\[
+\inferrule
+  {\text{T-Fun}}
+  {\Gamma; x:\tau_x \vdash e : \tau}
+  {\Gamma \vdash \lambda x. e : x:\tau_x \rightarrow \tau}
+\quad
+\inferrule
+  {\text{T-App}}
+  { \Gamma \vdash e: (x:\tau_x \rightarrow \tau) \quad 
+    \Gamma \vdash y : \tau_x}
+  {\Gamma \vdash e\ y : \tau [x / y] }
+\]</span> <span class="math display">\[
+\inferrule
+  {\texttt{T-If}}
+  {
+    \Gamma \vdash x : \{v:\texttt{bool} \mid p \} \quad 
+    \Gamma; y:\{y:\texttt{bool} \mid  x  \} \vdash e_1 : \tau \quad 
+    \Gamma; y:\{y:\texttt{bool} \mid  \lnot x  \}  \vdash e_2 : \tau
+  }{
+    \Gamma \vdash \text{if } x \text{ then } e_1 \text{ else } e_2 : \tau
+  }
+\]</span> <span class="math display">\[
+\inferrule
+  {\texttt{T-Let}}
+  {
+    \Gamma; \vdash e_x : \tau_x \quad 
+    \Gamma; x:\tau_x \vdash e : \tau 
+  }{
+    \Gamma \vdash \text{let } x = e_x \text{ in } e : \tau
+  }
+ \]</span></p>
+<p><span class="math display">\[
+\inferrule
+  {\texttt{T-Rec}}
+  {
+    \Gamma; f:\tau_f \vdash e_f : \tau_f \quad 
+    \Gamma; f:\tau_f \vdash e : \tau 
+  }{
+    \Gamma \vdash \text{let rec } f = e_f \text{ in } e : \tau
+  }
+ \]</span> <span class="math display">\[
+\inferrule
+  {\texttt{T-TAbs}}
+  {
+    \Gamma; \alpha \vdash e : \tau
+  } {
+    \Gamma \vdash \Lambda \alpha. e : \forall \alpha. \tau
+  }
+\qquad
+\inferrule
+  {\texttt{T-TInst}}
+  {
+    \Gamma \vdash e : \forall \alpha. \tau 
+  }{
+    \Gamma \vdash e[\tau_\alpha] : \tau[\tau_\alpha/\alpha]
+  }
+\]</span></p>
+<ul>
+<li>Subtyping rules collected:</li>
+</ul>
+<p><span class="math display">\[
+\inferrule
+  {\texttt{Sub-Base}}
+  {
+   \Gamma \vdash \forall v:b. p_1 \Rightarrow p_2
+  }{
+  \Gamma \vdash \{ v:\texttt{b} \mid p_1 \} \preceq \{ v:\texttt{b} \mid p_2 \}
+  }
+\]</span> <span class="math display">\[
+\inferrule
+  {\texttt{Sub-Fun}}
+  {
+    \Gamma \vdash \tau_{x2} \preceq \tau_{x1} \quad
+    \Gamma; x_2:\tau_{x2} \vdash \tau_1[x_1/x_2] \preceq \tau_2
+  }{
+    \Gamma \vdash x_1:\tau_{x1} \rightarrow \tau_1 \preceq x_2:\tau_{x2} \rightarrow \tau_2
+  }
+\]</span></p>
+<p><span class="math display">\[
+\inferrule
+  {\texttt{Sub-Abs}}
+  {
+    \Gamma; \alpha \vdash \tau_1 \preceq \tau_2
+  }{
+    \Gamma \vdash \forall \alpha. \tau_1 \preceq \forall \alpha. \tau_2
+  }
+\]</span></p>
+<p><strong>Note:</strong> The definitions of the rules are syntactic. One subtyping rule exists for each type and one typing rule exists for each expression. The subtyping rule applies to all expressions and <em>in general</em> make the system not algorithmic (meaning, when does this rule apply?) To solve this problem and make the system algorithmic Liquid Haskell uses a <em>bidirectional</em> type checking algorithm. In general, the above rules are simplified in various ways (e.g., well formedness is not discussed).</p>
+</section>
+<section id="further-reading" class="level2">
+<h2>Further Reading</h2>
+<p>These lectures notes are based on the <a href="https://ucsd-progsys.github.io/liquidhaskell-tutorial/">Liquid Haskell Tutorial</a>. For further reading on how to develop a refinement type checker for your own language, you can read the <a href="https://arxiv.org/abs/2010.07763">Refinement Types: A Tutorial</a> and for the theoretical foundations of LiquidHaskell, the publication <a href="https://dl.acm.org/doi/pdf/10.1145/3632912">Mechanizing Refinement Types</a>.</p>
+</section>
+<section id="cheatsheet" class="level2">
+<h2>Cheatsheet</h2>
+<p>Here is the definition of the primes array.</p>
+<pre class="spec"><code>primes :: Int -&gt; Array Int
+primes n = go  1 0  (new n (nextPrime 1))
+  where 
+    go i j a 
+      | i &lt; n     = go (i + 1) (j + 1) (set n j (nextPrime j) a)
+      | otherwise = a</code></pre>
+</section>
+</section>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p> These notes are adjusted from the <a href="https://ucsd-progsys.github.io/liquidhaskell-tutorial/">Liquid Haskell Tutorial</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p> SMT stands for Satisfiability Modulo Theories and are automated tools that check the satisfiability of logical formulas. Known SMT solvers are Z3, CVC5, etc. <a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</div>
+</div>
+
+<div class="hidden">
+<!--Site Meter -->
+  <script type="text/javascript" src="//s23.sitemeter.com/js/counter.js?site=s23liquidtypes"></script>
+  <noscript>
+    <a href="http://s23.sitemeter.com/stats.asp?site=s23liquidtypes" 
+      target="_top">
+      <img src="http://s23.sitemeter.com/meter.asp?site=s23liquidtypes" 
+      alt="Site Meter" border="0"/></a>
+  </noscript>
+  <!-- Copyright (c)2009 Site Meter -->
+</div>
+
+
+
+
+
+<!-- JavaScript below! ============================================== -->
+
+  <script src="./js/ace/ace.js" type="text/javascript" charset="utf-8"></script> 
+  <script src="./js/ace/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/ace/mode-haskell.js"  type="text/javascript" charset="utf-8"></script>
+  <script src="./js/liquid/tooltip.js"></script> 
+  <script src="./js/liquid/annot.js"></script> 
+  <script src="./js/liquid/config.js"></script> 
+  <script src="./js/liquid/liquid.js"></script>
+
+  <script type="text/javascript">
+    var queryServerURL = "https://liquidhaskell.goto.ucsd.edu/" ;
+  </script>
+  
+  <!-- rust nav JS --> 
+  <script type="text/javascript">
+    window.playgroundUrl = "";
+  </script>
+  
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+
+ document.getElementById("toggle-nav").onclick = toggleNav;
+
+  function toggleNav() {
+    var toc         = document.getElementById("toc");
+    var pagewrapper = document.getElementById("page-wrapper");
+    var status      = document.getElementById("checker-status");
+
+    toggleClass(toc,         "mobile-hidden");
+    // toggleClass(status,      "mobile-hidden");
+    toggleClass(pagewrapper, "mobile-hidden");
+  };
+
+  function toggleClass(el, className) {
+     // from http://youmightnotneedjquery.com/
+     if (el.classList) {
+       el.classList.toggle(className);
+     } else {
+       var classes = el.className.split(' ');
+       var existingIndex = classes.indexOf(className);
+
+       if (existingIndex >= 0) {
+         classes.splice(existingIndex, 1);
+       } else {
+         classes.push(className);
+       }
+       el.className = classes.join(' ');
+     }
+  }
+});
+</script>
+</body>
+</html>

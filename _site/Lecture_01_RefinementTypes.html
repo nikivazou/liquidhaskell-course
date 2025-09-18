@@ -139,7 +139,6 @@ MathJax.Hub.Config({
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.10.</b> Putting it all together: Safe Indexing</a></li>
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.11.</b> Summary</a></li>
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.12.</b> Further Reading</a></li>
-<li><a href='Lecture_01_RefinementTypes.html#'><b>1.13.</b> Cheatsheet</a></li>
 </ul>
 <li><a href='Lecture_02_DataTypes.html'><b>2.</b>Data Types</a></li>
 <ul class='section'>
@@ -210,15 +209,10 @@ MathJax.Hub.Config({
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.2.</b> Native Terms</a></li>
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.3.</b> Conjunction</a></li>
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.4.</b> Disjunction</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Negation</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Forall</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Exists</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.9.</b> Example 1: existsAll</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.10.</b> Example 2: Distributing Qualifiers</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.11.</b> Example 3: List Properties</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.12.</b> Example 4: Natural Induction</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.13.</b> Summary</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication &amp; Negation</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Forall and Exists</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Examples</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Summary</a></li>
 </ul>
 <li><a href='Lecture_09_DataPropositions.html'><b>9.</b>Data Propositions</a></li>
 <ul class='section'>
@@ -231,6 +225,28 @@ MathJax.Hub.Config({
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.7.</b> Soundness = Progress + Preservation</a></li>
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.8.</b> Summary</a></li>
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.9.</b> Appendix: The rest of the Code</a></li>
+</ul>
+<li><a href='Task1.html'><b>10.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+</ul>
+<li><a href='Task1.pretty.html'><b>11.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+<li><a href='Task1.pretty.html#'><b>11.1.</b> 1. Lists</a></li>
+<li><a href='Task1.pretty.html#'><b>11.2.</b> 2. Insertion Sort</a></li>
+<li><a href='Task1.pretty.html#'><b>11.3.</b> 3. Merge Sort</a></li>
+</ul>
+<li><a href='Task1All.html'><b>12.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+</ul>
+<li><a href='Task2.html'><b>13.</b>Task 2: Proving Theorems</a></li>
+<ul class='section'>
+<li><a href='Task2.html#'><b>13.1.</b> 1. Fusions</a></li>
+</ul>
+<li><a href='Task2.pretty.html'><b>14.</b>Task 2: Proving Theorems</a></li>
+<ul class='section'>
+<li><a href='Task2.pretty.html#'><b>14.1.</b> 1. Fusions</a></li>
+<li><a href='Task2.pretty.html#'><b>14.2.</b> 2. Higher Order Properties</a></li>
+<li><a href='Task2.pretty.html#'><b>14.3.</b> 3. Encoding of Logical Properties</a></li>
 </ul>
 </ul>
 
@@ -274,7 +290,7 @@ MathJax.Hub.Config({
 <section id="refinement-types" class="level1">
 <h1>Refinement Types</h1>
 <p>Refinement types are types refined with logical predicates that enforce a variety of invariants at compile time. In this course, we will learn the refinement type system of Liquid Haskell.</p>
-<p>If you follow this course via a brouser, you can just click the check button that exists on the code spinnets to run Liquid Haskell on your file. If you follow it on an editor, then compile the code using the Haskell compiler and turn on the `Liquid Haskell plugin``, but uncommenting the following line:</p>
+<p>If you follow this course via a brouser, you can just click the check button that exists on the code spinnets to run Liquid Haskell on your file. If you follow it on an editor, then compile the code using the Haskell compiler and turn on the <code>Liquid Haskell plugin</code>, but uncommenting the following line:</p>
 <div id="program-pane-0" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -342,7 +358,6 @@ test x = 42 `div` 2</div>
 {-@ type NZero    = {v:Int | v /= 0}  @-}
 {-@ type Pos      = {v:Int | v >  0}  @-}
 {-@ type Neg      = {v:Int | v <  0}  @-}
-{-@ type Nat      = {v:Int | 0 <= v}  @-}
 
 
 two :: Int
@@ -351,6 +366,14 @@ two = 2 </div>
 
 <p><strong>Question:</strong> What are good types for <code>two</code>?</p>
 <p><strong>Question:</strong> Can you find more types for <code>two</code>?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The good types for <code>two</code> are: <code>Two</code>, <code>NZero</code>, <code>Pos</code>, and <code>Nat</code>. Good types are any types implied by equality by two, for example: <code>{v:Int | v /= 42}</code>.</em>
+</p>
+</details>
 </section>
 <section id="subtyping" class="level2">
 <h2>Subtyping</h2>
@@ -450,11 +473,19 @@ two = 2 </div>
 \]</span></p>
 <p><em>Verification Conditions</em> can be predicates, as a base case, conjunction, so that many verification conditions can be gathered together, and implications, as generated by the <span class="math inline">\(\texttt{I-Ext}\)</span> rule. Most of the syntax of predicates should be familiar to you.</p>
 <p><strong>Question:</strong> Do we need more boolean operators? Or maybe less?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>We do not need more. Any complete set of boolean operator is sufficient, for example, not and and.</em>
+</p>
+</details>
 <p><em>Uninterpreted functions</em> are essentially logical functions that always return the same value for the same input.</p>
 <p><span class="math display">\[
 \forall x\ y. x = y \Rightarrow f(x) = f(y)
 \]</span></p>
-<p>They are essential for program verification because</p>
+<p>They are essential for program verification because:</p>
 <ol type="1">
 <li><p>they can be used to encode program functions in the logic and</p></li>
 <li><p>they can be used to capture ideas not directly implemented.</p></li>
@@ -521,6 +552,14 @@ threePlusSix :: Int
 threePlusSix = 3 + 6 </div>
 </div>
 
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The verification condition is <code>forall v:Int. 3 + 6 = v =&gt; 0 &lt;= v</code>.</em>
+</p>
+</details>
 <p><strong>Question:</strong> What is the verification condition of the problem below?</p>
 <div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
 
@@ -536,12 +575,33 @@ plusSix :: Int -> Int
 plusSix x = x + 6 </div>
 </div>
 
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The verification condition is <code>forall x:Int, v:Int. x + 6 = v =&gt; x &lt;= v</code>.</em>
+</p>
+</details>
 <p><strong>Question:</strong> Can you make the above code return only natural numbers?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>To return only natural numbers, the input should also be a natural number:</em>
+</p>
+<pre class="spec"><code>{-@ plusSix :: x:Nat -&gt; {v:Nat | x &lt;= v} @-}
+plusSix :: Int -&gt; Int 
+plusSix x = x + 6 </code></pre>
+</details>
 </section>
 <section id="function-types" class="level2">
 <h2>Function Types</h2>
 <p>Refinements on function arguments define <em>preconditions</em>, i.e., assumptions about the arguments of the function, while refinements on the return type define <em>postconditions</em>, i.e., guarantees about the return value of the function.</p>
 <p>For example, addition of two odd numbers is guaranteed to be even:</p>
+<pre class="spec"><code>{-@ type Odd  = {v:Int | v mod 2 = 1} @-}
+{-@ type Even = {v:Int | v mod 2 = 0} @-}</code></pre>
 <div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -550,9 +610,7 @@ plusSix x = x + 6 </div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-7" class="programbox">{-@ type Odd  = {v:Int | v mod 2 = 1} @-}
-{-@ type Even = {v:Int | v mod 2 = 0} @-}
-
+  <div id="program-7" class="programbox">
 {-@ addOdds :: x:Odd -> y:Odd -> Even @-}
 addOdds :: Int -> Int -> Int
 addOdds x y = x + y</div>
@@ -574,6 +632,14 @@ incrPos x = x + 1</div>
 </div>
 
 <p><strong>Question:</strong> What is the verification condition of the problem below?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The verification condition is <code>forall x:Pos, v:Int. x + 1 = v =&gt; 0 &lt; v</code>.</em>
+</p>
+</details>
 <p>So, the verification condition generated when checking the output, puts into the typing context the input and then checks the postcondition:</p>
 <p><span class="math display">\[
 \inferrule
@@ -621,22 +687,7 @@ incr2 x = incr (incr x)</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-10" class="programbox">
-fII, fIP, fIN, fPI, fPP, fPN, fNI, fNP, fNN :: Int -> Int 
-higher :: (Int -> Int) -> Int 
-fII = undefined 
-fIP = undefined
-fIN = undefined
-fPI = undefined
-fPP = undefined
-fPN = undefined
-fNI = undefined
-fNP = undefined
-fNN = undefined
-higher = undefined 
-
-
-{-@ fII :: Int -> Int @-}
+  <div id="program-10" class="programbox">{-@ fII :: Int -> Int @-}
 {-@ fIP :: Int -> Pos @-}
 {-@ fIN :: Int -> Nat @-}
 {-@ fPI :: Pos -> Int @-}
@@ -649,11 +700,35 @@ higher = undefined
 
 {-@ higher :: (Nat -> Nat) -> Nat @-}
 
-testhigher = higher fNN</div>
+testhigher = higher fNN
+
+fII, fIP, fIN, fPI, fPP, fPN, fNI, fNP, fNN :: Int -> Int 
+higher :: (Int -> Int) -> Int 
+fII = undefined 
+fIP = undefined
+fIN = undefined
+fPI = undefined
+fPP = undefined
+fPN = undefined
+fNI = undefined
+fNP = undefined
+fNN = undefined
+higher = undefined </div>
 </div>
 
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The functions that can be applied to <code>higher</code> should have a type that is a subtype of <code>Nat -&gt; Nat</code>. Their domain should be a supertype of <code>Nat</code> (e.g., <code>Nat</code> and <code>Int</code>, but no <code>Pos</code>) and their codomain a subtype of <code>Nat</code> (e.g., <code>Nat</code> and <code>Pos</code>, but no <code>Int</code>). So, the functions that can be applied are <code>fIP</code>, <code>fIN</code>, <code>fNP</code>, and <code>fNN</code>.</em>
+</p>
+<p>
+<em>To test this you can try to apply the functions to <code>higher</code> and see if Liquid Haskell accepts it.</em>
+</p>
+</details>
 <p><em>Intuitively:</em> <code>higher</code> will use the argument function, so the result type of the function should be stricter, so that its result is used whenever the result of the argument function is required. The argument of the function can be more general, since type checking of <code>higher</code> ensures that the argument function is used correctly.</p>
-<p>This intuition is captured in the rule of function subtyping that says that the result type should be a subtype but the argument a subpertype.</p>
+<p>This intuition is captured in the rule of function subtyping that says that the result type should be a subtype but the argument a supertype.</p>
 <p><span class="math display">\[
 \inferrule
   {\texttt{Sub-Fun}}
@@ -684,13 +759,30 @@ abs x = if x > 0 then x else -x </div>
 
 <p><strong>Question:</strong> What is the type of <code>abs</code>?</p>
 <p><strong>Question:</strong> What is the verification condition generated?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>One type of <code>abs</code> is the following:</em>
+</p>
+<pre class="spec"><code>{-@ abs :: Int -&gt; Nat @-} </code></pre>
+<p>
+<em>The verification conditions are two, one for each branch, each taking into account the branch condition: <code>forall x:Int, v:Int. x &gt; 0 and x = v =&gt; v &gt;= 0</code> and <code>forall x:Int, v:Int. not (x &gt; 0) and -x = v =&gt; v &gt;= 0</code>.</em>
+</p>
+<p>
+Other more precise types for <code>abs</code> are:_
+</p>
+<pre class="spec"><code>{-@ abs :: x:Int -&gt; {v:Nat | v &gt;= x } @-} 
+{-@ abs :: x:Int -&gt; {v:Nat | v = (if x&gt;0 then x else -x) } @-} </code></pre>
+</details>
 <p>Refinement types are <em>branch sensitive</em>, meaning that the type of the result of a branch depends on the condition of the branch.</p>
 <p>The typing rule for branches takes this sensitivity into account:</p>
 <p><span class="math display">\[
 \inferrule
   {\texttt{T-If}}
   {
-    \Gamma \vdash x : \{v:\texttt{bool} \mid p \} \quad 
+    \Gamma \vdash x : \{v:\texttt{bool} \mid p \} \\ 
     \Gamma; y:\{y:\texttt{bool} \mid  x  \} \vdash e_1 : \tau \quad 
     \Gamma; y:\{y:\texttt{bool} \mid  \lnot x  \}  \vdash e_2 : \tau
   }{
@@ -713,6 +805,23 @@ sumN n = if n == 0 then 0 else n + sumN (n - 1)</div>
 
 <p><strong>Question:</strong> What is the type of <code>sumN</code>?</p>
 <p><strong>Question:</strong> What is the verification condition generated?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>One type of <code>sumN</code> is the following:</em>
+</p>
+<pre class="spec"><code>{-@ sumN :: Nat -&gt; Nat @-} </code></pre>
+<p>
+<em>The verification conditions are two, one for each branch, each taking into account the branch condition: <code>forall n:Nat, v:Int. n = 0 and 0 = v =&gt; v &gt;= 0</code> and <code>forall n:Nat, x:Nat, v:Int. not (n = 0) and v = n + x =&gt; v &gt;= 0</code>.</em>
+</p>
+<p>
+Notice how the recursive call got into the typing environment, via the ANF variable <code>x</code>. Further, the type of <code>sumN</code> now cannot be exact (like the one of <code>abs</code>) because the definition contains the recursive call and this cannot be part of the refinement of the type!
+</p>
+<pre class="spec"><code>{-@ abs :: x:Int -&gt; {v:Nat | v &gt;= x } @-} 
+{-@ abs :: x:Int -&gt; {v:Nat | v = (if x&gt;0 then x else -x) } @-} </code></pre>
+</details>
 <p>Type checking of recursive functions is itself a recursive process. Meaning, to check the type of <code>sumN</code>, we need to assume that <code>sumN</code> has the correct type!</p>
 <p><span class="math display">\[
 \inferrule
@@ -727,7 +836,7 @@ sumN n = if n == 0 then 0 else n + sumN (n - 1)</div>
 </section>
 <section id="refined-polymorphism" class="level2">
 <h2>Refined Polymorphism</h2>
-<p>The truth is polymorphism is a difficult topic in the area of programming languages. But, as a first step let’s only see its great points and for refinement types, the great benefit of polymorphism is that any polymorphic function can be instantiated to refined values. For example, the identity function can be instantiated to propagate natural numbers:</p>
+<p>Polymorphism is strong topic in the area of programming languages. As a first step let’s only see its great points and for refinement types, the great benefit of polymorphism is that any polymorphic function can be instantiated to refined values. For example, the identity function can be instantiated to propagate natural numbers:</p>
 <div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -787,22 +896,13 @@ testPoly = higher myid</div>
   </button>
  
   <div id="program-14" class="programbox">type Array a = Int -> a 
-{-@ type ArrayN a N = {i:Nat | i < N} -> a @-}
-
-new :: Int -> a -> Array a 
-{-@ new :: n:Nat -> a -> ArrayN a n @-}
-new n x = \i -> if 0 <= i && i < n then x else error "Out of Bounds"
-
-set :: Int -> Int -> a -> Array a  -> Array a 
-{-@ set :: n:Nat -> i:{Nat | i < n} -> a -> ArrayN a n -> ArrayN a n @-}
-set n i x a = \j -> if i == j then x else a j
-
-get :: Int -> Int -> Array a -> a 
-{-@ get :: n:Nat -> i:{Nat | i < n} -> ArrayN a n -> a @-}
-get n i a = a i </div>
+{-@ type ArrayN a N = {i:Nat | i < N} -> a @-}</div>
 </div>
 
-Let’s create an array with 42 elements:
+<ul>
+<li><strong>Creating Arrays</strong></li>
+</ul>
+<p><strong>Question:</strong> Can you define the identity, constant, arrays below?</p>
 <div id="program-pane-15" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -811,8 +911,124 @@ Let’s create an array with 42 elements:
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-15" class="programbox">
-{-@ arr42 :: ArrayN Int 42 @-}
+  <div id="program-15" class="programbox">-- arrayId returns its index, e.g., arrayId 3 = 3, arrayId 5 = 5
+
+arrayId :: Array Int 
+arrayId = undefined 
+
+-- array0 returns zero, e.g., arrayId 3 = 0, arrayId 5 = 0
+
+array0 :: Array Int 
+array0 = undefined 
+
+
+-- arrayConst x returns x, e.g., arrayConst 42 3 = 42, arrayConst 42 5 = 42
+arrayConst :: a -> Array a
+arrayConst x = undefined</div>
+</div>
+
+<p><strong>Question:</strong> Can you refine the types to describe the values of the arrays?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The definitions with their refined types are the following:</em>
+</p>
+<pre class="spec"><code>arrayId :: Array Int 
+arrayId x = x 
+
+{-@ array0 :: Array {v:Int | v == 0} @-} 
+array0 :: Array Int 
+array0 = \_ -&gt; 0 
+
+{-@ arrayConst :: x:a -&gt; Array {v:a | v == x} @-} 
+arrayConst :: a -&gt; Array a
+arrayConst x = \_ -&gt; x </code></pre>
+</details>
+<ul>
+<li><strong>Creating Finite Arrays</strong><br />
+Now, let’s define arrays of a fixed size. The <code>new</code> function creates an array of size <code>n</code> with all elements equal to <code>x</code>, and otherwise it throws an out of bounds error.</li>
+</ul>
+<p>To encode crashing, Haskell uses the <code>error</code> function, and Liquid Haskell can ensure that it will never be called!</p>
+<pre class="spec"><code>error :: {v:String | false} -&gt; a</code></pre>
+<p><strong>Question:</strong> Define the <code>new</code> function that creates an array of size <code>n</code> with all elements equal to <code>x</code>.</p>
+<div id="program-pane-16" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-16" class="programbox">
+-- new n x i returns x if i is in bounds, otherwise it crashes
+
+new :: Int -> a -> Array a 
+new n x = undefined</div>
+</div>
+
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The function <code>new</code> is the following:</em>
+</p>
+<pre class="spec"><code>{-@ new :: n:Int -&gt; a -&gt; ArrayN a n @-} 
+new :: Int -&gt; a -&gt; Array a 
+new n x = \i -&gt; if 0 &lt;= i &amp;&amp; i &lt; n then x else error &quot;Out of Bounds!&quot;  </code></pre>
+</details>
+<ul>
+<li><strong>Getting and Setting Elements</strong></li>
+</ul>
+<p><strong>Question:</strong> Define the <code>get</code> and <code>set</code> functions that get and set the <code>i-th</code> element of an array.</p>
+<div id="program-pane-17" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-17" class="programbox">
+-- set n i x a returns a new array that is the same as a, but with the i-th element set to x
+set :: Int -> Int -> a -> Array a  -> Array a 
+set n i x a = undefined 
+
+-- get n i a returns the i-th element of a
+get :: Int -> Int -> Array a -> a 
+get n i a = undefined  </div>
+</div>
+
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The functions <code>get</code> and <code>set</code> are the following:</em>
+</p>
+<pre class="spec"><code>{-@ set :: n:Nat -&gt; i:{Nat | i &lt; n} -&gt; a -&gt; ArrayN a n -&gt; ArrayN a n @-} 
+set :: Int -&gt; Int -&gt; a -&gt; Array a -&gt; Array a 
+set n i x a = \j -&gt; if i == j then x else a i  
+
+{-@ get :: n:Nat -&gt; i:{Nat | i &lt; n} -&gt; ArrayN a n -&gt; a @-} 
+get :: Int -&gt; Int -&gt; Array a -&gt; a 
+get n i a = a i   </code></pre>
+</details>
+<ul>
+<li><strong>Using Arrays</strong> Let’s create an array with 42 elements:</li>
+</ul>
+<div id="program-pane-18" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-18" class="programbox">
+{- arr42 :: ArrayN Int 42 @-}
 arr42 :: Array Int
 arr42 = new 42 0
 
@@ -822,40 +1038,66 @@ getElem = get 42 10 arr42</div>
 </div>
 
 <p><strong>Question:</strong> What are good indices of <code>arr42</code>?</p>
-<p>To put now <em>all</em> the features we learnt together, let’s assume a function that checks for primality and use it to generate the next prime number.</p>
-<div id="program-pane-16" class="welleditor" style="background:#fff; position:relative">
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>Since the type of <code>arr42</code> is <code>ArrayN Int 42</code>, the array has 42 elements and the good indices are <code>0</code> to <code>41</code>.</em>
+</p>
+<pre><code>
+&lt;/details&gt;
 
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-16" class="programbox">{-@ type Prime = {v:Int | isPrime v } @-}
 
-isPrime :: Int -> Bool 
-{-@ isPrime :: i:Int -> {v:Bool | v <=> isPrime i } @-}
-isPrime = undefined 
 
-nextPrime :: Int -> Int 
-{-@ nextPrime :: Nat -> Prime  @-}
-nextPrime x = if isPrime x then x else nextPrime (x + 1)</div>
-</div>
 
-<p><strong>Question:</strong> Given <code>nextPrime</code> can you generate an array that contains only prime numbers?</p>
-<div id="program-pane-17" class="welleditor" style="background:#fff; position:relative">
+To put now _all_ the features we learnt together, let&#39;s assume a function 
+that checks for if a number is odd and use it to generate the next odd number.
 
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-17" class="programbox">{-@ primes :: n:Nat -> ArrayN Prime n @-}
-primes :: Int -> Array Int
-primes = undefined </div>
-</div>
+\begin{code}
 
+isOdd :: Int -&gt; Bool 
+{-@ isOdd :: i:Int -&gt; {v:Bool | v &lt;=&gt; (i mod 2 = 1) } @-}
+isOdd i = i `mod` 2 == 1
+
+nextOdd :: Int -&gt; Int 
+{-@ nextOdd :: Int -&gt; Odd  @-}
+nextOdd x = if isOdd x then x else (x + 1)
+\end{code}
+
+**Question:** Given `nextOdd` can you generate an array that contains only odd numbers?
+
+\begin{code}
+{-@ odds :: n:Nat -&gt; ArrayN Odd n @-}
+odds :: Int -&gt; Array Int
+odds = undefined 
+
+\end{code}
+
+
+&lt;details&gt;
+
+&lt;summary&gt;**Solution**&lt;/summary&gt;
+
+&lt;p&gt; _The funciton `odds` can be defined by induction on the index. 
+You can start by an array that only contains `1`, 
+created by `(new n 1)` and then the helper function `go`
+can iterate from `0` to `n` and set the `i-th` element to the next odd number:_&lt;/p&gt;
+
+
+~~~~~{.spec}
+{-@ odds :: n:Nat -&gt; ArrayN Odd n @-}
+odds :: Int -&gt; Array Int
+odds n = go 0 1 (new n 1)
+  where 
+    go i x a 
+      | i &lt; n     = go (i + 1) (nextOdd x) (set n i x a)
+      | otherwise = a</code></pre>
+<p><em>Alternatively</em>, one can directly construct the array as a function that for each index <code>i</code> returns the <code>i-th</code> odd number:</p>
+<pre class="spec"><code>{-@ odds :: n:Nat -&gt; ArrayN Odd n @-}
+odds :: Int -&gt; Array Int
+odds n = \i -&gt; 2*i + 1</code></pre>
+</details>
 </section>
 <section id="summary" class="level2">
 <h2>Summary</h2>
@@ -1000,16 +1242,6 @@ primes = undefined </div>
 <section id="further-reading" class="level2">
 <h2>Further Reading</h2>
 <p>These lectures notes are based on the <a href="https://ucsd-progsys.github.io/liquidhaskell-tutorial/">Liquid Haskell Tutorial</a>. For further reading on how to develop a refinement type checker for your own language, you can read the <a href="https://arxiv.org/abs/2010.07763">Refinement Types: A Tutorial</a> and for the theoretical foundations of LiquidHaskell, the publication <a href="https://dl.acm.org/doi/pdf/10.1145/3632912">Mechanizing Refinement Types</a>.</p>
-</section>
-<section id="cheatsheet" class="level2">
-<h2>Cheatsheet</h2>
-<p>Here is the definition of the primes array.</p>
-<pre class="spec"><code>primes :: Int -&gt; Array Int
-primes n = go  1 0  (new n (nextPrime 1))
-  where 
-    go i j a 
-      | i &lt; n     = go (i + 1) (j + 1) (set n j (nextPrime j) a)
-      | otherwise = a</code></pre>
 </section>
 </section>
 <section class="footnotes" role="doc-endnotes">

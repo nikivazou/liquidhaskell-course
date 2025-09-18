@@ -139,7 +139,6 @@ MathJax.Hub.Config({
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.10.</b> Putting it all together: Safe Indexing</a></li>
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.11.</b> Summary</a></li>
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.12.</b> Further Reading</a></li>
-<li><a href='Lecture_01_RefinementTypes.html#'><b>1.13.</b> Cheatsheet</a></li>
 </ul>
 <li><a href='Lecture_02_DataTypes.html'><b>2.</b>Data Types</a></li>
 <ul class='section'>
@@ -210,15 +209,10 @@ MathJax.Hub.Config({
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.2.</b> Native Terms</a></li>
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.3.</b> Conjunction</a></li>
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.4.</b> Disjunction</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Negation</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Forall</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Exists</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.9.</b> Example 1: existsAll</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.10.</b> Example 2: Distributing Qualifiers</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.11.</b> Example 3: List Properties</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.12.</b> Example 4: Natural Induction</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.13.</b> Summary</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication &amp; Negation</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Forall and Exists</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Examples</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Summary</a></li>
 </ul>
 <li><a href='Lecture_09_DataPropositions.html'><b>9.</b>Data Propositions</a></li>
 <ul class='section'>
@@ -231,6 +225,28 @@ MathJax.Hub.Config({
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.7.</b> Soundness = Progress + Preservation</a></li>
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.8.</b> Summary</a></li>
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.9.</b> Appendix: The rest of the Code</a></li>
+</ul>
+<li><a href='Task1.html'><b>10.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+</ul>
+<li><a href='Task1.pretty.html'><b>11.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+<li><a href='Task1.pretty.html#'><b>11.1.</b> 1. Lists</a></li>
+<li><a href='Task1.pretty.html#'><b>11.2.</b> 2. Insertion Sort</a></li>
+<li><a href='Task1.pretty.html#'><b>11.3.</b> 3. Merge Sort</a></li>
+</ul>
+<li><a href='Task1All.html'><b>12.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+</ul>
+<li><a href='Task2.html'><b>13.</b>Task 2: Proving Theorems</a></li>
+<ul class='section'>
+<li><a href='Task2.html#'><b>13.1.</b> 1. Fusions</a></li>
+</ul>
+<li><a href='Task2.pretty.html'><b>14.</b>Task 2: Proving Theorems</a></li>
+<ul class='section'>
+<li><a href='Task2.pretty.html#'><b>14.1.</b> 1. Fusions</a></li>
+<li><a href='Task2.pretty.html#'><b>14.2.</b> 2. Higher Order Properties</a></li>
+<li><a href='Task2.pretty.html#'><b>14.3.</b> 3. Encoding of Logical Properties</a></li>
 </ul>
 </ul>
 
@@ -345,7 +361,7 @@ badList = 2 :< 1 :< 3 :< Emp      -- rejected by LH</div>
 </div>
 
 <p> It’s all very well to <em>specify</em> ordered lists. Next, let’s see how it’s equally easy to <em>establish</em> these invariants by implementing several textbook sorting routines.</p>
-<p>First, let’s implement insertion sort, which converts an ordinary list <code>[a]</code> into an ordered list <code>IncList a</code>.</p>
+<p>First, let’s implement <a href="https://en.wikipedia.org/wiki/Insertion_sort#/media/File:Insertion-sort-example-300px.gif">insertion sort</a>, which converts an ordinary list <code>[a]</code> into an ordered list <code>IncList a</code>.</p>
 <div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -373,11 +389,43 @@ iinsert y Emp       = y :< Emp
 iinsert y (x :< xs) = undefined </div>
 </div>
 
-<p><em>Question:</em> What should be the definition of <code>insert</code>?</p>
+<p><strong>Question:</strong> What should be the definition of <code>iinsert</code>?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The function <code>iinsert</code> can be defined as follows: </em>
+</p>
+<pre class="spec"><code>iinsert             :: (Ord a) =&gt; a -&gt; IncList a -&gt; IncList a
+iinsert y Emp       = y :&lt; Emp
+iinsert y (x :&lt; xs) | y &lt;= x    = y :&lt; x :&lt; xs 
+                    | otherwise = x :&lt; iinsert y xs </code></pre>
+</details>
+<p><strong>Question:</strong> Can you update the definition of <code>insertSort</code> to use <code>foldr</code>?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The updated definition of <code>insertSort</code> using <code>foldr</code> is as follows: </em>
+</p>
+<pre class="spec"><code>insertSort    :: (Ord a) =&gt; [a] -&gt; IncList a
+insertSort xs = foldr iinsert Emp xs</code></pre>
+</details>
+<p><strong>Question:</strong> What do you need to do to define insertion of decreasing lists?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>First you need to define a data type for decreasing lists. Next, adjust the definition of the sorting function to construct the new type.</em>
+</p>
+</details>
 </section>
 <section id="abstraction-over-sortedness" class="level2">
 <h2>Abstraction over Sortedness</h2>
-<p>Ideally, we would like to write a verified sorted function that works over Haskell’s lists. Of course, we cannot constraint all lists to be sorted. But, we can abstract the notion of sortedness over the data declaration.</p>
+<p>Ideally, we would like to write a verified sorted function that works for various sortedness properties and even over Haskell’s lists. Of course, we cannot constraint all lists to be sorted. But, we can abstract the notion of sortedness over the data declaration.</p>
 <p>Thus, instead of explicitly stating that the head should be less that the element of the tail:</p>
 <pre class=".{spec}"><code>{-@ data IncList a = 
          Emp
@@ -398,7 +446,7 @@ iinsert y (x :< xs) = undefined </div>
       | Cons { phd :: a, ptl :: PList < p >  a < p phd > }  @-}</div>
 </div>
 
-<p><em>Refined Data Constructors</em> The internal data constructors are refined to be parametric with respect to the predicate <code>p</code>:</p>
+<p><strong>Refined Data Constructors</strong> The internal data constructors are refined to be parametric with respect to the predicate <code>p</code>:</p>
 <pre class="spec"><code>-- Generated Internal representation
 data PncList a where
   Nil  :: IncList a
@@ -424,7 +472,19 @@ pl3 = Cons 1 (Cons 1 (Cons 1 Nil))
 pl4 = Nil</div>
 </div>
 
-<p><em>Question:</em> Give refinement types to the above four lists.</p>
+<p><strong>Question:</strong> Give refinement types to the above four lists.</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The list <code>pl1</code> is increasing, <code>pl2</code> is decreasing, <code>pl3</code> is equal and <code>pl4</code> is empty, which means that it could have any property.</em>
+</p>
+<pre class="spec"><code>{-@ pl1 :: IPList Int @-}
+{-@ pl2 :: DPList Int @-}
+{-@ pl3 :: EPList Int @-}
+{-@ pl4 :: IPList Int @-}</code></pre>
+</details>
 <p>So, now the same Haskell lists can be refined to be either decreasing, increasing or equal. For example, the code below inserts into an increasing list:</p>
 <div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
 
@@ -442,7 +502,21 @@ pinsert y (x `Cons` xs)
   | otherwise      = x `Cons` pinsert y xs</div>
 </div>
 
-<p><em>Question:</em> Can you adjust it to <code>insert</code> fointor decreasing lists?</p>
+<p><strong>Question:</strong> Can you adjust it to <code>insert</code> for decreasing lists?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>You need to 1) change the type and 2) change the guard condition:</em>
+</p>
+<pre class="spec"><code>{-@ pinsert         :: (Ord a) =&gt; a -&gt; DPList a -&gt; DPList a @-}
+pinsert             :: (Ord a) =&gt; a -&gt; PList a -&gt; PList a
+pinsert y Nil       = y `Cons` Nil
+pinsert y (x `Cons` xs) 
+  | y &gt;= x         = y `Cons` (x `Cons` xs)
+  | otherwise      = x `Cons` pinsert y xs</code></pre>
+</details>
 </section>
 <section id="haskells-lists" class="level2">
 <h2>Haskell’s Lists</h2>
@@ -493,8 +567,18 @@ isort []     = []
 isort (x:xs) = insert x (isort xs)</div>
 </div>
 
-<p><em>Question:</em> Let’s also check if <code>isort</code> preserves the <code>len</code> of the list.</p>
-<p>This abstraction, called <a href="http://goto.ucsd.edu/~rjhala/liquid/abstract_refinement_types.pdf">Abstract Refinements</a> is very powerful since it allows lists to turn from increasing to decreasing. Because of this flexibility, Liquid Haskell can automatically verify the below code, used as the official sorting function in Haskell, that very smartly sorts lists by collecting increasing and decreasing subsequences and merging them back together.</p>
+<p><strong>Question:</strong> Let’s also check if <code>isort</code> preserves the <code>len</code> of the list. (Where <code>len</code> is the buildin measure for Haskell’s lists.)</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The updated types that ensure the length preservation are the following:</em>
+</p>
+<pre class="spec"><code>{-@ insert :: (Ord a) =&gt; a -&gt; x:IList a -&gt; {v:IList a | len v = len x + 1 } @-}
+{-@ isort  :: (Ord a) =&gt; x:IList a -&gt; {v:IList a | len x = len v} @-}</code></pre>
+</details>
+<p>This abstraction, called <a href="http://goto.ucsd.edu/~rjhala/liquid/abstract_refinement_types.pdf">Abstract Refinements</a> is very powerful since it allows lists to turn from increasing to decreasing. Because of this flexibility, Liquid Haskell can automatically verify the below code, used as the official <a href="https://hackage.haskell.org/package/base-4.21.0.0/docs/Data-List.html#v:sortBy">sorting function</a> in Haskell, that very smartly sorts lists by collecting increasing and decreasing subsequences and merging them back together.</p>
 <pre class="spec"><code>{-@  sort :: (Ord a) =&gt; [a] -&gt; IList a  @-}
 sort :: (Ord a) =&gt; [a] -&gt; [a]
 sort xs = mergeAll (sequences xs)
@@ -568,7 +652,18 @@ exGt x = (x+1, ())</div>
 </div>
 
 <p>The above code says that for each natural number <code>x</code>, there exists one <code>y</code> that is greater than <code>x</code>, taking us to a theorem proving territory, that we will return soon.</p>
-<p><em>Question:</em> Is this property true for less than too?</p>
+<p><strong>Question:</strong> Is this property true for less than too?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>No, because it would encode that for every natural number, there exists a smaller natural number, which is not true. But, it is true for integers:</em>
+</p>
+<pre class="spec"><code>exLt :: Int -&gt; (Int, ())
+{-@ exLt :: x:Int -&gt; (Int, ()) &lt; {\f s -&gt; f &lt; x} &gt; @-}
+exLt x = (x-1, ())</code></pre>
+</details>
 </section>
 <section id="summary" class="level2">
 <h2>Summary</h2>

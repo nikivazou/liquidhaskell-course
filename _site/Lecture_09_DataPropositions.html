@@ -139,7 +139,6 @@ MathJax.Hub.Config({
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.10.</b> Putting it all together: Safe Indexing</a></li>
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.11.</b> Summary</a></li>
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.12.</b> Further Reading</a></li>
-<li><a href='Lecture_01_RefinementTypes.html#'><b>1.13.</b> Cheatsheet</a></li>
 </ul>
 <li><a href='Lecture_02_DataTypes.html'><b>2.</b>Data Types</a></li>
 <ul class='section'>
@@ -210,15 +209,10 @@ MathJax.Hub.Config({
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.2.</b> Native Terms</a></li>
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.3.</b> Conjunction</a></li>
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.4.</b> Disjunction</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Negation</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Forall</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Exists</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.9.</b> Example 1: existsAll</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.10.</b> Example 2: Distributing Qualifiers</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.11.</b> Example 3: List Properties</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.12.</b> Example 4: Natural Induction</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.13.</b> Summary</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication &amp; Negation</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Forall and Exists</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Examples</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Summary</a></li>
 </ul>
 <li><a href='Lecture_09_DataPropositions.html'><b>9.</b>Data Propositions</a></li>
 <ul class='section'>
@@ -231,6 +225,28 @@ MathJax.Hub.Config({
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.7.</b> Soundness = Progress + Preservation</a></li>
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.8.</b> Summary</a></li>
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.9.</b> Appendix: The rest of the Code</a></li>
+</ul>
+<li><a href='Task1.html'><b>10.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+</ul>
+<li><a href='Task1.pretty.html'><b>11.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+<li><a href='Task1.pretty.html#'><b>11.1.</b> 1. Lists</a></li>
+<li><a href='Task1.pretty.html#'><b>11.2.</b> 2. Insertion Sort</a></li>
+<li><a href='Task1.pretty.html#'><b>11.3.</b> 3. Merge Sort</a></li>
+</ul>
+<li><a href='Task1All.html'><b>12.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+</ul>
+<li><a href='Task2.html'><b>13.</b>Task 2: Proving Theorems</a></li>
+<ul class='section'>
+<li><a href='Task2.html#'><b>13.1.</b> 1. Fusions</a></li>
+</ul>
+<li><a href='Task2.pretty.html'><b>14.</b>Task 2: Proving Theorems</a></li>
+<ul class='section'>
+<li><a href='Task2.pretty.html#'><b>14.1.</b> 1. Fusions</a></li>
+<li><a href='Task2.pretty.html#'><b>14.2.</b> 2. Higher Order Properties</a></li>
+<li><a href='Task2.pretty.html#'><b>14.3.</b> 3. Encoding of Logical Properties</a></li>
 </ul>
 </ul>
 
@@ -298,7 +314,7 @@ import Data.Set </div>
 <section id="even-numbers" class="level2">
 <h2>Even Numbers</h2>
 <p>Data propositions essentially axiomatize the behavior of predicates in the data type definitions, without actually giving a Haskell definition.</p>
-<p>They are very similar to Coq’s <a href="http://adam.chlipala.net/cpdt/html/Predicates.html">inductive predicates</a>. Thus, let’s look at the using the textbook example of even numbers.</p>
+<p>They are very similar to Rocq’s <a href="http://adam.chlipala.net/cpdt/html/Predicates.html">inductive predicates</a>. Thus, let’s look at the using the textbook example of even numbers.</p>
 <p>First, we define the data type of natural numbers.</p>
 <div id="program-pane-1" class="welleditor" style="background:#fff; position:relative">
 
@@ -336,7 +352,7 @@ data Eveness = EVEN N
 <p>There are two important points in this construction.</p>
 <ul>
 <li><p>First, there is no function that computes evens, thus there is <em>no termination check</em>, meaning, that using data propositions one can encode non-terminating computations.</p></li>
-<li><p>Second, the data proposition <code>EVEN</code> is a proof object, thus an <code>Even</code> value, gives us information how the proof was constructed.</p></li>
+<li><p>Second, the data proposition <code>EVEN</code> is a <em>proof object</em>, thus an <code>Even</code> value, gives us information <em>how</em> the proof was constructed.</p></li>
 </ul>
 </section>
 <section id="construction-of-even-numbers" class="level2">
@@ -362,6 +378,17 @@ even4 = undefined</div>
 </div>
 
 <p><strong>Question:</strong> Fill in the above definitions to construct the even numbers <code>0</code>, <code>2</code>, and <code>4</code>.</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The terms are defined as follows:</em>
+</p>
+<pre class="spec"><code>even0 = E0
+even2 = E2 Z even0
+even4 = E2 (S (S Z)) even2</code></pre>
+</details>
 <p>Since <code>EVEN</code> is a proof object one can inspect it, to, for example, show contradictions.</p>
 <div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
 
@@ -377,10 +404,19 @@ even1_false _ = undefined</div>
 </div>
 
 <p><strong>Question:</strong> Show that <code>S Z</code> is not even, by inspection.</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The term is defined as follows:</em>
+</p>
+<pre class="spec"><code>even1_false E0       = ()
+even1_false (E2 n p) = even1_false p</code></pre>
 </section>
 <section id="functions-on-even-numbers" class="level2">
 <h2>Functions on Even Numbers</h2>
-<p>Let’s now show that each even number, other than <code>0</code>, can be written as <code>2 + n</code>, for some <code>n</code>.</p>
+<p>As a fist function on even numbers, let’s define a function that takes a non zero, even number and returns its predecessor. That is, each even number, other than <code>0</code>, can be written as <code>2 + n</code>, for some <code>n</code>.</p>
 <div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -396,6 +432,15 @@ even1_false _ = undefined</div>
 even_plus_2 _ _ = undefined </div>
 </div>
 
+<p><strong>Question:</strong> Fill in the definition of the <code>even_plus_2</code> function.</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The term is defined as follows:</em>
+</p>
+<pre class="spec"><code>even_plus_2 _ (E2 n _) = (n,()) </code></pre>
 <p>As a final exercise, let’s show that the sum of two even numbers is also even.</p>
 <p>To do so, we first define the <code>plus</code> function:</p>
 <div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
@@ -428,10 +473,22 @@ plus (S n) m = S (plus n m)</div>
 even_plus _ _ _ _ = undefined </div>
 </div>
 
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The term is defined as follows:</em>
+</p>
+<pre class="spec"><code>even_plus Z m pn pm 
+  = pm 
+even_plus n m pn@(E2 _ pn&#39;) pm 
+  = E2 (plus n&#39; m) (even_plus n&#39; m pn&#39; pm)
+  where (n&#39;,_) = even_plus_2 n pn </code></pre>
 </section>
 <section id="metatheory-of-programming-languages" class="level2">
 <h2>Metatheory of Programming Languages</h2>
-<p>In the theory of programming languages, we often use theorem provers, like Liquid Haskell or Coq, to mechanize the proof of properties of programs.</p>
+<p>In the theory of programming languages, we often use theorem provers, like Liquid Haskell or <a href="https://rocq-prover.org/">Rock</a> or <a href="https://wiki.portal.chalmers.se/agda/pmwiki.php">Agda</a> or <a href="https://lean-lang.org/">Lean</a>, to mechanize the proof of properties of programs.</p>
 <p>Such proofs usually talk about <em>program evaluation</em>.</p>
 <p>Due to the <a href="https://en.wikipedia.org/wiki/Halting_problem">halting problem</a> we cannot prove, in general that program evaluation terminates, thus such concepts are encoded as data propositions (or inductive predicates).</p>
 <p>As a simplification, let’s consider the simply typed lambda calculus, with integers and functions.</p>
@@ -580,7 +637,12 @@ soundness eo t e eo_has_t eo_evals_e = case eo_evals_e of
 </section>
 <section id="summary" class="level2">
 <h2>Summary</h2>
-<p>In this lecture, we saw data propositions, which are used to axiomatize the behavior of predicates in the data type definitions. Data propositions have two major uses. First, they are used to encode non-terminating functions, like the evaluation function of a programming language. Second, they construct proof objects, whose inspection can facilitate proof developments. These two features allow the mechanization of sophisticated proofs, like metatheory of programming languages, in theorem provers like Liquid Haskell.</p>
+<p>In this lecture, we saw data propositions, which are used to axiomatize the behavior of predicates in the data type definitions. Data propositions have two major uses:</p>
+<ul>
+<li><p>First, they are used to encode non-terminating functions, like the evaluation function of a programming language.</p></li>
+<li><p>Second, they construct proof objects, whose inspection can facilitate proof developments.</p></li>
+</ul>
+<p>These two features allow the mechanization of sophisticated proofs, like metatheory of programming languages, in theorem provers like Liquid Haskell.</p>
 </section>
 <section id="appendix-the-rest-of-the-code" class="level2">
 <h2>Appendix: The rest of the Code</h2>

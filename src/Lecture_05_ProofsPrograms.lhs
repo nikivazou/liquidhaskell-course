@@ -51,6 +51,24 @@ intToA x = error "Define me!"
 
 **Question:** Can you define the function above?
 
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _You can only define it using divergence (which is actually how Haskell's undefined is defined). 
+But then you need a `lazy` annotation to deactivate the termination checker!_</p>
+
+~~~~~{.spec}
+intToA :: Int -> a
+intToA x = intToA x
+
+{-@ lazy intToA @-}
+~~~~~
+
+</details>
+
+
+
 
 The only way to define the above function is via divergence. 
 Thus, note that when a polymorphic type appears only in the result of your function,
@@ -67,7 +85,7 @@ In Liquid Haskell, we can write propositions as refinement types.
 Concretely, we use refinement types to express theorems 
 and define their Haskell functions as proofs of these theorems.
 
-For example, below we prove that `1 + 1 = 2` by defining a function `onePlusOne`
+For example, below we prove that `1 + 1 = 2` by defining a function `onePlusOne`:
 
 \begin{code}
 {-@ onePlusOne :: () -> {v:() | 1 + 1 = 2 } @-}
@@ -142,6 +160,21 @@ trivialThm _ = trivial *** QED
 \end{code}
 
 
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _Anothing that the SMT knows, for example boolean or linear logic:_</p>
+
+~~~~~{.spec}
+{-@ trivialThm :: () -> { false => false } @-}
+~~~~~
+
+</details>
+
+
+
+
 Quantified Theorems
 --------------------
 
@@ -157,7 +190,7 @@ propPlusAccum x y = trivial *** QED
 \end{code}
 
 Note, function arguments work as universal quantifiers, 
-and also, due to currin, we use function abstraction to express existential quantifiers.
+and also, due to [currying](https://en.wikipedia.org/wiki/Currying), we use function abstraction to express existential quantifiers.
 
 
 Theorems about Haskell Functions
@@ -233,6 +266,26 @@ fibThree _ = undefined
 
 **Question:** Can you complete the proof above?
 
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _Using the because operator, the proof goes as follows:_</p>
+
+~~~~~{.spec}
+{-@ fibThree :: () -> { fib 3 = 2 } @-}
+fibThree :: () -> Proof
+fibThree _ =   fib 3 
+           === fib 2 + fib 1 
+           === fib 1 + fib 0 + 1
+           === 1             + 1    
+           === 2 
+           *** QED 
+~~~~~
+
+</details>
+
+
 If you have completed the proof you might have duplicated the proof of `fibTwo`.
 In Liquid Haskell, we can reuse proofs by using the `because` combinator.
 The proof combinators library defines the `because` combinator as follows:
@@ -245,6 +298,27 @@ x ? _ = x
 Thus, essentially introducing the it's second argument as a _fact_ in the proof.
 
 **Question:** Let's now complete the proof of `fibThree` using the `because` combinator.
+
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _Using the because operator, the proof goes as follows:_</p>
+
+~~~~~{.spec}
+{-@ fibThree :: () -> { fib 3 = 2 } @-}
+fibThree :: () -> Proof
+fibThree _ =   fib 3 
+           === fib 2 + fib 1 
+             ? fibTwo () 
+           === 1     + 1    
+           === 2 
+           *** QED 
+~~~~~
+
+</details>
+
 
 
 Quantified Proofs
@@ -274,6 +348,21 @@ fibUp n =   fib n
 \end{code}
 
 **Question:** Can you complete the proof above?
+
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The missing steps are the following:_</p>
+
+~~~~~{.spec}
+        ? fibUp (n-2)
+        =<= fib n + fib (n-1)
+~~~~~
+
+</details>
+
 
 
 To simplify proofs, Liquid Haskell has a tactic, called 
@@ -316,6 +405,35 @@ Concretely, complete the missing calls to the `fibUp` lemma and the inductive hy
 metric of the proof. 
 
 
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The completed proof is the following. 
+Note, that it requires a termination metric, since induction is on the second argument `y`:_</p>
+
+~~~~~{.spec}
+{-@ fibMonotonic :: x:Nat -> y:{Nat | x < y } 
+                 -> {fib x <= fib y} / [y]@-}
+fibMonotonic :: Int -> Int -> Proof
+fibMonotonic x y
+  | y == x + 1
+  =   fib x     ? (fibUp x)            {- Call to the fibUp lemma goes here   -}
+  =<= fib (x+1) 
+  =<= fib y
+  *** QED
+  | x < y - 1
+  =   fib x     ? fibMonotonic x (y-1) {- Inductive Hypothesis call goes here -}
+  =<= fib (y-1) ? (fibUp (y-1))        {- Call to the fibUp lemma goes here   -}
+  =<= fib y     
+  *** QED
+~~~~~
+
+</details>
+
+
+
+
 
 Generalizing the Monotonicity Proof
 ------------------------------------
@@ -346,6 +464,35 @@ fMonotonic f fUp x y
 
 **Question:** Can you complete the proof above?
 
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _To complete, or better generalize, the proof you need to 
+1) replace `fib` with `f` and `fibUp` with `fUp`, 
+leading to the following proof:_</p>
+
+~~~~~{.spec}
+{-@ fMonotonic :: f:(Nat -> Int) 
+               -> fUp:(z:Nat -> {f z <= f (z+1)})
+               -> x:Nat -> y:{Nat | x < y } -> {f x <= f y} / [y] @-}
+fMonotonic :: (Int -> Int) -> (Int -> ()) -> Int -> Int -> Proof
+fMonotonic f fUp x y
+  | y == x + 1
+  =   f x     ? fUp x
+  =<= f (x+1) 
+  =<= f y
+  *** QED
+  | x < y - 1
+  =   f x     ? fMonotonic f fUp x (y-1)
+  =<= f (y-1) ? fUp (y-1)
+  =<= f y     
+  *** QED
+~~~~~
+
+</details>
+
+
 Once we have the general (a.k.a. higher-order) proof
 that increasing functions are monotonic, we can use it to prove the monotonicity of the Fibonacci function.
 
@@ -360,7 +507,22 @@ Proofs By Natural Induction
 ---------------------------
 
 The proofs we did so far are essentially proofs by natural induction.
-Let's prove the textbook theorem that the sum of the first `n` natural numbers is `n*(n+1)/2`.
+
+
+[Natural induction](https://en.wikipedia.org/wiki/Mathematical_induction)
+is a proof technique that is used to prove theorems about natural numbers.
+Concretely, it is used to prove that a property `P(n)` holds for all natural numbers `n`.
+The proof consists of two steps:
+
+1. **Base case**: Prove that `P(0)`  holds.
+2. **Inductive step**: Prove that if `P(k)` holds for some `k`, then `P(k+1)` also holds.
+3. **Conclusion**: Conclude that `P(n)` holds for all `n`.
+
+For example, we can prove  the textbook theorem that the sum of the first `n` natural numbers is `n*(n+1)/2`. 
+
+$$ P(n) = 1 + .... + n = n*(n+1)/2 $$
+
+Let's prove it using Liquid Haskell.
 
 For that, we first define the `sumTo` function that computes the sum of the first `n` natural numbers.
 
@@ -381,6 +543,67 @@ sumToN = undefined
 
 **Question:** Can you complete the proof above? 
 Hint, the Haskell function `div` is the integer division. 
+
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The proof goes by induction and equational reasoning, 
+where the logical `/` is `div`:_</p>
+
+~~~~~{.spec}
+{-@ sumToN :: n:Nat -> { sumTo 0 n = n * (n + 1) / 2 } @-}
+sumToN :: Int -> Proof
+sumToN 0 = sumTo 0 0 === 0 *** QED 
+sumToN n = 
+      sumTo 0 n 
+  === n + sumTo 0 (n-1)
+    ? sumToN (n-1)
+  === n + (n-1) * n `div` 2 
+  === n * (n + 1) `div` 2
+  *** QED 
+~~~~~
+
+</details>
+
+
+
+
+**Question:** Can you _embed_ this theorem in the type of the `sumTo` function?
+
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _Yes! This theorem can be part of the specification of `sumTo` if 
+we refine its type signature to:_</p>
+
+~~~~~{.spec}
+{-@ sumTo :: lo:Nat -> hi:{Nat | lo <= hi} 
+          -> {v:Nat | lo = 0 => v = hi * (hi+1) / 2 } / [hi]@-}
+~~~~~
+
+</details>
+
+
+
+**Intrinsic vs Extrinsic Theorems:**
+Instrinsic theorems are the thereoms that are part of the type signature of the function.
+These theorems do not require explicit proofs, since the _definition_ 
+of the function is already a proof of the theorem.
+Extrinsic theorems are theorems that are not part of the type signature of the function, 
+like the `fibMonotonic` theorem.
+These theorems require explicit proof terms but they are more expressive, 
+since they can encode properties that cannot be encoded or proved by the definition of the function.
+Concretely, extrinsic theorems: 
+
+- can relate different functions or different calls to the same function and 
+- can encode theorems that require different proof techniques 
+  (e.g., induction, case analysis, etc.).
+
+
 
 Next, we will see how the concept of natural induction can be generalized to prove 
 properties of data types as structural induction.

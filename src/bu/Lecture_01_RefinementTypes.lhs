@@ -11,7 +11,7 @@ If you follow this course via a brouser,
 you can just click the check button that exists on the code spinnets 
 to run Liquid Haskell on your file. 
 If you follow it on an editor, then compile the code using the Haskell compiler 
-and turn on the `Liquid Haskell plugin``, but uncommenting the following line:
+and turn on the `Liquid Haskell plugin`, but uncommenting the following line:
 
 \begin{code}
 
@@ -110,6 +110,17 @@ two = 2
 **Question:** What are good types for `two`? 
 
 **Question:** Can you find more types for `two`?
+
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The good types for `two` are: `Two`, `NZero`, `Pos`, and `Nat`.
+Good types are any types implied by equality by two, for example:
+`{v:Int | v /= 42}`._</p>
+
+</details>
 
 
 
@@ -266,14 +277,28 @@ Most of the syntax of predicates should be familiar to you.
 
 **Question:** Do we need more boolean operators? Or maybe less? 
 
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _We do not need more. Any complete set of boolean operator is sufficient, 
+for example, not and and._</p>
+
+</details>
+
+
+
+
 _Uninterpreted functions_ are essentially logical functions that always return the same value for the same input.
 
 $$
 \forall x\ y. x = y \Rightarrow f(x) = f(y)
 $$
 
-They are essential for program verification because 
+They are essential for program verification because: 
+
 1. they can be used to encode program functions in the logic and 
+
 2. they can be used to capture ideas not directly implemented. 
 
 For example, in Liquid Haskell, we use the `measure` keyword to define uninterpreted functions.
@@ -332,6 +357,8 @@ $$
 
 **Question:** What is the verification condition of the problem below? 
 
+
+
 \begin{code}
 
 {-@ threePlusSix :: {v:Int | 0 <= v} @-}
@@ -339,6 +366,19 @@ threePlusSix :: Int
 threePlusSix = 3 + 6 
 
 \end{code}
+
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The verification condition 
+is `forall v:Int. 3 + 6 = v => 0 <= v`._</p>
+
+</details>
+
+
+
 
 **Question:** What is the verification condition of the problem below? 
 
@@ -350,7 +390,34 @@ plusSix x = x + 6
 
 \end{code}
 
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The verification condition 
+is `forall x:Int, v:Int. x + 6 = v => x <= v`._</p>
+
+</details>
+
+
+
+
 **Question:** Can you make the above code return only natural numbers? 
+
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _To return only natural numbers, the input should also be a natural number:_</p>
+
+~~~~~{.spec}
+{-@ plusSix :: x:Nat -> {v:Nat | x <= v} @-}
+plusSix :: Int -> Int 
+plusSix x = x + 6 
+~~~~~
+
+</details>
 
 
 
@@ -384,6 +451,16 @@ incrPos x = x + 1
 \end{code}
 
 **Question:** What is the verification condition of the problem below?
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The verification condition 
+is `forall x:Pos, v:Int. x + 1 = v => 0 < v`._</p>
+
+</details>
+
 
 
 So, the verification condition generated when checking the output, 
@@ -446,21 +523,6 @@ can be applied to `higher`?
 
 
 \begin{code}
-
-fII, fIP, fIN, fPI, fPP, fPN, fNI, fNP, fNN :: Int -> Int 
-higher :: (Int -> Int) -> Int 
-fII = undefined 
-fIP = undefined
-fIN = undefined
-fPI = undefined
-fPP = undefined
-fPN = undefined
-fNI = undefined
-fNP = undefined
-fNN = undefined
-higher = undefined 
-
-
 {-@ fII :: Int -> Int @-}
 {-@ fIP :: Int -> Pos @-}
 {-@ fIN :: Int -> Nat @-}
@@ -475,7 +537,37 @@ higher = undefined
 {-@ higher :: (Nat -> Nat) -> Nat @-}
 
 testhigher = higher fNN
+
+fII, fIP, fIN, fPI, fPP, fPN, fNI, fNP, fNN :: Int -> Int 
+higher :: (Int -> Int) -> Int 
+fII = undefined 
+fIP = undefined
+fIN = undefined
+fPI = undefined
+fPP = undefined
+fPN = undefined
+fNI = undefined
+fNP = undefined
+fNN = undefined
+higher = undefined 
 \end{code}
+
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The functions that can be applied to `higher` should have 
+a type that is a subtype of `Nat -> Nat`.
+Their domain should be a supertype of `Nat` (e.g., `Nat` and `Int`, but no `Pos`)
+ and their codomain a subtype of `Nat` (e.g., `Nat` and `Pos`, but no `Int`).
+So, the functions that can be applied are `fIP`, `fIN`, `fNP`, and `fNN`._</p>
+
+<p> _To test this you can try to apply the functions to `higher` and see if Liquid Haskell accepts it._</p>
+
+</details>
+
+
 
 _Intuitively:_ `higher` will use the argument function, so 
 the result type of the function should be stricter, so that its result is used 
@@ -484,7 +576,7 @@ The argument of the function can be more general, since type checking of `higher
 ensures that the argument function is used correctly.  
 
 This intuition is captured in the rule of function subtyping that says that 
-the result type should be a subtype but the argument a subpertype. 
+the result type should be a subtype but the argument a supertype. 
 
 
 $$
@@ -518,6 +610,33 @@ abs x = if x > 0 then x else -x
 
 **Question:** What is the verification condition generated?
 
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _One type of `abs` is the following:_</p>
+
+~~~~~{.spec}
+{-@ abs :: Int -> Nat @-} 
+~~~~~
+
+<p> _The verification conditions are two, 
+one for each branch, each taking into account the branch condition:
+`forall x:Int, v:Int. x > 0 and x = v => v >= 0`
+and
+`forall x:Int, v:Int. not (x > 0) and -x = v => v >= 0`._</p>
+
+<p> Other more precise types for `abs` are:_</p>
+
+~~~~~{.spec}
+{-@ abs :: x:Int -> {v:Nat | v >= x } @-} 
+{-@ abs :: x:Int -> {v:Nat | v = (if x>0 then x else -x) } @-} 
+~~~~~
+
+</details>
+
+
 Refinement types are _branch sensitive_, meaning that the type of the result of a branch
 depends on the condition of the branch.
 
@@ -527,7 +646,7 @@ $$
 \inferrule
   {\texttt{T-If}}
   {
-    \Gamma \vdash x : \{v:\texttt{bool} \mid p \} \quad 
+    \Gamma \vdash x : \{v:\texttt{bool} \mid p \} \\ 
     \Gamma; y:\{y:\texttt{bool} \mid  x  \} \vdash e_1 : \tau \quad 
     \Gamma; y:\{y:\texttt{bool} \mid  \lnot x  \}  \vdash e_2 : \tau
   }{
@@ -551,6 +670,39 @@ sumN n = if n == 0 then 0 else n + sumN (n - 1)
 
 **Question:** What is the verification condition generated?
 
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _One type of `sumN` is the following:_</p>
+
+~~~~~{.spec}
+{-@ sumN :: Nat -> Nat @-} 
+~~~~~
+
+<p> _The verification conditions are two, 
+one for each branch, each taking into account the branch condition:
+`forall n:Nat, v:Int. n = 0 and 0 = v => v >= 0`
+and
+`forall n:Nat, x:Nat, v:Int. not (n = 0) and v = n + x => v >= 0`._</p>
+
+<p> Notice how the recursive call got into the typing environment, 
+via the ANF variable `x`.
+Further, the type of `sumN` now cannot be exact (like the one of `abs`)
+because the definition contains the recursive call and this cannot be part 
+of the refinement of the type! 
+</p>
+
+~~~~~{.spec}
+{-@ abs :: x:Int -> {v:Nat | v >= x } @-} 
+{-@ abs :: x:Int -> {v:Nat | v = (if x>0 then x else -x) } @-} 
+~~~~~
+
+</details>
+
+
+
 Type checking of recursive functions is itself a recursive process.
 Meaning, to check the type of `sumN`, we need to assume that `sumN` has the correct type! 
 
@@ -568,8 +720,8 @@ $$
 
 Refined Polymorphism 
 ------------
-The truth is polymorphism is a difficult topic in the area of programming languages. 
-But, as a first step let's only see its great points and for refinement types, 
+Polymorphism is strong topic in the area of programming languages. 
+As a first step let's only see its great points and for refinement types, 
 the great benefit of polymorphism is that any polymorphic function can be instantiated 
 to refined values. 
 For example, the identity function can be instantiated to propagate natural numbers: 
@@ -635,26 +787,138 @@ out of bounds error.
 \begin{code}
 type Array a = Int -> a 
 {-@ type ArrayN a N = {i:Nat | i < N} -> a @-}
+\end{code}
 
-new :: Int -> a -> Array a 
-{-@ new :: n:Nat -> a -> ArrayN a n @-}
-new n x = \i -> if 0 <= i && i < n then x else error "Out of Bounds"
 
-set :: Int -> Int -> a -> Array a  -> Array a 
-{-@ set :: n:Nat -> i:{Nat | i < n} -> a -> ArrayN a n -> ArrayN a n @-}
-set n i x a = \j -> if i == j then x else a j
+- **Creating Arrays** 
 
-get :: Int -> Int -> Array a -> a 
-{-@ get :: n:Nat -> i:{Nat | i < n} -> ArrayN a n -> a @-}
-get n i a = a i 
+**Question:** Can you define the identity, constant, arrays below? 
+
+
+\begin{code}
+-- arrayId returns its index, e.g., arrayId 3 = 3, arrayId 5 = 5
+
+arrayId :: Array Int 
+arrayId = undefined 
+
+-- array0 returns zero, e.g., arrayId 3 = 0, arrayId 5 = 0
+
+array0 :: Array Int 
+array0 = undefined 
+
+
+-- arrayConst x returns x, e.g., arrayConst 42 3 = 42, arrayConst 42 5 = 42
+arrayConst :: a -> Array a
+arrayConst x = undefined
 
 \end{code}
 
 
-Let's create an array with 42 elements: 
+**Question:** Can you refine the types to describe the values of the arrays?
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The definitions with their refined types are the following:_</p>
+
+~~~~~{.spec}
+arrayId :: Array Int 
+arrayId x = x 
+
+{-@ array0 :: Array {v:Int | v == 0} @-} 
+array0 :: Array Int 
+array0 = \_ -> 0 
+
+{-@ arrayConst :: x:a -> Array {v:a | v == x} @-} 
+arrayConst :: a -> Array a
+arrayConst x = \_ -> x 
+~~~~~
+
+</details>
+
+
+
+- **Creating Finite Arrays**  
+Now, let's define arrays of a fixed size.
+The `new`  function creates an array of size `n` with all elements equal to `x`, 
+and otherwise it throws an out of bounds error.
+
+To encode crashing, Haskell uses the `error` function, 
+and Liquid Haskell can ensure that it will never be called! 
+
+~~~{.spec}
+error :: {v:String | false} -> a
+~~~
+
+**Question:** Define the `new` function that creates an array of size `n` with all elements equal to `x`.
+
 \begin{code}
 
-{-@ arr42 :: ArrayN Int 42 @-}
+-- new n x i returns x if i is in bounds, otherwise it crashes
+
+new :: Int -> a -> Array a 
+new n x = undefined
+
+\end{code}
+
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The function `new` is the following:_</p>
+
+~~~~~{.spec}
+{-@ new :: n:Int -> a -> ArrayN a n @-} 
+new :: Int -> a -> Array a 
+new n x = \i -> if 0 <= i && i < n then x else error "Out of Bounds!"  
+~~~~~
+
+</details>
+
+- **Getting and Setting Elements**
+
+**Question:** Define the `get` and `set` functions that get and set the `i-th` element of an array.
+
+\begin{code}
+
+-- set n i x a returns a new array that is the same as a, but with the i-th element set to x
+set :: Int -> Int -> a -> Array a  -> Array a 
+set n i x a = undefined 
+
+-- get n i a returns the i-th element of a
+get :: Int -> Int -> Array a -> a 
+get n i a = undefined  
+
+\end{code}
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The functions `get` and `set` are the following:_</p>
+
+~~~~~{.spec}
+{-@ set :: n:Nat -> i:{Nat | i < n} -> a -> ArrayN a n -> ArrayN a n @-} 
+set :: Int -> Int -> a -> Array a -> Array a 
+set n i x a = \j -> if i == j then x else a i  
+
+{-@ get :: n:Nat -> i:{Nat | i < n} -> ArrayN a n -> a @-} 
+get :: Int -> Int -> Array a -> a 
+get n i a = a i   
+~~~~~
+
+</details>
+
+
+
+- **Using Arrays**
+Let's create an array with 42 elements: 
+
+\begin{code}
+
+{- arr42 :: ArrayN Int 42 @-}
 arr42 :: Array Int
 arr42 = new 42 0
 
@@ -666,29 +930,74 @@ getElem = get 42 10 arr42
 **Question:** What are good indices of `arr42`?
 
 
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _Since the type of `arr42` is `ArrayN Int 42`,
+the array has 42 elements and the good indices are `0` to `41`._</p>
+~~~~~
+
+</details>
+
+
+
+
 To put now _all_ the features we learnt together, let's assume a function 
-that checks for primality and use it to generate the next prime number.
+that checks for if a number is odd and use it to generate the next odd number.
 
 \begin{code}
-{-@ type Prime = {v:Int | isPrime v } @-}
+{-@ type Odd = {v:Nat | v mod 2 = 1 } @-}
 
-isPrime :: Int -> Bool 
-{-@ isPrime :: i:Int -> {v:Bool | v <=> isPrime i } @-}
-isPrime = undefined 
+isOdd :: Int -> Bool 
+{-@ isOdd :: i:Int -> {v:Bool | v <=> (i mod 2 = 1) } @-}
+isOdd i = i `mod` 2 == 1
 
-nextPrime :: Int -> Int 
-{-@ nextPrime :: Nat -> Prime  @-}
-nextPrime x = if isPrime x then x else nextPrime (x + 1)
+nextOdd :: Int -> Int 
+{-@ nextOdd :: Int -> Odd  @-}
+nextOdd x = if isOdd x then x else (x + 1)
 \end{code}
 
-**Question:** Given `nextPrime` can you generate an array that contains only prime numbers?
+**Question:** Given `nextOdd` can you generate an array that contains only odd numbers?
 
 \begin{code}
-{-@ primes :: n:Nat -> ArrayN Prime n @-}
-primes :: Int -> Array Int
-primes = undefined 
+{-@ odds :: n:Nat -> ArrayN Odd n @-}
+odds :: Int -> Array Int
+odds = undefined 
 
 \end{code}
+
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The funciton `odds` can be defined by induction on the index. 
+You can start by an array that only contains `1`, 
+created by `(new n 1)` and then the helper function `go`
+can iterate from `0` to `n` and set the `i-th` element to the next odd number:_</p>
+
+
+~~~~~{.spec}
+{-@ odds :: n:Nat -> ArrayN Odd n @-}
+odds :: Int -> Array Int
+odds n = go 0 1 (new n 1)
+  where 
+    go i x a 
+      | i < n     = go (i + 1) (nextOdd x) (set n i x a)
+      | otherwise = a
+~~~~~
+
+
+_Alternatively_, one can directly construct the array 
+as a function that for each index `i` returns the `i-th` odd number:
+
+~~~~~{.spec}
+{-@ odds :: n:Nat -> ArrayN Odd n @-}
+odds :: Int -> Array Int
+odds n = \i -> 2*i + 1
+~~~~~
+</details>
 
 
 
@@ -868,17 +1177,3 @@ For further reading on how to develop a refinement type checker for your own lan
 you can read the [Refinement Types: A Tutorial](https://arxiv.org/abs/2010.07763) 
 and for the theoretical foundations of LiquidHaskell, the publication [Mechanizing Refinement Types](https://dl.acm.org/doi/pdf/10.1145/3632912). 
 
-
-Cheatsheet
-----------------
-
-Here is the definition of the primes array.
-
-~~~{.spec}
-primes :: Int -> Array Int
-primes n = go  1 0  (new n (nextPrime 1))
-  where 
-    go i j a 
-      | i < n     = go (i + 1) (j + 1) (set n j (nextPrime j) a)
-      | otherwise = a
-~~~

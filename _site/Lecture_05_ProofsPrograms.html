@@ -139,7 +139,6 @@ MathJax.Hub.Config({
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.10.</b> Putting it all together: Safe Indexing</a></li>
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.11.</b> Summary</a></li>
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.12.</b> Further Reading</a></li>
-<li><a href='Lecture_01_RefinementTypes.html#'><b>1.13.</b> Cheatsheet</a></li>
 </ul>
 <li><a href='Lecture_02_DataTypes.html'><b>2.</b>Data Types</a></li>
 <ul class='section'>
@@ -210,15 +209,10 @@ MathJax.Hub.Config({
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.2.</b> Native Terms</a></li>
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.3.</b> Conjunction</a></li>
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.4.</b> Disjunction</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Negation</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Forall</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Exists</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.9.</b> Example 1: existsAll</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.10.</b> Example 2: Distributing Qualifiers</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.11.</b> Example 3: List Properties</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.12.</b> Example 4: Natural Induction</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.13.</b> Summary</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication &amp; Negation</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Forall and Exists</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Examples</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Summary</a></li>
 </ul>
 <li><a href='Lecture_09_DataPropositions.html'><b>9.</b>Data Propositions</a></li>
 <ul class='section'>
@@ -231,6 +225,28 @@ MathJax.Hub.Config({
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.7.</b> Soundness = Progress + Preservation</a></li>
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.8.</b> Summary</a></li>
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.9.</b> Appendix: The rest of the Code</a></li>
+</ul>
+<li><a href='Task1.html'><b>10.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+</ul>
+<li><a href='Task1.pretty.html'><b>11.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+<li><a href='Task1.pretty.html#'><b>11.1.</b> 1. Lists</a></li>
+<li><a href='Task1.pretty.html#'><b>11.2.</b> 2. Insertion Sort</a></li>
+<li><a href='Task1.pretty.html#'><b>11.3.</b> 3. Merge Sort</a></li>
+</ul>
+<li><a href='Task1All.html'><b>12.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+</ul>
+<li><a href='Task2.html'><b>13.</b>Task 2: Proving Theorems</a></li>
+<ul class='section'>
+<li><a href='Task2.html#'><b>13.1.</b> 1. Fusions</a></li>
+</ul>
+<li><a href='Task2.pretty.html'><b>14.</b>Task 2: Proving Theorems</a></li>
+<ul class='section'>
+<li><a href='Task2.pretty.html#'><b>14.1.</b> 1. Fusions</a></li>
+<li><a href='Task2.pretty.html#'><b>14.2.</b> 2. Higher Order Properties</a></li>
+<li><a href='Task2.pretty.html#'><b>14.3.</b> 3. Encoding of Logical Properties</a></li>
 </ul>
 </ul>
 
@@ -333,13 +349,25 @@ intToA x = error "Define me!"</div>
 </div>
 
 <p><strong>Question:</strong> Can you define the function above?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>You can only define it using divergence (which is actually how Haskell’s undefined is defined). But then you need a <code>lazy</code> annotation to deactivate the termination checker!</em>
+</p>
+<pre class="spec"><code>intToA :: Int -&gt; a
+intToA x = intToA x
+
+{-@ lazy intToA @-}</code></pre>
+</details>
 <p>The only way to define the above function is via divergence. Thus, note that when a polymorphic type appears only in the result of your function, then most probably your function is not terminating… The property that it is “proving” does not hold.</p>
 <p>Programs as proofs when they are <em>well formed</em> meaning, they are terminating and total.</p>
 </section>
 <section id="propositions-as-refinement-types" class="level2">
 <h2>Propositions as Refinement Types</h2>
 <p>In Liquid Haskell, we can write propositions as refinement types. Concretely, we use refinement types to express theorems and define their Haskell functions as proofs of these theorems.</p>
-<p>For example, below we prove that <code>1 + 1 = 2</code> by defining a function <code>onePlusOne</code></p>
+<p>For example, below we prove that <code>1 + 1 = 2</code> by defining a function <code>onePlusOne</code>:</p>
 <div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -414,6 +442,15 @@ trivialThm :: () -> Proof
 trivialThm _ = trivial *** QED </div>
 </div>
 
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>Anothing that the SMT knows, for example boolean or linear logic:</em>
+</p>
+<pre class="spec"><code>{-@ trivialThm :: () -&gt; { false =&gt; false } @-}</code></pre>
+</details>
 </section>
 <section id="quantified-theorems" class="level2">
 <h2>Quantified Theorems</h2>
@@ -432,7 +469,7 @@ propPlusAccum :: Int -> Int -> Proof
 propPlusAccum x y = trivial *** QED</div>
 </div>
 
-<p>Note, function arguments work as universal quantifiers, and also, due to currin, we use function abstraction to express existential quantifiers.</p>
+<p>Note, function arguments work as universal quantifiers, and also, due to <a href="https://en.wikipedia.org/wiki/Currying">currying</a>, we use function abstraction to express existential quantifiers.</p>
 </section>
 <section id="theorems-about-haskell-functions" class="level2">
 <h2>Theorems about Haskell Functions</h2>
@@ -515,11 +552,43 @@ fibThree _ = undefined </div>
 </div>
 
 <p><strong>Question:</strong> Can you complete the proof above?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>Using the because operator, the proof goes as follows:</em>
+</p>
+<pre class="spec"><code>{-@ fibThree :: () -&gt; { fib 3 = 2 } @-}
+fibThree :: () -&gt; Proof
+fibThree _ =   fib 3 
+           === fib 2 + fib 1 
+           === fib 1 + fib 0 + 1
+           === 1             + 1    
+           === 2 
+           *** QED </code></pre>
+</details>
 <p>If you have completed the proof you might have duplicated the proof of <code>fibTwo</code>. In Liquid Haskell, we can reuse proofs by using the <code>because</code> combinator. The proof combinators library defines the <code>because</code> combinator as follows:</p>
 <pre class=".{spec}"><code>(?) :: a -&gt; b -&gt; a
 x ? _ = x </code></pre>
 <p>Thus, essentially introducing the it’s second argument as a <em>fact</em> in the proof.</p>
 <p><strong>Question:</strong> Let’s now complete the proof of <code>fibThree</code> using the <code>because</code> combinator.</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>Using the because operator, the proof goes as follows:</em>
+</p>
+<pre class="spec"><code>{-@ fibThree :: () -&gt; { fib 3 = 2 } @-}
+fibThree :: () -&gt; Proof
+fibThree _ =   fib 3 
+           === fib 2 + fib 1 
+             ? fibTwo () 
+           === 1     + 1    
+           === 2 
+           *** QED </code></pre>
+</details>
 </section>
 <section id="quantified-proofs" class="level2">
 <h2>Quantified Proofs</h2>
@@ -551,6 +620,16 @@ fibUp n =   fib n
 </div>
 
 <p><strong>Question:</strong> Can you complete the proof above?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The missing steps are the following:</em>
+</p>
+<pre class="spec"><code>        ? fibUp (n-2)
+        =&lt;= fib n + fib (n-1)</code></pre>
+</details>
 <p>To simplify proofs, Liquid Haskell has a tactic, called <code>ple</code> (Proof by Logical Equivalence) that automates most equational reasoning steps, but still requires the case splitting and the lemma invocations.</p>
 Thus, turning on the <code>ple</code> flag, we can simplify the proof of <code>fibUp</code>.
 <div id="program-pane-14" class="welleditor" style="background:#fff; position:relative">
@@ -593,6 +672,28 @@ fibMonotonic x y
 </div>
 
 <p><strong>Question:</strong> Can you complete the proof above? Concretely, complete the missing calls to the <code>fibUp</code> lemma and the inductive hypothesis and the termination metric of the proof.</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The completed proof is the following. Note, that it requires a termination metric, since induction is on the second argument <code>y</code>:</em>
+</p>
+<pre class="spec"><code>{-@ fibMonotonic :: x:Nat -&gt; y:{Nat | x &lt; y } 
+                 -&gt; {fib x &lt;= fib y} / [y]@-}
+fibMonotonic :: Int -&gt; Int -&gt; Proof
+fibMonotonic x y
+  | y == x + 1
+  =   fib x     ? (fibUp x)            {- Call to the fibUp lemma goes here   -}
+  =&lt;= fib (x+1) 
+  =&lt;= fib y
+  *** QED
+  | x &lt; y - 1
+  =   fib x     ? fibMonotonic x (y-1) {- Inductive Hypothesis call goes here -}
+  =&lt;= fib (y-1) ? (fibUp (y-1))        {- Call to the fibUp lemma goes here   -}
+  =&lt;= fib y     
+  *** QED</code></pre>
+</details>
 </section>
 <section id="generalizing-the-monotonicity-proof" class="level2">
 <h2>Generalizing the Monotonicity Proof</h2>
@@ -623,6 +724,29 @@ fMonotonic f fUp x y
 </div>
 
 <p><strong>Question:</strong> Can you complete the proof above?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>To complete, or better generalize, the proof you need to 1) replace <code>fib</code> with <code>f</code> and <code>fibUp</code> with <code>fUp</code>, leading to the following proof:</em>
+</p>
+<pre class="spec"><code>{-@ fMonotonic :: f:(Nat -&gt; Int) 
+               -&gt; fUp:(z:Nat -&gt; {f z &lt;= f (z+1)})
+               -&gt; x:Nat -&gt; y:{Nat | x &lt; y } -&gt; {f x &lt;= f y} / [y] @-}
+fMonotonic :: (Int -&gt; Int) -&gt; (Int -&gt; ()) -&gt; Int -&gt; Int -&gt; Proof
+fMonotonic f fUp x y
+  | y == x + 1
+  =   f x     ? fUp x
+  =&lt;= f (x+1) 
+  =&lt;= f y
+  *** QED
+  | x &lt; y - 1
+  =   f x     ? fMonotonic f fUp x (y-1)
+  =&lt;= f (y-1) ? fUp (y-1)
+  =&lt;= f y     
+  *** QED</code></pre>
+</details>
 <p>Once we have the general (a.k.a. higher-order) proof that increasing functions are monotonic, we can use it to prove the monotonicity of the Fibonacci function.</p>
 <div id="program-pane-17" class="welleditor" style="background:#fff; position:relative">
 
@@ -640,7 +764,16 @@ fibMono = fMonotonic fib fibUp</div>
 </section>
 <section id="proofs-by-natural-induction" class="level2">
 <h2>Proofs By Natural Induction</h2>
-<p>The proofs we did so far are essentially proofs by natural induction. Let’s prove the textbook theorem that the sum of the first <code>n</code> natural numbers is <code>n*(n+1)/2</code>.</p>
+<p>The proofs we did so far are essentially proofs by natural induction.</p>
+<p><a href="https://en.wikipedia.org/wiki/Mathematical_induction">Natural induction</a> is a proof technique that is used to prove theorems about natural numbers. Concretely, it is used to prove that a property <code>P(n)</code> holds for all natural numbers <code>n</code>. The proof consists of two steps:</p>
+<ol type="1">
+<li><strong>Base case</strong>: Prove that <code>P(0)</code> holds.</li>
+<li><strong>Inductive step</strong>: Prove that if <code>P(k)</code> holds for some <code>k</code>, then <code>P(k+1)</code> also holds.</li>
+<li><strong>Conclusion</strong>: Conclude that <code>P(n)</code> holds for all <code>n</code>.</li>
+</ol>
+<p>For example, we can prove the textbook theorem that the sum of the first <code>n</code> natural numbers is <code>n*(n+1)/2</code>.</p>
+<p><span class="math display">\[ P(n) = 1 + .... + n = n*(n+1)/2 \]</span></p>
+<p>Let’s prove it using Liquid Haskell.</p>
 <p>For that, we first define the <code>sumTo</code> function that computes the sum of the first <code>n</code> natural numbers.</p>
 <div id="program-pane-18" class="welleditor" style="background:#fff; position:relative">
 
@@ -671,6 +804,40 @@ sumToN = undefined </div>
 </div>
 
 <p><strong>Question:</strong> Can you complete the proof above? Hint, the Haskell function <code>div</code> is the integer division.</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The proof goes by induction and equational reasoning, where the logical <code>/</code> is <code>div</code>:</em>
+</p>
+<pre class="spec"><code>{-@ sumToN :: n:Nat -&gt; { sumTo 0 n = n * (n + 1) / 2 } @-}
+sumToN :: Int -&gt; Proof
+sumToN 0 = sumTo 0 0 === 0 *** QED 
+sumToN n = 
+      sumTo 0 n 
+  === n + sumTo 0 (n-1)
+    ? sumToN (n-1)
+  === n + (n-1) * n `div` 2 
+  === n * (n + 1) `div` 2
+  *** QED </code></pre>
+</details>
+<p><strong>Question:</strong> Can you <em>embed</em> this theorem in the type of the <code>sumTo</code> function?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>Yes! This theorem can be part of the specification of <code>sumTo</code> if we refine its type signature to:</em>
+</p>
+<pre class="spec"><code>{-@ sumTo :: lo:Nat -&gt; hi:{Nat | lo &lt;= hi} 
+          -&gt; {v:Nat | lo = 0 =&gt; v = hi * (hi+1) / 2 } / [hi]@-}</code></pre>
+</details>
+<p><strong>Intrinsic vs Extrinsic Theorems:</strong> Instrinsic theorems are the thereoms that are part of the type signature of the function. These theorems do not require explicit proofs, since the <em>definition</em> of the function is already a proof of the theorem. Extrinsic theorems are theorems that are not part of the type signature of the function, like the <code>fibMonotonic</code> theorem. These theorems require explicit proof terms but they are more expressive, since they can encode properties that cannot be encoded or proved by the definition of the function. Concretely, extrinsic theorems:</p>
+<ul>
+<li>can relate different functions or different calls to the same function and</li>
+<li>can encode theorems that require different proof techniques (e.g., induction, case analysis, etc.).</li>
+</ul>
 <p>Next, we will see how the concept of natural induction can be generalized to prove properties of data types as structural induction.</p>
 </section>
 <section id="summary" class="level2">

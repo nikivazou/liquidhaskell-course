@@ -149,6 +149,31 @@ chunk i x = [x]
 \end{code}
 
 
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The functions `take`, `drop`, and `chunk` can be defined as follows:_</p>
+
+~~~~~{.spec}
+drop :: Int -> [a] -> [a]
+drop 0 x = x 
+drop i (x:xs) = drop (i-1) xs 
+
+take 0 _ = []
+take i (x:xs) = x : take (i-1) xs
+
+{-@ chunk :: Int -> x:[a] -> [[a]] / [len x] @-}
+chunk :: Int -> [a] -> [[a]]
+chunk i x 
+  | i <= 0 || length x <= i = [x]
+  | otherwise = take i x : chunk i (drop i x)
+~~~~~
+
+</details>
+
+
+
 
 
 
@@ -180,6 +205,48 @@ mRTheorem n f op rightId distrib is = undefined
 **Question:** What is the proof of `mRTheorem`?
 
 
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The function `mRTheorem` can be defined as follows:_</p>
+
+~~~~~{.spec}
+mRTheorem n f op rightId distrib is 
+  | n <= 0 || length is <= n 
+  =   mapReduce n f op is 
+  === reduce op (f []) (map f (chunk n is))
+  === reduce op (f []) [f is]
+  ? rightId is
+  === f is 
+  *** QED 
+
+mRTheorem n f op rightId distrib is  
+  =   mapReduce n f op is 
+  === reduce op (f []) (map f (chunk n is))
+  === reduce op (f []) (map f (take n is : chunk n (drop n is)))
+  === reduce op (f []) (f (take n is) : map f (chunk n (drop n is)))
+  ===  op (f (take n is)) (reduce op (f []) (map f (chunk n (drop n is))))
+  ? mRTheorem n f op rightId distrib (drop n is)
+  === op (f (take n is)) (f (drop n is))
+  ? distrib (take n is) (drop n is)
+  === f (take n is ++ drop n is)
+   ? takeDrop n is
+  === f is   
+  *** QED  
+
+takeDrop :: Int -> [a] -> Proof
+{-@ takeDrop :: i:Nat -> xs:{[a] | i <= len xs }
+             -> {take i xs ++ drop i xs == xs} @-}
+takeDrop 0 xs     = ()
+takeDrop n (_:xs) = takeDrop (n-1) xs
+~~~~~
+
+</details>
+
+
+
+
 
 Lemmata for `mRTheorem` on plus 
 ------------------------------------------
@@ -195,6 +262,22 @@ plusRightId = undefined
 
 **Question:** What is the proof of `plusRightId`?
 
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The function `plusRightId` can be defined as follows:_</p>
+
+~~~~~{.spec}
+plusRightId []     = ()
+plusRightId (x:xs) = plusRightId xs 
+~~~~~
+
+</details>
+
+
+
+
 \begin{code}
 sumDistr :: [Int] -> [Int] -> Proof
 {-@ sumDistr :: xs:[Int] -> ys:[Int] 
@@ -203,6 +286,20 @@ sumDistr xs = undefined
 \end{code}
 
 **Question:** What is the proof of `sumDistr`?
+
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The function `sumDistr` can be defined as follows:_</p>
+
+~~~~~{.spec}
+sumDistr [] ys = ()
+sumDistr (x:xs) ys = sumDistr xs ys  
+~~~~~
+
+</details>
 
 
 Summary 

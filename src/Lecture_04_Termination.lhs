@@ -44,8 +44,21 @@ it does not violate any refinement type specification.
 *This is a termination error* and it will disappear if we 
 turn off termination checking (either with `--no-termination` pragma or with `{-@ lazy fib@-}` annotation).
 
-_Question:_ Does `fib` terminate?
+**Question:** Does `fib` terminate?
 
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _Yes, but only when the input is a natural number.
+This would also require the result of `fib` to be a natural number. 
+Thus, to ensure termination you need the following specification of `fib`:_</p>
+
+~~~~~{.spec}
+{-@ fib :: i:Nat -> Nat  @-}
+~~~~~
+
+</details>
 
 To ensure `fib` terminates we need to restrict the input to be non-negative.
 This is actually implied by the error message that requires 
@@ -55,10 +68,10 @@ This error was generated because Liquid Haskell was trying to prove termination 
 `fib` by applying its termination heuristic.
 
 *Termination Heuristic:* 
-The first argument that can be "sized", i.e., turned into nat, 
+The first argument that can be "sized", i.e., turned into `Nat`, 
 should be decreasing in recursive calls and non negative.
 
-`Int` is by default "sized" while later we will see how to make other types "sized".
+`Int` is by default "size" while later we will see how to make other types "sized".
 
 
 Termination Metrics 
@@ -75,7 +88,21 @@ range lo hi
  | otherwise = []
 \end{code}
 
-_Question:_ Does `range` terminate?
+**Question:** Does `range` terminate?
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _Yes, because the difference `hi - lo` is decreasing in recursive calls.
+Thus, to ensure termination you need the following specification of `range`:_</p>
+
+~~~~~{.spec}
+{-@ range :: lo:Int -> hi:Int -> [Int] / [hi - lo] @-} 
+~~~~~
+
+</details>
+
 
 
 The termination heuristic fails because the first argument is not decreasing in recursive calls.
@@ -106,7 +133,24 @@ ack m n
   | otherwise = ack (m-1) (ack m (n-1))
 \end{code}
 
-_Question:_ Does `ack` terminate?
+**Question:** Does `ack` terminate?
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _Yes, because either `m` is decreasing, 
+or `m` is the same and `n` is decreasing.
+This is a lexicographic termination metric and can be encoded as `[m,n]`. 
+But, we need to ensure that `m` and `n` are non-negative, 
+which in turn requires the result of `ack` to be non-negative.
+Thus, to ensure termination you need the following specification of `ack`:_</p>
+
+~~~~~{.spec}
+{-@ ack :: m:Nat -> n:Nat -> Nat  / [m, n] @-} 
+~~~~~
+
+</details>
 
 To show that `ack` terminates we need to provide a lexicographic termination metric.
 Now at each recursive call, Liquid Haskell will check that the first component of the metric is decreasing
@@ -119,14 +163,63 @@ The GCD Example
 The Greater Common Divisor (gcd) function is an interesting example, 
 because it might or not require lexicographic termination. 
 
+The gcd of two numbers (which is not both zero) is the largest positive integer
+that divides both numbers. 
+For example, the gcd of 8 and 12 is 4.
 
-_Question:_ Refine properly the `gcd` and `mod` functions to ensure termination.
+
+- **GCD with Lexicographic Termination:**
+
+The [Euclidean algorithm](https://en.wikipedia.org/wiki/Euclidean_algorithm)
+for computing the gcd of two numbers 
+is based on the principle that the greatest common divisor 
+of two numbers does not change if the larger number is replaced 
+by its difference with the smaller number:
+
 
 \begin{code}
-{-@ gcd :: a:Nat -> b:Nat -> Int @-}
+{-@ gcd :: a:Int -> b:Int -> Int @-}
 gcd :: Int -> Int -> Int
-gcd a 0 = a
-gcd a b = gcd b (a `mod` b)
+gcd 0 b = 0 
+gcd a 0 = a 
+gcd a b | a == b = a
+        | a >  b = gcd (a - b) b 
+        | a <  b = gcd a (b - a) 
+\end{code}
+
+For example, 
+`gcd 8 12 = gcd 8 4 = gcd 4 4 = 4`.
+
+**Question:** Provide the proper lexicographic termination metric for the below `gcd` function.
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The metric is `[a,b]`. 
+Either `a` is decreasing or it remains the same and `b` is decreasing. 
+Thus, to ensure termination you need the following specification of `gcd`:_</p>
+
+~~~~~{.spec}
+{-@ gcd :: a:Nat -> b:Nat -> Nat / [a, b]@-}
+~~~~~
+
+</details>
+
+
+- **GCD with Semantic Termination:**
+
+An alternative definition of `gcd` is using 
+the modulo operator.
+Instead of directly use the difference of the two numbers, 
+`ghc a b` is using the `mod` to remove from `a` 
+as many `b`s as possible: 
+
+
+\begin{code}
+{-@ gcdMod :: a:Nat -> b:Nat -> Int @-}
+gcdMod :: Int -> Int -> Int
+gcdMod a 0 = a
+gcdMod a b = gcdMod b (a `mod` b)
 
 
 {-@ mod :: a:Nat -> b:Nat -> Nat @-}
@@ -136,18 +229,30 @@ mod a b
   | otherwise = mod (a - b) b
 \end{code}
 
+For example, 
+`gcdMod 12 8 = gcdMod 8 4 = gcdMod 4 0 = 4`, 
+because `mod 12 8 = 4` and `mod 8 4 = 0`.
 
-_Question:_ Provide the proper lexicographic termination metric for the below `gcd` function.
+Interestingly, termination does not require any explicit metrics, 
+but follows from the semantics of the functions. 
+That means, that if you properly refine the functions,
+termination will be guaranteed.
 
-\begin{code}
-{-@ gcd' :: a:Int -> b:Int -> Int @-}
-gcd' :: Int -> Int -> Int
-gcd' 0 b = 0 
-gcd' a 0 = a 
-gcd' a b | a == b = a
-         | a >  b = gcd' (a - b) b 
-         | a <  b = gcd' a (b - a) 
-\end{code}
+
+**Question:** Refine properly the `gcd` and `mod` functions to ensure termination.
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _Termination is ensured by the following specifications:_</p>
+
+~~~~~{.spec}
+{-@ gcdMod :: a:Nat -> b:{Nat | b < a} -> Nat @-}
+{-@ mod :: a:Nat -> b:{Nat | b /= 0} -> {v:Nat | v < b} @-}
+~~~~~
+
+</details>
+
 
 Data Types 
 ------------
@@ -167,7 +272,8 @@ map f (x:xs) = f x : map f xs
 
 Of course, not all recursive functions on data types 
 are structurally terminating. 
-As an example consider the `merge` function below. 
+As an example consider the `merge` function below, that is usually part of 
+[merge sort](https://en.wikipedia.org/wiki/Merge_sort) algorithm. 
 
 \begin{code}
 {-@ merge :: xs:[a] -> ys:[a] -> [a] @-}
@@ -179,14 +285,40 @@ merge (x:xs) (y:ys)
   | otherwise = y:(merge ys (x:xs))
 \end{code}
 
-_Question:_ Let's prove `merge` terminating using a termination metric.
+**Question:** Let's prove `merge` terminating using a termination metric.
 
-_Question:_ Let's also show that `merge` propagates sortedness, 
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _Termination is ensured by the following specifications:_</p>
+
+~~~~~{.spec}
+{-@ merge :: xs:[a] -> ys:[a] -> [a] / [len xs + len ys]@-}
+~~~~~
+
+</details>
+
+
+**Question:** Let's also show that `merge` propagates sortedness, 
 by refining the inputs and output to be IList: 
 
 \begin{code}
 {-@ type IList a = [a]<{\h t -> h <= t}>  @-}
 \end{code}
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _Sortedness is ensured by the following specifications:_</p>
+
+~~~~~{.spec}
+{-@ merge :: xs:IList a -> ys:IList a -> IList a / [len xs + len ys]@-}
+~~~~~
+
+</details>
+
 
 
 
@@ -233,12 +365,21 @@ lmerge (Cons x xs) (Cons y ys)
   | otherwise = Cons y (lmerge (Cons x xs) ys)
 \end{code}
 
+Like with the Haskell's lists, to ensure termination we need to provide a termination metric.
+In this case, the termination metric is the size of the `List` data type: 
+
+~~~~~{.spec}
+{-@ lmerge :: xs:List a -> ys:List a -> List a / [llen xs + llen ys] @-}
+~~~~~
+
 
 
 Mutual Recursion
 ----------------
 
-On mutual recursion, the user needs to provide termination metrics. 
+Two functions are mutually recursive if they call each other.
+In such cases, Liquid Haskell will not attempt to prove termination automatically.
+Instead, the user needs to provide termination metrics.
 For example, consider the `isEven` and `isOdd` functions below.
 
 \begin{code}
@@ -253,7 +394,27 @@ isOdd :: Int -> Bool
 isOdd m = not $ isEven m
 \end{code}
 
-_Question:_ Provide the proper termination metrics for the `isEven` and `isOdd` functions.
+**Question:** Provide the proper termination metrics for the `isEven` and `isOdd` functions.
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The termination metrics can be the following:_</p>
+
+~~~~~{.spec}
+{-@ isEven :: n:Nat -> Bool / [n, 0]@-}
+{-@ isOdd  :: m:Nat -> Bool / [m, 1]@-}
+~~~~~
+
+</details>
+
+Note that at the definition of `isOdd m`, the recursive argument 
+remains the same. Thus, _something_ should decrease! 
+We define the termination metric `[m, 1]` for `isOdd` to ensure that the 
+second component is decreasing. In the definition of `isEven n`, 
+the recursive argument decreases, so the second component of the termination metric 
+is irrelevant. 
+
 
 
 This pattern of providing numeric values for lexicographic termination metrics
@@ -261,7 +422,7 @@ appears very often in mutually recursive functions.
 For example, the below code is a simplification of a real world example
 and follows the same pattern.
 
-_Question:_ Provide the proper termination metrics for the `eval` and `evalAnd` functions? 
+**Question:** Provide the proper termination metrics for the `eval` and `evalAnd` functions? 
 
 \begin{code}
 
@@ -283,6 +444,20 @@ evalAnd :: BExpr -> Bool -> Bool
 evalAnd b2 x1 = if x1 then (eval b2) else False 
 
 \end{code}
+
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The termination metrics can be the following:_</p>
+
+~~~~~{.spec}
+{-@ eval :: e:BExpr -> Bool / [size e, 0] @-}
+{-@ evalAnd :: e:BExpr -> Bool -> Bool / [size e, 1] @-}
+~~~~~
+
+</details>
 
 
 

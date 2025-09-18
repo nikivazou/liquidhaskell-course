@@ -139,7 +139,6 @@ MathJax.Hub.Config({
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.10.</b> Putting it all together: Safe Indexing</a></li>
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.11.</b> Summary</a></li>
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.12.</b> Further Reading</a></li>
-<li><a href='Lecture_01_RefinementTypes.html#'><b>1.13.</b> Cheatsheet</a></li>
 </ul>
 <li><a href='Lecture_02_DataTypes.html'><b>2.</b>Data Types</a></li>
 <ul class='section'>
@@ -210,15 +209,10 @@ MathJax.Hub.Config({
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.2.</b> Native Terms</a></li>
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.3.</b> Conjunction</a></li>
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.4.</b> Disjunction</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Negation</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Forall</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Exists</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.9.</b> Example 1: existsAll</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.10.</b> Example 2: Distributing Qualifiers</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.11.</b> Example 3: List Properties</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.12.</b> Example 4: Natural Induction</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.13.</b> Summary</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication &amp; Negation</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Forall and Exists</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Examples</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Summary</a></li>
 </ul>
 <li><a href='Lecture_09_DataPropositions.html'><b>9.</b>Data Propositions</a></li>
 <ul class='section'>
@@ -231,6 +225,28 @@ MathJax.Hub.Config({
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.7.</b> Soundness = Progress + Preservation</a></li>
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.8.</b> Summary</a></li>
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.9.</b> Appendix: The rest of the Code</a></li>
+</ul>
+<li><a href='Task1.html'><b>10.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+</ul>
+<li><a href='Task1.pretty.html'><b>11.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+<li><a href='Task1.pretty.html#'><b>11.1.</b> 1. Lists</a></li>
+<li><a href='Task1.pretty.html#'><b>11.2.</b> 2. Insertion Sort</a></li>
+<li><a href='Task1.pretty.html#'><b>11.3.</b> 3. Merge Sort</a></li>
+</ul>
+<li><a href='Task1All.html'><b>12.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+</ul>
+<li><a href='Task2.html'><b>13.</b>Task 2: Proving Theorems</a></li>
+<ul class='section'>
+<li><a href='Task2.html#'><b>13.1.</b> 1. Fusions</a></li>
+</ul>
+<li><a href='Task2.pretty.html'><b>14.</b>Task 2: Proving Theorems</a></li>
+<ul class='section'>
+<li><a href='Task2.pretty.html#'><b>14.1.</b> 1. Fusions</a></li>
+<li><a href='Task2.pretty.html#'><b>14.2.</b> 2. Higher Order Properties</a></li>
+<li><a href='Task2.pretty.html#'><b>14.3.</b> 3. Encoding of Logical Properties</a></li>
 </ul>
 </ul>
 
@@ -438,6 +454,26 @@ chunk :: Int -> [a] -> [[a]]
 chunk i x = [x] </div>
 </div>
 
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The functions <code>take</code>, <code>drop</code>, and <code>chunk</code> can be defined as follows:</em>
+</p>
+<pre class="spec"><code>drop :: Int -&gt; [a] -&gt; [a]
+drop 0 x = x 
+drop i (x:xs) = drop (i-1) xs 
+
+take 0 _ = []
+take i (x:xs) = x : take (i-1) xs
+
+{-@ chunk :: Int -&gt; x:[a] -&gt; [[a]] / [len x] @-}
+chunk :: Int -&gt; [a] -&gt; [[a]]
+chunk i x 
+  | i &lt;= 0 || length x &lt;= i = [x]
+  | otherwise = take i x : chunk i (drop i x)</code></pre>
+</details>
 </section>
 <section id="higher-order-theorem-mrtheorem" class="level2">
 <h2>Higher Order Theorem: <code>mRTheorem</code></h2>
@@ -465,6 +501,42 @@ mRTheorem n f op rightId distrib is = undefined </div>
 </div>
 
 <p><strong>Question:</strong> What is the proof of <code>mRTheorem</code>?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The function <code>mRTheorem</code> can be defined as follows:</em>
+</p>
+<pre class="spec"><code>mRTheorem n f op rightId distrib is 
+  | n &lt;= 0 || length is &lt;= n 
+  =   mapReduce n f op is 
+  === reduce op (f []) (map f (chunk n is))
+  === reduce op (f []) [f is]
+  ? rightId is
+  === f is 
+  *** QED 
+
+mRTheorem n f op rightId distrib is  
+  =   mapReduce n f op is 
+  === reduce op (f []) (map f (chunk n is))
+  === reduce op (f []) (map f (take n is : chunk n (drop n is)))
+  === reduce op (f []) (f (take n is) : map f (chunk n (drop n is)))
+  ===  op (f (take n is)) (reduce op (f []) (map f (chunk n (drop n is))))
+  ? mRTheorem n f op rightId distrib (drop n is)
+  === op (f (take n is)) (f (drop n is))
+  ? distrib (take n is) (drop n is)
+  === f (take n is ++ drop n is)
+   ? takeDrop n is
+  === f is   
+  *** QED  
+
+takeDrop :: Int -&gt; [a] -&gt; Proof
+{-@ takeDrop :: i:Nat -&gt; xs:{[a] | i &lt;= len xs }
+             -&gt; {take i xs ++ drop i xs == xs} @-}
+takeDrop 0 xs     = ()
+takeDrop n (_:xs) = takeDrop (n-1) xs</code></pre>
+</details>
 </section>
 <section id="lemmata-for-mrtheorem-on-plus" class="level2">
 <h2>Lemmata for <code>mRTheorem</code> on plus</h2>
@@ -483,6 +555,16 @@ plusRightId = undefined </div>
 </div>
 
 <p><strong>Question:</strong> What is the proof of <code>plusRightId</code>?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The function <code>plusRightId</code> can be defined as follows:</em>
+</p>
+<pre class="spec"><code>plusRightId []     = ()
+plusRightId (x:xs) = plusRightId xs </code></pre>
+</details>
 <div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -498,6 +580,16 @@ sumDistr xs = undefined </div>
 </div>
 
 <p><strong>Question:</strong> What is the proof of <code>sumDistr</code>?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The function <code>sumDistr</code> can be defined as follows:</em>
+</p>
+<pre class="spec"><code>sumDistr [] ys = ()
+sumDistr (x:xs) ys = sumDistr xs ys  </code></pre>
+</details>
 </section>
 <section id="summary" class="level2">
 <h2>Summary</h2>

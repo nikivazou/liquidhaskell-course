@@ -139,7 +139,6 @@ MathJax.Hub.Config({
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.10.</b> Putting it all together: Safe Indexing</a></li>
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.11.</b> Summary</a></li>
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.12.</b> Further Reading</a></li>
-<li><a href='Lecture_01_RefinementTypes.html#'><b>1.13.</b> Cheatsheet</a></li>
 </ul>
 <li><a href='Lecture_02_DataTypes.html'><b>2.</b>Data Types</a></li>
 <ul class='section'>
@@ -210,15 +209,10 @@ MathJax.Hub.Config({
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.2.</b> Native Terms</a></li>
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.3.</b> Conjunction</a></li>
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.4.</b> Disjunction</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Negation</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Forall</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Exists</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.9.</b> Example 1: existsAll</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.10.</b> Example 2: Distributing Qualifiers</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.11.</b> Example 3: List Properties</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.12.</b> Example 4: Natural Induction</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.13.</b> Summary</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication &amp; Negation</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Forall and Exists</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Examples</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Summary</a></li>
 </ul>
 <li><a href='Lecture_09_DataPropositions.html'><b>9.</b>Data Propositions</a></li>
 <ul class='section'>
@@ -231,6 +225,28 @@ MathJax.Hub.Config({
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.7.</b> Soundness = Progress + Preservation</a></li>
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.8.</b> Summary</a></li>
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.9.</b> Appendix: The rest of the Code</a></li>
+</ul>
+<li><a href='Task1.html'><b>10.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+</ul>
+<li><a href='Task1.pretty.html'><b>11.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+<li><a href='Task1.pretty.html#'><b>11.1.</b> 1. Lists</a></li>
+<li><a href='Task1.pretty.html#'><b>11.2.</b> 2. Insertion Sort</a></li>
+<li><a href='Task1.pretty.html#'><b>11.3.</b> 3. Merge Sort</a></li>
+</ul>
+<li><a href='Task1All.html'><b>12.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+</ul>
+<li><a href='Task2.html'><b>13.</b>Task 2: Proving Theorems</a></li>
+<ul class='section'>
+<li><a href='Task2.html#'><b>13.1.</b> 1. Fusions</a></li>
+</ul>
+<li><a href='Task2.pretty.html'><b>14.</b>Task 2: Proving Theorems</a></li>
+<ul class='section'>
+<li><a href='Task2.pretty.html#'><b>14.1.</b> 1. Fusions</a></li>
+<li><a href='Task2.pretty.html#'><b>14.2.</b> 2. Higher Order Properties</a></li>
+<li><a href='Task2.pretty.html#'><b>14.3.</b> 3. Encoding of Logical Properties</a></li>
 </ul>
 </ul>
 
@@ -292,7 +308,7 @@ import Prelude hiding ((++))</div>
 </div>
 
 <p>In a previous lecture we saw tha programs are proofs and we proved a higher order property, i.e., a property over functions, that all increasing functions are monotonic.</p>
-<p>In this lecture, we see that any higher order property can be encoded in Liquid Haskell, because refinement types can encode higher order logic and type checking can encode the natural deduction proof system.</p>
+<p>In this lecture, we see that <em>any</em> higher order property can be encoded in Liquid Haskell, because refinement types can encode higher order logic and type checking can encode the natural deduction proof system.</p>
 <section id="logical-properties" class="level2">
 <h2>Logical Properties</h2>
 <p>Like a programming language, logic has</p>
@@ -301,7 +317,7 @@ import Prelude hiding ((++))</div>
 <li><strong>meaning</strong> (if <span class="math inline">\(\phi\)</span> is true and <span class="math inline">\(\psi\)</span> is true, then <span class="math inline">\(\phi \land \psi\)</span> is true), and</li>
 <li><strong>“evaluation”</strong> (decision procedues).</li>
 </ul>
-<p><strong>Natural Deduction</strong> is a decision procedure for logic. The Curry-Howard correspondence says that propositions are types and proofs are programs. In this lecture, we will see that natural deduction is encoded by type checking rules.</p>
+<p><a href="https://en.wikipedia.org/wiki/Natural_deduction"><strong>Natural Deduction</strong></a> is a decision procedure for logic. The Curry-Howard correspondence says that propositions are types and proofs are programs. In this lecture, we will see that natural deduction is encoded by type checking rules.</p>
 <p>Concretely, we will see the encoding by filling in the following table:</p>
 <table>
 <thead>
@@ -383,7 +399,7 @@ fact2 = ()</div>
 <tr class="odd">
 <td style="text-align: right;">Native Terms</td>
 <td style="text-align: center;"><span class="math inline">\(e\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\{e\}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\{v:() | e\}\)</span></td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">Conjunction</td>
@@ -435,38 +451,49 @@ conj :: Bool -> Bool -> (Bool, Bool)
 conj ϕ1 ϕ2 = (ϕ1,ϕ2)</div>
 </div>
 
-<p>Given that logical conjunction can be encoded as pairs, we can see how type checking can encode the natural deduction proof system. When typing pairs, there are three rules: left and right <em>elimination</em> and <em>introduction</em>.</p>
-<p><span class="math display">\[
-\inferrule
-  {\land\text{-L-E}}
-  {
-    \Gamma \vdash e : (\phi_1, \phi_2)
-  }{
-    \Gamma \vdash \text{case } e \text{ of } (x_1, x_2) \rightarrow x_1 : \phi_1
-  }
-\]</span></p>
-<p><span class="math display">\[
-\inferrule
-  {\land\text{-R-E}}
-  {
-    \Gamma \vdash e : (\phi_1, \phi_2)
-  }{
-    \Gamma \vdash \text{case } e \text{ of } (x_1, x_2) \rightarrow x_2 : \phi_2
-  }
-\]</span></p>
-<p><span class="math display">\[
-\inferrule
-  {\land\text{-I}}
-  {
-    \Gamma \vdash \text{case } e \text{ of } (x_1, x_2) \rightarrow x_1 : \phi_1 \\
-    \Gamma \vdash \text{case } e \text{ of } (x_1, x_2) \rightarrow x_2 : \phi_2
-  }{
-    \Gamma \vdash e : (\phi_1, \phi_2)
-  }
-\]</span></p>
-<p>If we ignore the expressions above we take exactly the conjuction rules of natural deduction.</p>
-<p>** You can generate Haskell terms that provide evidence for the natural deduction rules!**</p>
-<p>As an example, consider the natural deduction devation below</p>
+<p><strong>Deduction Rules:</strong> The rules of natural deduction are the rules that we can use to prove a formula. For conjuctions, there are three rules:</p>
+<ul>
+<li>left and right <em>elimination</em>, eliminates the conjunction and</li>
+<li><em>introduction</em>, introduces the conjunction.</li>
+</ul>
+<p>These rules are part of the natural deduction proof system and can also be encoded as refinement type checking rules.</p>
+<table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 40%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Rule</th>
+<th style="text-align: center;"><strong>Natural Deduction</strong></th>
+<th style="text-align: center;"><strong>Type Checking</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">Left Elimination</td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}  {  \Gamma \vdash \phi_1 \land \phi_2  }{  \Gamma \vdash \phi_1  }\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}  {  \Gamma \vdash e : (\phi_1, \phi_2)  }{  \Gamma \vdash \text{case } e \text{ of } (x_1, x_2) \rightarrow x_1 : \phi_1  }\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">Right Elimination</td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}  {  \Gamma \vdash \phi_1 \land \phi_2  }{  \Gamma \vdash \phi_2  }\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}  {  \Gamma \vdash e : (\phi_1, \phi_2)  }{  \Gamma \vdash \text{case } e \text{ of } (x_1, x_2) \rightarrow x_2 : \phi_2  }\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">Introduction</td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}  {  \Gamma \vdash \phi_1  \\  \Gamma \vdash \phi_2  }{  \Gamma \vdash \phi_1 \land \phi_2  }\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}  {  \Gamma \vdash \text{case } e \text{ of } (x_1, x_2) \rightarrow x_1 : \phi_1  \\  \Gamma \vdash \text{case } e \text{ of } (x_1, x_2) \rightarrow x_2 : \phi_2  }{  \Gamma \vdash e : (\phi_1, \phi_2)  }\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>The type checking rules are not part of the core rules (that we saw in the first lecture), but they can be derived from the core rules.</p>
+<p>If we ignore the expressions in the type checking rules, we take exactly the conjuction rules of natural deduction.</p>
+<p><strong>You can generate Haskell terms that provide evidence for the natural deduction rules!</strong></p>
+<p><strong>As an example,</strong> consider the logical formula:</p>
+<p><span class="math display">\[ \textit{If } \phi_1 \textit{ and } \phi_2\land\phi_3, \text{ then }  \phi_1\land \phi_3 .\]</span></p>
+<p>The natural deduction devation tree is shown below:</p>
 <p><span class="math display">\[
 \inferrule
   {\land\text{-I}}
@@ -482,7 +509,7 @@ conj ϕ1 ϕ2 = (ϕ1,ϕ2)</div>
     \phi_1, \phi_2\land\phi_3 \vdash  \phi_1\land \phi_3
   }
 \]</span></p>
-<p>Filling in the terms (and applying the correspondence of propositions and types) we get:</p>
+<p>Filling in the terms (and applying the correspondence of propositions and types) we get the type checking derivation tree:</p>
 <p><span class="math display">\[
 \inferrule
   {\land\text{-I}}
@@ -498,6 +525,9 @@ conj ϕ1 ϕ2 = (ϕ1,ϕ2)</div>
     x_1:\phi_1,x_{23}: \phi_2\land\phi_3 \vdash (x_1, \text{case } x_{23} \text{ of } (x_2, x_3) \rightarrow x_3): \phi_1\land \phi_3
   }
 \]</span></p>
+<ul>
+<li><strong>Example 1: Conjunction</strong></li>
+</ul>
 <p>Let’s encode this proof in Liquid Haskell!</p>
 <div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
 
@@ -508,9 +538,9 @@ conj ϕ1 ϕ2 = (ϕ1,ϕ2)</div>
   </button>
  
   <div id="program-3" class="programbox">{-@ ex1 :: φ1:Bool -> φ2:Bool -> φ3:Bool 
-    -> {v:() | φ1}
-    -> ({v:() | φ2}, {v:() | φ3})
-    -> ({v:() | φ1}, {v:() | φ3}) @-}
+        -> {v:() | φ1}
+        -> ({v:() | φ2}, {v:() | φ3})
+        -> ({v:() | φ1}, {v:() | φ3}) @-}
 ex1 :: Bool -> Bool -> Bool -> () -> ((), ()) -> ((), ())
 ex1 _ _ _ x1 x23 = 
   (x1, case x23 of (x2,x3) -> x3)</div>
@@ -529,7 +559,7 @@ ex1 _ _ _ x1 x23 =
 <tr class="odd">
 <td style="text-align: right;">Native Terms</td>
 <td style="text-align: center;"><span class="math inline">\(e\)</span></td>
-<td style="text-align: center;">{e}</td>
+<td style="text-align: center;"><span class="math inline">\(\{v:() | e\}\)</span></td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">Conjunction</td>
@@ -566,7 +596,8 @@ ex1 _ _ _ x1 x23 =
 </section>
 <section id="disjunction" class="level2">
 <h2>Disjunction</h2>
-<p>Disjunction is encoded by the <code>Either</code> type, which is a sum type that can be either <code>Left</code> or <code>Right</code>. <code>data Either a b = Left a | Right b</code>.</p>
+<p>Disjunction is encoded by the <code>Either</code> type, which is a sum type that can be either <code>Left</code> or <code>Right</code>.</p>
+<pre class="spec"><code>data Either a b = Left a | Right b -- defined in Prelude</code></pre>
 <div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -576,164 +607,50 @@ ex1 _ _ _ x1 x23 =
   </button>
  
   <div id="program-4" class="programbox">{-@ disj :: ϕ1:Bool -> ϕ2:Bool -> {v:() | ϕ1 || ϕ2 }
-         -> {v:Either () () | ϕ1 || ϕ2 } @-}
+         -> Either {v:() | ϕ1} {v:() | ϕ2} @-}
 disj :: Bool -> Bool -> () -> Either () ()
 disj ϕ1 ϕ2 p = if ϕ1 then Left p else Right p</div>
 </div>
 
 <p>If you know that <span class="math inline">\(\phi_1\)</span> is true or <span class="math inline">\(\phi_2\)</span> is true, then <code>Left ()</code> is a term that shows that <span class="math inline">\(\phi_1 \lor \phi_2\)</span> is true and <code>Right ()</code> is a term that shows that <span class="math inline">\(\phi_1 \lor \phi_2\)</span> is true.</p>
-<p>Dually to conjunction, disjunction has three rules: left and right <em>introduction</em> and <em>elimination</em>.</p>
-<p><span class="math display">\[
-\inferrule
-  {\lor\text{-L-I}}
-  {
-    \Gamma \vdash e : \phi_1
-  }{
-    \Gamma \vdash \text{Left } e : \text{Either } \phi_1 \ \phi_2
-  }
-\]</span></p>
-<p><span class="math display">\[
-\inferrule
-  {\lor\text{-R-I}}
-  {
-    \Gamma \vdash e : \phi_2
-  }{
-    \Gamma \vdash \text{Right } e : \text{Either } \phi_1 \ \phi_2
-  }
-\]</span></p>
-<p><span class="math display">\[
-\inferrule
-  {\lor\text{-E}}
-  {
-    \Gamma \vdash e : \text{Either } \phi_1\ \phi_2 \\
-    \Gamma, x_1 : \phi_1 \vdash e_1 : \phi \quad
-    \Gamma, x_2 : \phi_2 \vdash e_2 : \phi
-  }{
-    \Gamma \vdash \text{case } e \text{ of } \{\text{Left } x_1 \rightarrow x_1 ;  
-                                             \text{Right } x_2 \rightarrow x_2 \} : \phi
-  }
-\]</span></p>
+<p><strong>Deduction Rules:</strong> Dually to conjunction, disjunction has three rules: left and right <em>introduction</em> and <em>elimination</em>.</p>
+<table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 40%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Rule</th>
+<th style="text-align: center;"><strong>Natural Deduction</strong></th>
+<th style="text-align: center;"><strong>Type Checking</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">Left Introduction</td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}{ \Gamma \vdash \phi_1}{\Gamma \vdash \phi_1 \lor \phi_2}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}  {  \Gamma \vdash e : \phi_1  }{  \Gamma \vdash \text{Left } e : \text{Either } \phi_1 \ \phi_2  }\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">Right Introduction</td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}{ \Gamma \vdash \phi_2}{\Gamma \vdash \phi_1 \lor \phi_2}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}  {  \Gamma \vdash e : \phi_2  }{  \Gamma \vdash \text{Right } e : \text{Either } \phi_1 \ \phi_2  }\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">Elimination</td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}  {  \Gamma \vdash \phi_1 \lor \phi_2  \\  \Gamma, \phi_1 \vdash \phi  \\  \Gamma, \phi_2 \vdash \phi  }{  \Gamma \vdash \phi  }\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}  {  \Gamma \vdash e : \text{Either } \phi_1\ \phi_2 \\  \Gamma, x_1 : \phi_1 \vdash e_1 : \phi \\  \Gamma, x_2 : \phi_2 \vdash e_2 : \phi  }{  \Gamma \vdash \text{case } e \text{ of } \{\text{Left } x_1 \rightarrow x_1 ;  \text{Right } x_2 \rightarrow x_2 \} : \phi  }\)</span></td>
+</tr>
+</tbody>
+</table>
 <p>So, disjunction is encoded by the either type.</p>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: right;"></th>
-<th style="text-align: center;"><strong>Logical Formula</strong></th>
-<th style="text-align: center;"><strong>Refinement Type</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">Native Terms</td>
-<td style="text-align: center;"><span class="math inline">\(e\)</span></td>
-<td style="text-align: center;">{e}</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">Conjunction</td>
-<td style="text-align: center;"><span class="math inline">\(\phi_1 \land \phi_2\)</span></td>
-<td style="text-align: center;">(<span class="math inline">\(\phi_1\)</span>, <span class="math inline">\(\phi_2\)</span>)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">Disjunction</td>
-<td style="text-align: center;"><span class="math inline">\(\phi_1 \lor \phi_2\)</span></td>
-<td style="text-align: center;"> <span class="math inline">\(\phi_1\)</span> <span class="math inline">\(\phi_2\)</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">Implication</td>
-<td style="text-align: center;"><span class="math inline">\(\phi_1 \Rightarrow \phi_2\)</span></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">Negation</td>
-<td style="text-align: center;"><span class="math inline">\(\lnot \phi\)</span></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">Forall</td>
-<td style="text-align: center;"><span class="math inline">\(\forall x. \phi\)</span></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">Exists</td>
-<td style="text-align: center;"><span class="math inline">\(\exists x. \phi\)</span></td>
-<td style="text-align: center;"></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="implication" class="level2">
-<h2>Implication</h2>
-<p>Implication is encoded by the function type. It has two rules: <em>introduction</em> and <em>elimination</em>:</p>
-<p><span class="math display">\[
-\inferrule
-  {\Rightarrow\text{-I}}
-  {
-    \Gamma, x : \phi_x \vdash e : \phi
-  }{
-    \Gamma \vdash \lambda x. e : \phi_x \rightarrow \phi
-  }
-\]</span></p>
-<p><span class="math display">\[
-\inferrule
-  {\Rightarrow\text{-E}}
-  {
-    \Gamma \vdash e : \phi_x \rightarrow \phi \quad
-    \Gamma \vdash e_x : \phi_x
-  }{
-    \Gamma \vdash e\ e_x : \phi
-  }
-\]</span></p>
-<p>The Implication Elimination Rule for natural deduction is also known as the <em>modus ponens</em> rule.</p>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: right;"></th>
-<th style="text-align: center;"><strong>Logical Formula</strong></th>
-<th style="text-align: center;"><strong>Refinement Type</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">Native Terms</td>
-<td style="text-align: center;"><span class="math inline">\(e\)</span></td>
-<td style="text-align: center;">{e}</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">Conjunction</td>
-<td style="text-align: center;"><span class="math inline">\(\phi_1 \land \phi_2\)</span></td>
-<td style="text-align: center;">(<span class="math inline">\(\phi_1\)</span>, <span class="math inline">\(\phi_2\)</span>)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">Disjunction</td>
-<td style="text-align: center;"><span class="math inline">\(\phi_1 \lor \phi_2\)</span></td>
-<td style="text-align: center;"> <span class="math inline">\(\phi_1\)</span> <span class="math inline">\(\phi_2\)</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">Implication</td>
-<td style="text-align: center;"><span class="math inline">\(\phi_1 \Rightarrow \phi_2\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\phi_1 \rightarrow \phi_2\)</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">Negation</td>
-<td style="text-align: center;"><span class="math inline">\(\lnot \phi\)</span></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">Forall</td>
-<td style="text-align: center;"><span class="math inline">\(\forall x. \phi\)</span></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">Exists</td>
-<td style="text-align: center;"><span class="math inline">\(\exists x. \phi\)</span></td>
-<td style="text-align: center;"></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="negation" class="level2">
-<h2>Negation</h2>
-<p>Negation is just implication to <code>False</code>.</p>
+<ul>
+<li><strong>Example 2: Disjunction</strong></li>
+</ul>
+<p>Consider the valid logical formula: <span class="math display">\[ \textit{If } \phi \lor \text{ false,} \textit{ then }  \phi .\]</span></p>
+<p>In Liquid Haskell, it is encoded usint the below type specification:</p>
 <div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -742,7 +659,111 @@ disj ϕ1 ϕ2 p = if ϕ1 then Left p else Right p</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-5" class="programbox">{-@ neg :: ϕ:Bool -> {v:() | not ϕ} 
+  <div id="program-5" class="programbox">{-@ exOr :: ϕ:Bool -> Either {v:() | ϕ} {v:() | false }
+         -> {v:() | ϕ}  @-}
+exOr :: Bool -> Either () () -> ()
+exOr φ p = undefined </div>
+</div>
+
+<p><strong>Question</strong>: Can you prove this property in Liquid Haskell?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The function <code>exOr</code> can be defined as follows:</em>
+</p>
+<pre class="spec"><code>exOr ϕ (Left p)  = p
+exOr ϕ (Right p) = error &quot;impossible&quot;</code></pre>
+</details>
+<p>So, disjunction is encoded by the either type:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;"></th>
+<th style="text-align: center;"><strong>Logical Formula</strong></th>
+<th style="text-align: center;"><strong>Refinement Type</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">Native Terms</td>
+<td style="text-align: center;"><span class="math inline">\(e\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\{v:() | e\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">Conjunction</td>
+<td style="text-align: center;"><span class="math inline">\(\phi_1 \land \phi_2\)</span></td>
+<td style="text-align: center;">(<span class="math inline">\(\phi_1\)</span>, <span class="math inline">\(\phi_2\)</span>)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">Disjunction</td>
+<td style="text-align: center;"><span class="math inline">\(\phi_1 \lor \phi_2\)</span></td>
+<td style="text-align: center;">Either <span class="math inline">\(\phi_1\)</span> <span class="math inline">\(\phi_2\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">Implication</td>
+<td style="text-align: center;"><span class="math inline">\(\phi_1 \Rightarrow \phi_2\)</span></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">Negation</td>
+<td style="text-align: center;"><span class="math inline">\(\lnot \phi\)</span></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">Forall</td>
+<td style="text-align: center;"><span class="math inline">\(\forall x. \phi\)</span></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">Exists</td>
+<td style="text-align: center;"><span class="math inline">\(\exists x. \phi\)</span></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="implication-negation" class="level2">
+<h2>Implication &amp; Negation</h2>
+<p><strong>Implication</strong> is encoded by the function type. It has two rules: <em>introduction</em> and <em>elimination</em>:</p>
+<table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 40%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Rule</th>
+<th style="text-align: center;"><strong>Natural Deduction</strong></th>
+<th style="text-align: center;"><strong>Type Checking</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">Introduction</td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}{ \Gamma, \phi_x \vdash \phi}{\Gamma \vdash \phi_x \Rightarrow \phi}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}  {  \Gamma, x : \phi_x \vdash e : \phi  }{  \Gamma \vdash \lambda x. e : \phi_x \rightarrow \phi  }\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">Elimination</td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}  {  \Gamma \vdash \phi_x  \\  \Gamma \vdash \phi_x \Rightarrow \phi  }{  \Gamma \vdash \phi  }\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}  {  \Gamma \vdash e_x : \phi_x  \\  \Gamma \vdash e : (\phi_x \rightarrow \phi)  }{  \Gamma \vdash e\ e_x : \phi  }\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>The Implication Elimination Rule for natural deduction is also known as the <em>modus ponens</em> rule.</p>
+<p><strong>Negation</strong> is just implication to <code>False</code>.</p>
+<div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-6" class="programbox">{-@ neg :: ϕ:Bool -> {v:() | not ϕ} 
         -> ({v:() | ϕ} -> {v:() | false}) @-}
 neg :: Bool -> () -> (() -> ())
 neg _ _ = \_ -> ()</div>
@@ -760,7 +781,7 @@ neg _ _ = \_ -> ()</div>
 <tr class="odd">
 <td style="text-align: right;">Native Terms</td>
 <td style="text-align: center;"><span class="math inline">\(e\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\{e\}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\{v:() | e\}\)</span></td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">Conjunction</td>
@@ -770,7 +791,7 @@ neg _ _ = \_ -> ()</div>
 <tr class="odd">
 <td style="text-align: right;">Disjunction</td>
 <td style="text-align: center;"><span class="math inline">\(\phi_1 \lor \phi_2\)</span></td>
-<td style="text-align: center;"> <span class="math inline">\(\phi_1\)</span> <span class="math inline">\(\phi_2\)</span></td>
+<td style="text-align: center;">Either <span class="math inline">\(\phi_1\)</span> <span class="math inline">\(\phi_2\)</span></td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">Implication</td>
@@ -794,99 +815,130 @@ neg _ _ = \_ -> ()</div>
 </tr>
 </tbody>
 </table>
+<ul>
+<li><strong>Example 3: Contradictions</strong></li>
+</ul>
+<p>Consider the valid logical formula: <span class="math display">\[ \phi_C \doteq  \lnot \phi \land \phi \Rightarrow \text{false}\]</span></p>
+In Liquid Haskell, it is encoded usint the below type specification:
+<div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-7" class="programbox">{-@ exC :: φ:Bool 
+        -> (({v:() | φ} -> {v:() | false}), {v:() | φ}) 
+        -> {v:() | false} @-}
+exC :: Bool ->  (() -> () , ()) -> ()
+exC ϕ p = undefined </div>
+</div>
+
+<p><strong>Question</strong>: Can you prove this property in Liquid Haskell?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The function <code>exC</code> can be defined as follows:</em>
+</p>
+<pre class="spec"><code>exC ϕ (f, p) = f p </code></pre>
+</details>
+<ul>
+<li><strong>Example 4: Double Negation</strong></li>
+</ul>
+<p>Consider the valid logical formula:</p>
+<p><span class="math display">\[ \phi_{DN} \doteq  \lnot \lnot \phi \Rightarrow \phi\]</span></p>
+In Liquid Haskell, it is encoded usint the below type specification:
+<div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-8" class="programbox">{-@ exDN :: φ:Bool 
+         -> (({v:() | φ} -> {v:() | false}) -> {v:() | false}) 
+         -> {v:() | φ}  @-}
+exDN :: Bool -> ((()-> ()) -> ()) -> () 
+exDN ϕ nnp = undefined </div>
+</div>
+
+<p><strong>Question</strong>: Can you prove this property in Liquid Haskell?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The function <code>exDN</code> can be defined as follows:</em>
+</p>
+<pre class="spec"><code>exDN ϕ nnp | not ϕ = nnp f 
+  where 
+    {-@ f :: {v:() | not ϕ &amp;&amp; ϕ} -&gt; {v:() | false} @-} 
+    f :: () -&gt; () 
+    f _ = () 
+exDN ϕ nnp = ()</code></pre>
+</details>
 </section>
-<section id="forall" class="level2">
-<h2>Forall</h2>
-<p>Forall is encoded by the quantified function type. It has two rules: <em>introduction</em> and <em>elimination</em>:</p>
-<p><span class="math display">\[
-\inferrule
-  {\forall\text{-I}}
-  {
-    \Gamma, x:\tau \vdash e : \phi
-  }{
-    \Gamma \vdash \lambda x. e : x:\tau \rightarrow \phi
-  }
-\]</span></p>
-<p><span class="math display">\[
-\inferrule
-  {\forall\text{-E}}
-  {
-    \Gamma \vdash e : (x:\tau \rightarrow \phi) \quad
-    \Gamma \vdash e_x : \tau
-  }{
-    \Gamma \vdash e\ e_x : \phi [x / e_x]
-  }
-\]</span></p>
+<section id="forall-and-exists" class="level2">
+<h2>Forall and Exists</h2>
+<p><strong>Universal quantification</strong> is encoded by the function type. It has two rules: <em>introduction</em> and <em>elimination</em>:</p>
 <table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 40%" />
+<col style="width: 33%" />
+</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: right;"></th>
-<th style="text-align: center;"><strong>Logical Formula</strong></th>
-<th style="text-align: center;"><strong>Refinement Type</strong></th>
+<th style="text-align: right;">Rule</th>
+<th style="text-align: center;"><strong>Natural Deduction</strong></th>
+<th style="text-align: center;"><strong>Type Checking</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">Native Terms</td>
-<td style="text-align: center;"><span class="math inline">\(e\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\{e\}\)</span></td>
+<td style="text-align: right;">Introduction</td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}{ \Gamma \vdash \phi_x}{\Gamma \vdash \forall x. \phi_x}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}  {  \Gamma, x:\tau \vdash e : \phi_x  }{  \Gamma \vdash \lambda x. e : x:\tau \rightarrow \phi_x  }\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">Conjunction</td>
-<td style="text-align: center;"><span class="math inline">\(\phi_1 \land \phi_2\)</span></td>
-<td style="text-align: center;">(<span class="math inline">\(\phi_1\)</span>, <span class="math inline">\(\phi_2\)</span>)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">Disjunction</td>
-<td style="text-align: center;"><span class="math inline">\(\phi_1 \lor \phi_2\)</span></td>
-<td style="text-align: center;"> <span class="math inline">\(\phi_1\)</span> <span class="math inline">\(\phi_2\)</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">Implication</td>
-<td style="text-align: center;"><span class="math inline">\(\phi_1 \Rightarrow \phi_2\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\phi_1 \rightarrow \phi_2\)</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">Negation</td>
-<td style="text-align: center;"><span class="math inline">\(\lnot \phi\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\phi \rightarrow \{\text{false}\}\)</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">Forall</td>
-<td style="text-align: center;"><span class="math inline">\(\forall x. \phi\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(x:\tau \rightarrow \phi\)</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">Exists</td>
-<td style="text-align: center;"><span class="math inline">\(\exists x. \phi\)</span></td>
-<td style="text-align: center;"></td>
+<td style="text-align: right;">Elimination</td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}  {  \Gamma \vdash \forall x. \phi_x  }{  \Gamma \vdash \phi_x [x / e_x]  }\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}  {  \Gamma \vdash e : (x:\tau \rightarrow \phi_x) \quad  \Gamma \vdash e_x : \tau  }{  \Gamma \vdash e\ e_x : \phi_x [x / e_x]  }\)</span></td>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="exists" class="level2">
-<h2>Exists</h2>
-<p>Exists is encoded by the dependent pair. It has two rules: <em>introduction</em> and <em>elimination</em>:</p>
-<p><span class="math display">\[
-\inferrule
-  {\exists\text{-I}}
-  {
-    \Gamma \vdash \text{fst } e : \tau \quad
-    \Gamma, x:\tau \vdash \text{snd }  e : \phi
-  }{
-    \Gamma \vdash e : (x:\tau, \phi[x / \text{fst } e])
-  }
-\]</span></p>
-<p><span class="math display">\[
-\inferrule
-  {\exists\text{-E}}
-  {
-    \Gamma \vdash e : (x:\tau, \phi_x) \quad
-    \Gamma, x:\tau, y:\phi_x \vdash e&#39; : \phi
-  }{
-    \Gamma \vdash \text{case } e \text{ of } (x, y) \rightarrow e&#39; : \phi
-  }
-\]</span></p>
+<p><strong>Existsential quantification</strong> is encoded by the dependent pair type. It has two rules: <em>introduction</em> and <em>elimination</em>:</p>
+<table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 40%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Rule</th>
+<th style="text-align: center;"><strong>Natural Deduction</strong></th>
+<th style="text-align: center;"><strong>Type Checking</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">Introduction</td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}{ \Gamma \vdash \phi_x[x / e_x]}{\Gamma \vdash \exists x. \phi_x}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}  {  \Gamma \vdash \text{fst } e : \tau \quad  \Gamma, x:\tau \vdash \text{snd } e : \phi_x  }{  \Gamma \vdash e : (x:\tau, \phi_x[x / \text{fst } e])  }\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">Elimination</td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}  {  \Gamma \vdash \exists x. \phi_x  \\  \Gamma, \phi_x[x / e_x] \vdash \phi  }{  \Gamma \vdash : \phi  }\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\inferrule{}  {  \Gamma \vdash e : (x:\tau, \phi_x) \\  \Gamma, x:\tau, y:\phi_x \vdash e&#39; : \phi  }{  \Gamma \vdash \text{case } e \text{ of } (x, y) \rightarrow e&#39; : \phi  }\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>These concludes the encoding of the rules of natural deduction in refinement types:</p>
 <table>
 <thead>
 <tr class="header">
@@ -899,7 +951,7 @@ neg _ _ = \_ -> ()</div>
 <tr class="odd">
 <td style="text-align: right;">Native Terms</td>
 <td style="text-align: center;"><span class="math inline">\(e\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\{e\}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\{v:() | e\}\)</span></td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">Conjunction</td>
@@ -909,7 +961,7 @@ neg _ _ = \_ -> ()</div>
 <tr class="odd">
 <td style="text-align: right;">Disjunction</td>
 <td style="text-align: center;"><span class="math inline">\(\phi_1 \lor \phi_2\)</span></td>
-<td style="text-align: center;"> <span class="math inline">\(\phi_1\)</span> <span class="math inline">\(\phi_2\)</span></td>
+<td style="text-align: center;">Either <span class="math inline">\(\phi_1\)</span> <span class="math inline">\(\phi_2\)</span></td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">Implication</td>
@@ -933,76 +985,15 @@ neg _ _ = \_ -> ()</div>
 </tr>
 </tbody>
 </table>
-<p>That concludes the encoding! Let’s now see some examples that use it!</p>
+<p>Let’s now see some examples that use it!</p>
 </section>
-<section id="example-1-existsall" class="level2">
-<h2>Example 1: existsAll</h2>
-<p>The first example is a proof that if there exists an <span class="math inline">\(x\)</span> that satisfies a property forall <span class="math inline">\(y\)</span>, then forall <span class="math inline">\(y\)</span> there exists an <span class="math inline">\(x\)</span> that satisfies the property.</p>
-<p><span class="math display">\[ \phi = \exists x. \forall y. p\ x \ y  \Rightarrow \forall y. \exists x. p \ x \ y \]</span></p>
-<p>Let’s prove this propery in Liquid Haskell!</p>
-<div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-6" class="programbox">{-@ exAll :: p:(a -> a -> Bool)
-          -> (x::a, y:a -> {v:() | p x y}) 
-          -> y:a 
-          -> (x::a, {v:() | p x y}) @-}
-exAll :: (a -> a -> Bool) -> (a, a -> ()) -> a -> (a, ())
-exAll p = undefined</div>
-</div>
-
-<p><strong>Question</strong>: Can you prove this property in Liquid Haskell?</p>
-<p>The natural deduction proof is shown below:</p>
-<div id="fig:avl" style="align: left; text-align:center;">
-  <img src="img/exAll.png" height="300px" style="display:block;  margin-left:auto; margin-right:auto">
-  <div class="caption" style="text-align:center"><b>Figure 1.1:</b> Natural Deduction Proof for exAll </div>
-</div>
-<br>
-
-
-</section>
-<section id="example-2-distributing-qualifiers" class="level2">
-<h2>Example 2: Distributing Qualifiers</h2>
-<p>First, let’s distribute the exists quantifier over disjunction.</p>
-<p><span class="math display">\[ \phi_\exists = (\exists x. p\ x \lor q\ x) \rightarrow ((\exists x. p\ x) \lor (\exists x. q\ x)) \]</span></p>
-<p>Let’s prove this propery in Liquid Haskell!</p>
-<div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-7" class="programbox">exDistOr = undefined </div>
-</div>
-
-<p><strong>Question</strong>: Can you prove this property in Liquid Haskell?</p>
-<p>Now, let’s distribute the forall quantifier over conjunction.</p>
-<p><span class="math display">\[ \phi_\forall = (\forall x. p\ x \land q\ x) \rightarrow ((\forall x. p\ x) \land (\forall x. q\ x))\]</span></p>
-<p>Let’s prove this propery in Liquid Haskell!</p>
-<div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-8" class="programbox">allDistAnd = undefined</div>
-</div>
-
-<p><strong>Question</strong>: Can you prove this property in Liquid Haskell?</p>
-</section>
-<section id="example-3-list-properties" class="level2">
-<h2>Example 3: List Properties</h2>
-<p>Next, let’s prove that for all lists that are constructed by appending a list to itself, there exists an integer that is half the length of the list.</p>
-<p><span class="math display">\[ \phi = \forall xs. (\exists ys. xs = ys \text{ ++ } ys) \rightarrow (\exists n. \text{length } xs = n + n )\]</span></p>
+<section id="examples" class="level2">
+<h2>Examples</h2>
+<ul>
+<li><strong>Example 4: ExistsAll</strong></li>
+</ul>
+<p>This example encodes a proof that if there exists an <span class="math inline">\(x\)</span> that satisfies a property forall <span class="math inline">\(y\)</span>, then forall <span class="math inline">\(y\)</span> there exists an <span class="math inline">\(x\)</span> that satisfies the property.</p>
+<p><span class="math display">\[ \phi \doteq \exists x. \forall y. p\ x \ y  \Rightarrow \forall y. \exists x. p \ x \ y \]</span></p>
 <p>Let’s prove this propery in Liquid Haskell!</p>
 <div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
 
@@ -1012,10 +1003,38 @@ exAll p = undefined</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-9" class="programbox">evenLen = undefined</div>
+  <div id="program-9" class="programbox">{-@ exAll :: p:(a -> a -> Bool)
+          -> (x::a, y:a -> {v:() | p x y}) 
+          -> y:a 
+          -> (x::a, {v:() | p x y}) @-}
+exAll :: (a -> a -> Bool) -> (a, a -> ()) -> a -> (a, ())
+exAll p = undefined</div>
 </div>
 
-<p><strong>Question</strong>: Can you prove the above property in Liquid Haskell? <em>Hint:</em> You can use the property <code>lenAppend</code>:</p>
+<p><strong>Question</strong>: Can you prove this property in Liquid Haskell?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The function <code>exAll</code> can be defined as follows:</em>
+</p>
+<pre class="spec"><code>exAll p (x, f) y = (x, f y)</code></pre>
+</details>
+<p>The natural deduction proof is shown below:</p>
+<div id="fig:avl" style="align: left; text-align:center;">
+  <img src="img/exAll.png" height="300px" style="display:block;  margin-left:auto; margin-right:auto">
+  <div class="caption" style="text-align:center"><b>Figure 1.1:</b> Natural Deduction Proof for exAll </div>
+</div>
+<br>
+
+
+<ul>
+<li><strong>Example 5: Distributing Qualifiers</strong></li>
+</ul>
+<p>First, let’s distribute the exists quantifier over disjunction.</p>
+<p><span class="math display">\[ \phi_\exists = (\exists x. p\ x \lor q\ x) \rightarrow ((\exists x. p\ x) \lor (\exists x. q\ x)) \]</span></p>
+<p>Let’s prove this propery in Liquid Haskell!</p>
 <div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -1024,7 +1043,85 @@ exAll p = undefined</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-10" class="programbox">{-@ lenAppend :: xs:[a] -> ys:[a] -> {v:() | len (xs ++ ys) == len xs + len ys} @-}
+  <div id="program-10" class="programbox">exDistOr = undefined </div>
+</div>
+
+<p><strong>Question</strong>: Can you prove this property in Liquid Haskell?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The function <code>exDistOr</code> can be defined as follows:</em>
+</p>
+<pre class="spec"><code>{-@ exDistOr :: p:(a -&gt; Bool) -&gt; q:(a -&gt; Bool)
+             -&gt; (x::a, Either {v:() | p x} {v:() | q x})
+             -&gt; Either (x::a, {v:() | p x}) (x::a, {v:() | q x}) @-}
+exDistOr :: (a -&gt; Bool) -&gt; (a -&gt; Bool)
+         -&gt; (a, Either () ())
+         -&gt; Either (a,()) (a,())
+exDistOr p q (x, Left f) = Left (x, f )
+exDistOr p q (x, Right g) = Right (x, g )</code></pre>
+</details>
+<p>Now, let’s distribute the forall quantifier over conjunction.</p>
+<p><span class="math display">\[ \phi_\forall = (\forall x. p\ x \land q\ x) \rightarrow ((\forall x. p\ x) \land (\forall x. q\ x))\]</span></p>
+<p>Let’s prove this propery in Liquid Haskell!</p>
+<div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-11" class="programbox">allDistAnd = undefined</div>
+</div>
+
+<p><strong>Question</strong>: Can you prove this property in Liquid Haskell?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The function <code>allDistAnd</code> can be defined as follows:</em>
+</p>
+<pre class="spec"><code>{-@ allDistAnd :: p:(a -&gt; Bool) -&gt; q:(a -&gt; Bool)
+               -&gt; (x:a -&gt; ({v:() | p x}, {v:() | q x}))
+               -&gt; (x:a -&gt; {v:() | p x}, x:a -&gt; {v:() | q x}) @-}
+allDistAnd :: (a -&gt; Bool) -&gt; (a -&gt; Bool)
+          -&gt; (a -&gt; ((), ()))
+          -&gt; (a -&gt; (), a -&gt; ())
+
+allDistAnd p q xpq = (\x -&gt; case xpq x of (p,_) -&gt; p, 
+                      \x -&gt; case xpq x of (_,q) -&gt; q)</code></pre>
+</details>
+<ul>
+<li><strong>Example 6: List Properties</strong></li>
+</ul>
+<p>Next, let’s prove that for all lists that are constructed by appending a list to itself, there exists an integer that is half the length of the list.</p>
+<p><span class="math display">\[ \phi = \forall xs. (\exists ys. xs = ys \text{ ++ } ys) \rightarrow (\exists n. \text{length } xs = n + n )\]</span></p>
+<p>Let’s prove this propery in Liquid Haskell!</p>
+<div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-12" class="programbox">evenLen = undefined</div>
+</div>
+
+<p><strong>Question</strong>: Can you prove the above property in Liquid Haskell? <em>Hint:</em> You can use the property <code>lenAppend</code>:</p>
+<div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-13" class="programbox">{-@ lenAppend :: xs:[a] -> ys:[a] -> {v:() | len (xs ++ ys) == len xs + len ys} @-}
 lenAppend :: [a] -> [a] -> ()
 lenAppend [] _      = ()
 lenAppend (_:xs) ys = lenAppend xs ys
@@ -1035,13 +1132,25 @@ lenAppend (_:xs) ys = lenAppend xs ys
 (x:xs) ++ ys = x : (xs ++ ys)</div>
 </div>
 
-</section>
-<section id="example-4-natural-induction" class="level2">
-<h2>Example 4: Natural Induction</h2>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The function <code>evenLen</code> can be defined as follows:</em>
+</p>
+<pre class="spec"><code>{-@ evenLen :: xs:[a] -&gt; (ys::[a], {v:() | xs == ys ++ ys})
+            -&gt; (n::{v:Int | 0 &lt;= v}, {v:() | len xs == n + n}) @-}
+evenLen :: [a] -&gt; ([a], ()) -&gt; (Int, ())
+evenLen xs (ys, ()) = (length ys, lenAppend ys ys)</code></pre>
+</details>
+<ul>
+<li><strong>Example 7: Natural Induction</strong></li>
+</ul>
 <p>Finally, let’s prove that for all natural numbers,</p>
 <p><span class="math display">\[ \phi = (p \ 0 \land (\forall n. p \ (n-1) \rightarrow p \ n))) \rightarrow \forall n. p \ n\]</span></p>
 <p>Let’s prove this propery in Liquid Haskell!</p>
-<div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
+<div id="program-pane-14" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
   <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
@@ -1049,13 +1158,27 @@ lenAppend (_:xs) ys = lenAppend xs ys
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-11" class="programbox">natInd = undefined</div>
+  <div id="program-14" class="programbox">natInd = undefined</div>
 </div>
 
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The function <code>natInd</code> can be defined as follows:</em>
+</p>
+<pre class="spec"><code>{-@ natInd :: p:({v:Int | 0 &lt;= v} -&gt; Bool)
+           -&gt; ({v:() | p 0}, n:{v:Int | 0 &lt;= v} -&gt; {v:() | p (n-1)} -&gt; {v:() | p n})
+           -&gt; n:{v:Int | 0 &lt;= v} -&gt; {v:() | p n} / [n] @-}
+natInd :: (Int -&gt; Bool) -&gt; ((), Int -&gt; () -&gt; ()) -&gt; Int -&gt; () 
+natInd p (p0, pn) n 
+  = if n == 0 then p0 else pn n (natInd p (p0, pn) (n-1))</code></pre>
+</details>
 </section>
 <section id="summary" class="level2">
 <h2>Summary</h2>
-<p>In this lecture, we saw that natural deduction can be encoded in Liquid Haskell. We saw that the rules of natural deduction can be encoded by the type checking rules of Liquid Haskell. We saw that the Curry-Howard correspondence can be extended to higher order logic. We saw that we can prove higher order properties in Liquid Haskell.</p>
+<p>In this lecture, we saw that natural deduction can be encoded with refinement types, and specifically in Liquid Haskell. We saw that the rules of natural deduction can be encoded by the type checking rules of Liquid Haskell, where the expressions provide evidence for the rules. We saw that the Curry-Howard correspondence can be extended to higher order logic. We saw that we can prove higher order properties in Liquid Haskell.</p>
 </section>
 </section>
 

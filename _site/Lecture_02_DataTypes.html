@@ -139,7 +139,6 @@ MathJax.Hub.Config({
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.10.</b> Putting it all together: Safe Indexing</a></li>
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.11.</b> Summary</a></li>
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.12.</b> Further Reading</a></li>
-<li><a href='Lecture_01_RefinementTypes.html#'><b>1.13.</b> Cheatsheet</a></li>
 </ul>
 <li><a href='Lecture_02_DataTypes.html'><b>2.</b>Data Types</a></li>
 <ul class='section'>
@@ -210,15 +209,10 @@ MathJax.Hub.Config({
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.2.</b> Native Terms</a></li>
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.3.</b> Conjunction</a></li>
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.4.</b> Disjunction</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Negation</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Forall</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Exists</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.9.</b> Example 1: existsAll</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.10.</b> Example 2: Distributing Qualifiers</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.11.</b> Example 3: List Properties</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.12.</b> Example 4: Natural Induction</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.13.</b> Summary</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication &amp; Negation</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Forall and Exists</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Examples</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Summary</a></li>
 </ul>
 <li><a href='Lecture_09_DataPropositions.html'><b>9.</b>Data Propositions</a></li>
 <ul class='section'>
@@ -231,6 +225,28 @@ MathJax.Hub.Config({
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.7.</b> Soundness = Progress + Preservation</a></li>
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.8.</b> Summary</a></li>
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.9.</b> Appendix: The rest of the Code</a></li>
+</ul>
+<li><a href='Task1.html'><b>10.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+</ul>
+<li><a href='Task1.pretty.html'><b>11.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+<li><a href='Task1.pretty.html#'><b>11.1.</b> 1. Lists</a></li>
+<li><a href='Task1.pretty.html#'><b>11.2.</b> 2. Insertion Sort</a></li>
+<li><a href='Task1.pretty.html#'><b>11.3.</b> 3. Merge Sort</a></li>
+</ul>
+<li><a href='Task1All.html'><b>12.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+</ul>
+<li><a href='Task2.html'><b>13.</b>Task 2: Proving Theorems</a></li>
+<ul class='section'>
+<li><a href='Task2.html#'><b>13.1.</b> 1. Fusions</a></li>
+</ul>
+<li><a href='Task2.pretty.html'><b>14.</b>Task 2: Proving Theorems</a></li>
+<ul class='section'>
+<li><a href='Task2.pretty.html#'><b>14.1.</b> 1. Fusions</a></li>
+<li><a href='Task2.pretty.html#'><b>14.2.</b> 2. Higher Order Properties</a></li>
+<li><a href='Task2.pretty.html#'><b>14.3.</b> 3. Encoding of Logical Properties</a></li>
 </ul>
 </ul>
 
@@ -286,7 +302,7 @@ MathJax.Hub.Config({
 module Lecture_02_DataTypes where
 
 import Data.List    (foldl')
-import Prelude hiding (head, tail, (!!), map, zipWith, zip, take, drop, reverse)
+import Prelude hiding (head, tail, (!!), elem, zip, take, drop, reverse)
 import Data.Maybe   (fromJust)
 
 main :: IO ()
@@ -397,9 +413,29 @@ Cons :: x:a -&gt; l:List a -&gt; {v:List a | llen v = 1 + llen l &amp;&amp; not 
  
   <div id="program-5" class="programbox">
 head :: List a -> a
-head = undefined </div>
+head = undefined 
+
+
+tail :: List a -> List a
+tail = undefined </div>
 </div>
 
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The functions <code>head</code> and <code>tail</code> can be defined as follows: </em>
+</p>
+<pre class="spec"><code>head :: List a -&gt; a
+{-@ head :: x:{List a | 0 &lt; llen x} -&gt; a @-}
+head (Cons x _ ) = x 
+
+{-@ tail :: x:{List a | 0 &lt; llen x} -&gt; {v:List a | llen v = llen x - 1 } @-}
+tail :: List a -&gt; List a 
+tail (Cons _ x) = x </code></pre>
+</details>
+<p><strong>Question:</strong> Can you give a strong engouth type for tail to verify length of result?</p>
 <div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -409,11 +445,20 @@ head = undefined </div>
   </button>
  
   <div id="program-6" class="programbox">
-tail :: List a -> List a
-tail = undefined </div>
+{- oneElem :: {v:List Int | llen v == 1} @-}
+oneElem :: List Int 
+oneElem = tail twoElems</div>
 </div>
 
-<p><strong>Question:</strong> Can you give a strong engouth type for tail to verify length of result?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The type provided before is strong enought because its postcondition state that the result list has the same length as the input list minus one. This strong postcondition is not required to define the function tail, but it is required to verify the uses of the function.</em>
+</p>
+</details>
+<p><strong>Question:</strong> Let’s now define a safe indexing function for lists.</p>
 <div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -423,12 +468,25 @@ tail = undefined </div>
   </button>
  
   <div id="program-7" class="programbox">
-{- oneElem :: {v:List Int | llen v == 1} @-}
-oneElem :: List Int 
-oneElem = tail twoElems</div>
+{-@ (!!) :: xs:List a -> {i:Int | 0 <= i && i < llen xs } -> a @-}
+(!!) :: List a -> Int -> a
+(!!) = undefined</div>
 </div>
 
-<p><strong>Question:</strong> Let’s now define a safe indexing function for lists.</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The function <code>(!!)</code> can be defined as follows:</em>
+</p>
+<pre class="spec"><code>{-@ (!!) :: xs:List a -&gt; {i:Int | 0 &lt;= i &amp;&amp; i &lt; llen xs } -&gt; a @-}
+(!!) :: List a -&gt; Int -&gt; a
+(Cons x _)  !! 0 = x 
+(Cons _ xs) !! i = xs !! (i-1)</code></pre>
+<p>Note that because <code>!!</code> is named using symbols instead of letters, it can be use as an infix operator, and needs to be enclosed in parentheses when used in prefix notation. That is, <code>xs !! i</code> is the same as <code>(!!) xs i</code>.</p>
+</details>
+<p><strong>Question:</strong> Let’s now define a safe lookup function for lists, using the case sensitivity of refinement types.</p>
 <div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -437,13 +495,24 @@ oneElem = tail twoElems</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-8" class="programbox">
-{-@ (!!) :: xs:List a -> {i:Int | 0 <= i && i < llen xs } -> a @-}
-(!!) :: List a -> Int -> a
-(!!) = undefined</div>
+  <div id="program-8" class="programbox">safeLookup :: List a -> Int -> Maybe a
+safeLookup = undefined</div>
 </div>
 
-<p><strong>Question:</strong> Let’s now define a safe lookup function for lists, using the case sensitivity of refinement types.</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The function <code>safeLookup</code> can be defined as follows:</em>
+</p>
+<pre class="spec"><code>safeLookup :: List a -&gt; Int -&gt; Maybe a
+safeLookup xs i = if 0 &lt;= i &amp;&amp; i &lt; llen xs then Just (xs !! i) else Nothing</code></pre>
+</details>
+</section>
+<section id="recursive-functions" class="level2">
+<h2>Recursive Functions</h2>
+<p>Let’s write a recursive function that adds up the values of an integer list.</p>
 <div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -452,23 +521,7 @@ oneElem = tail twoElems</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-9" class="programbox">safeLookup :: List a -> Int -> Maybe a
-safeLookup = undefined</div>
-</div>
-
-</section>
-<section id="recursive-functions" class="level2">
-<h2>Recursive Functions</h2>
-<p>Let’s write a recursive function that adds up the values of an integer list.</p>
-<div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-10" class="programbox">listSum :: List Int -> Int
+  <div id="program-9" class="programbox">listSum :: List Int -> Int
 listSum xs = go 0 0 
   where 
     go acc i  
@@ -477,7 +530,51 @@ listSum xs = go 0 0
 </div>
 
 <p><strong>Question:</strong> What happens if you <em>replace</em> the guard with <code>i &lt;= llen xs</code>?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The function will fail to typecheck because the indexing of lists is out of bounds.</em>
+</p>
+</details>
 <p><strong>Question:</strong> Write a variant of the above function that computes the <code>absuluteSum</code> of the list, i.e., the sum of the absolute values of the elements.</p>
+<div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-10" class="programbox">{-@ absSum :: List Int -> Nat @-}
+absSum :: List Int -> Int
+absSum = undefined </div>
+</div>
+
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>In the body of <code>go</code> where the indexing happens, apply an absolute value function that returns the absolute value of the indexed element.</em>
+</p>
+<pre class="spec"><code>{-@ absSum :: List Int -&gt; Nat @-}
+absSum :: List Int -&gt; Int
+absSum xs = go 0 0 
+  where 
+    go acc i  
+      | i &lt; llen xs = go (acc + myAbs (xs !! i)) (i+1)
+      | otherwise   = acc
+      
+{-@ myAbs :: Int -&gt; Nat @-} 
+myAbs :: Int -&gt; Int 
+myAbs x = if x &lt; 0 then -x else x </code></pre>
+</details>
+<p>LiquidHaskell verifies <code>listSum</code>, or to be precise the safety of list indexing. The verification works because Liquid Haskell is able to <em>automatically infer</em></p>
+<pre class="spec"><code>go :: Int -&gt; {v:Int | 0 &lt;= v &amp;&amp; v &lt;= llen xs} -&gt; Int</code></pre>
+<p>which states that the second parameter <code>i</code> is between 0 and the length of the list (inclusive). LiquidHaskell uses this and the test that <code>i &lt; llen xs</code> to verify that the indexing is safe.</p>
+<p><em>Note:</em> LiquidHaskell automatically tests the termination of recursive functions. The default termination metric for the above functions fail. Later, we will see how to fix this. But for now, we can disable termination checking, but declaring functions as <code>lazy</code>.</p>
 <div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -486,15 +583,23 @@ listSum xs = go 0 0
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-11" class="programbox">{-@ absSum :: List Int -> Int @-}
-absSum :: List Int -> Int
-absSum = undefined </div>
+  <div id="program-11" class="programbox">{-@ lazy listSum @-}
+{-@ lazy absSum @-}</div>
 </div>
 
-<p>LiquidHaskell verifies <code>listSum</code>, or to be precise the safety of list indexing. The verification works because Liquid Haskell is able to <em>automatically infer</em></p>
-<pre class="spec"><code>go :: Int -&gt; {v:Int | 0 &lt;= v &amp;&amp; v &lt;= llen xs} -&gt; Int</code></pre>
-<p>which states that the second parameter <code>i</code> is between 0 and the length of the list (inclusive). LiquidHaskell uses this and the test that <code>i &lt; llen xs</code> to verify that the indexing is safe.</p>
-<p><em>Note:</em> LiquidHaskell automatically tests the termination of recursive functions. The default termination metric for the above functions fail. Later, we will see how to fix this. But for now, we can disable termination checking, but declaring functions as <code>lazy</code>.</p>
+<p><strong>Question:</strong> Why does the type of <code>go</code> has <code>v &lt;= llen xs</code> and not <code>v &lt; llen xs</code>?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>Because <code>go</code> also needs to enter in the base case to exit the loop!</em>
+</p>
+</details>
+</section>
+<section id="higher-order-functions" class="level2">
+<h2>Higher-Order Functions</h2>
+<p>We already used the <code>go</code> structure twice, so let’s generalize the common pattern! Let’s refactor the above low-level recursive function into a generic higher-order <code>loop</code>.</p>
 <div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -503,24 +608,7 @@ absSum = undefined </div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-12" class="programbox">{-@ lazy listSum @-}
-{-@ lazy absSum @-}</div>
-</div>
-
-<p><strong>Question:</strong> Why does the type of <code>go</code> has <code>v &lt;= llen xs</code> and not <code>v &lt; llen xs</code>?</p>
-</section>
-<section id="higher-order-functions" class="level2">
-<h2>Higher-Order Functions</h2>
-<p>We already used the <code>go</code> structure twice, so let’s generalize the common pattern! Let’s refactor the above low-level recursive function into a generic higher-order <code>loop</code>.</p>
-<div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-13" class="programbox">{-@ lazy loop @-}
+  <div id="program-12" class="programbox">{-@ lazy loop @-}
 loop :: Int -> Int -> a -> (Int -> a -> a) -> a
 loop lo hi base f =  go base lo
   where
@@ -530,7 +618,7 @@ loop lo hi base f =  go base lo
 </div>
 
 <p>We can now use <code>loop</code> to implement <code>listSum</code>:</p>
-<div id="program-pane-14" class="welleditor" style="background:#fff; position:relative">
+<div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
   <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
@@ -538,7 +626,7 @@ loop lo hi base f =  go base lo
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-14" class="programbox">{-@ lazy listSum' @-}
+  <div id="program-13" class="programbox">{-@ lazy listSum' @-}
 listSum'      :: List Int -> Int
 listSum' xs  = loop 0 n 0 body
   where
@@ -548,6 +636,28 @@ listSum' xs  = loop 0 n 0 body
 
 <p><br />
 <strong>Inference</strong> is a convenient option. LiquidHaskell finds:</p>
+<div id="program-pane-14" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-14" class="programbox">{-@ type Btwn Lo Hi = {v:Int | Lo <= v && v < Hi} @-}
+{-@ loop :: lo:Nat -> hi:{Nat|lo <= hi} -> a 
+         -> (Btwn lo hi -> a -> a) -> a @-}</div>
+</div>
+
+<p>In English, the above type states that</p>
+<ul>
+<li><code>lo</code> the loop <em>lower</em> bound is a non-negative integer</li>
+<li><code>hi</code> the loop <em>upper</em> bound is a greater than or equal to <code>lo</code>,</li>
+<li><code>f</code> the loop <em>body</em> is only called with integers between <code>lo</code> and <code>hi</code>.</li>
+</ul>
+<p> It can be tedious to have to keep typing things like the above. If we wanted to make <code>loop</code> a public or exported function, we could use the inferred type to generate an explicit signature.</p>
+<p>At the call <code>loop 0 n 0 body</code> the parameters <code>lo</code> and <code>hi</code> are instantiated with <code>0</code> and <code>n</code> respectively, which, by the way is where the inference engine deduces non-negativity. Thus LiquidHaskell concludes that <code>body</code> is only called with values of <code>i</code> that are <em>between</em> <code>0</code> and <code>(llen xs)</code>, which verifies the safety of the call <code>xs !! i</code>.</p>
+<p><strong>Question:</strong> Complete the implementation of <code>absoluteSum'</code> below. When you are done, what is the type that is inferred for <code>body</code>?</p>
 <div id="program-pane-15" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -556,20 +666,33 @@ listSum' xs  = loop 0 n 0 body
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-15" class="programbox">{-@ type Btwn Lo Hi = {v:Int | Lo <= v && v < Hi} @-}
-{-@ loop :: lo:Nat -> hi:{Nat|lo <= hi} -> a 
-         -> (Btwn lo hi -> a -> a) -> a @-}</div>
+  <div id="program-15" class="programbox">{-@ absoluteSum' :: List Int -> Nat @-}
+absoluteSum' :: List Int -> Int
+absoluteSum' xs = loop 0 n 0 body
+  where
+    body i acc   = undefined
+    n            = llen xs</div>
 </div>
 
-<p>In English, the above type states that</p>
-<ul>
-<li><code>lo</code> the loop <em>lower</em> bound is a non-negative integer</li>
-<li><code>hi</code> the loop <em>upper</em> bound is a greater then or equal to <code>lo</code>,</li>
-<li><code>f</code> the loop <em>body</em> is only called with integers between <code>lo</code> and <code>hi</code>.</li>
-</ul>
-<p> It can be tedious to have to keep typing things like the above. If we wanted to make <code>loop</code> a public or exported function, we could use the inferred type to generate an explicit signature.</p>
-<p>At the call <code>loop 0 n 0 body</code> the parameters <code>lo</code> and <code>hi</code> are instantiated with <code>0</code> and <code>n</code> respectively, which, by the way is where the inference engine deduces non-negativity. Thus LiquidHaskell concludes that <code>body</code> is only called with values of <code>i</code> that are <em>between</em> <code>0</code> and <code>(llen xs)</code>, which verifies the safety of the call <code>xs !! i</code>.</p>
-<p><strong>Question:</strong> Complete the implementation of <code>absoluteSum'</code> below. When you are done, what is the type that is inferred for <code>body</code>?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The function <code>absoluteSum'</code> can be implemented as follows:</em>
+</p>
+<pre class="spec"><code>{-@ absoluteSum&#39; :: List Int -&gt; Nat @-}
+absoluteSum&#39; :: List Int -&gt; Int
+absoluteSum&#39; xs = loop 0 n 0 body
+  where
+    body i acc   = acc + myAbs (xs!!i)
+    n            = llen xs</code></pre>
+<p>
+<em>where <code>myAbs</code> is the absolute value function defined before. The type inferred for <code>body</code> is:</em>
+</p>
+<pre class="spec"><code>{-@ body :: Btwn 0 (llen xs) -&gt; Nat -&gt; Nat @-}</code></pre>
+</details>
+<p><strong>Question:</strong> The following uses <code>loop</code> to compute <code>dotProduct</code>s. Why does LiquidHaskell flag an error? Fix the code or specification so that LiquidHaskell accepts it.</p>
 <div id="program-pane-16" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -578,24 +701,7 @@ listSum' xs  = loop 0 n 0 body
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-16" class="programbox">{-@ absoluteSum' :: List Int -> Nat @-}
-absoluteSum' :: List Int -> Int
-absoluteSum' xs = loop 0 n 0 body
-  where
-    body i acc   = undefined
-    n            = llen xs</div>
-</div>
-
-<p><strong>Question:</strong> The following uses <code>loop</code> to compute <code>dotProduct</code>s. Why does LiquidHaskell flag an error? Fix the code or specification so that LiquidHaskell accepts it.</p>
-<div id="program-pane-17" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-17" class="programbox">{-@ ignore dotProduct @-}
+  <div id="program-16" class="programbox">{-@ ignore dotProduct @-}
 -- >>> dotProduct ([1,2,3]) ( [4,5,6])
 -- 32
 {-@ dotProduct :: x:List Int -> y:List Int  -> Int @-}
@@ -606,10 +712,34 @@ dotProduct x y = loop 0 sz 0 body
     sz         = llen x</div>
 </div>
 
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>First, to see the error, you need to remove the <code>ignore</code> annotation. The error occurs because <code>loop</code> is defined over the length of the list <code>x</code>, but the indexing is done over the length of the list <code>y</code>. To fix the error, you can refine the type of <code>dotProduct</code> to require that the length of the two lists is the same.</em>
+</p>
+<pre class="spec"><code>{-@ dotProduct :: x:List Int -&gt; y:{List Int | llen x == llen y}  -&gt; Int @-}</code></pre>
+</details>
 </section>
 <section id="folding-indexed-lists" class="level2">
 <h2>Folding (Indexed Lists)</h2>
 <p>Let’s now use lists to represent sparse vectors, meaning vectors with many zeros.</p>
+<div id="program-pane-17" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-17" class="programbox">{-@ type SparseN a N = [(Btwn 0 N, a)] @-}</div>
+</div>
+
+<p>Implicitly, all indices <em>other</em> than those in the list have the value <code>0</code> (or the equivalent value for the type <code>a</code>).</p>
+<p><br />
+<strong>The Alias</strong> <code>SparseN</code> is just a shorthand for the (longer) type on the right, it does not <em>define</em> a new type. If you are familiar with the <em>index-style</em> length encoding e.g. as found in <a href="https://en.wikipedia.org/wiki/Dependent_ML">DML</a> or <a href="http://code.haskell.org/Agda/examples/Vec.agda">Agda</a>, then note that despite appearances, our <code>Sparse</code> definition is <em>not</em> indexed.</p>
+<p>Let’s write a function to compute a sparse product</p>
 <div id="program-pane-18" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -618,22 +748,7 @@ dotProduct x y = loop 0 sz 0 body
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-18" class="programbox">{-@ type SparseN a N = [(Btwn 0 N, a)] @-}</div>
-</div>
-
-<p>Implicitly, all indices <em>other</em> than those in the list have the value <code>0</code> (or the equivalent value for the type <code>a</code>).</p>
-<p><br />
-<strong>The Alias</strong> <code>SparseN</code> is just a shorthand for the (longer) type on the right, it does not <em>define</em> a new type. If you are familiar with the <em>index-style</em> length encoding e.g. as found in <a href="https://en.wikipedia.org/wiki/Dependent_ML">DML</a> or <a href="http://code.haskell.org/Agda/examples/Vec.agda">Agda</a>, then note that despite appearances, our <code>Sparse</code> definition is <em>not</em> indexed.</p>
-<p>Let’s write a function to compute a sparse product</p>
-<div id="program-pane-19" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-19" class="programbox">{-@ sparseProduct  :: x:List Int -> SparseN Int (llen x) -> Int @-}
+  <div id="program-18" class="programbox">{-@ sparseProduct  :: x:List Int -> SparseN Int (llen x) -> Int @-}
 sparseProduct :: List Int -> [(Int, Int)] -> Int
 sparseProduct x y   = go 0 y
   where
@@ -645,7 +760,7 @@ sparseProduct x y   = go 0 y
 <p>The sharp reader will have undoubtedly noticed that the sparse product can be more cleanly expressed as a <a href="https://hackage.haskell.org/package/base-4.18.0.0/docs/Data-List.html#v:foldl">fold</a>:</p>
 <pre class="spec"><code>foldl&#39; :: (a -&gt; b -&gt; a) -&gt; a -&gt; [b] -&gt; a</code></pre>
 <p>We can simply fold over the sparse vector, accumulating the <code>sum</code> as we go along</p>
-<div id="program-pane-20" class="welleditor" style="background:#fff; position:relative">
+<div id="program-pane-19" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
   <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
@@ -653,7 +768,7 @@ sparseProduct x y   = go 0 y
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-20" class="programbox">{-@ sparseProduct'  :: x:List Int -> SparseN Int (llen x) -> Int @-}
+  <div id="program-19" class="programbox">{-@ sparseProduct'  :: x:List Int -> SparseN Int (llen x) -> Int @-}
 sparseProduct' :: List Int -> [(Int, Int)] -> Int
 sparseProduct' x y  = foldl' body 0 y
   where
@@ -663,9 +778,35 @@ sparseProduct' x y  = foldl' body 0 y
 <p> LiquidHaskell digests this without difficulty. The main trick is in how the polymorphism of <code>foldl'</code> is instantiated.</p>
 <ol type="1">
 <li><p>GHC infers that at this site, the type variable <code>b</code> from the signature of <code>foldl'</code> is instantiated to the Haskell type <code>(Int, a)</code>.</p></li>
-<li><p>Correspondingly, LiquidHaskell infers that in fact <code>b</code> can be instantiated to the <em>refined</em> <code>(Btwn 0 (vlen x), a)</code>.</p></li>
+<li><p>Correspondingly, LiquidHaskell infers that in fact <code>b</code> can be instantiated to the <em>refined</em> <code>(Btwn 0 (llen x), a)</code>.</p></li>
 </ol>
 <p>Thus, the inference mechanism saves us a fair bit of typing and allows us to reuse existing polymorphic functions over containers and such without ceremony.</p>
+<p><strong>Question:</strong> Modify the <code>sparseProduct'</code> function to only add the elements that are indexed by odd indices.</p>
+<div id="program-pane-20" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-20" class="programbox">{-@ oddProduct  :: x:List Int -> SparseN Int (llen x) -> Int @-}
+oddProduct :: List Int -> [(Int, Int)] -> Int
+oddProduct x y  = undefined</div>
+</div>
+
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p><em>The function <code>oddProduct</code> can be implemented as follows:</em></p>
+<pre class="spec"><code>{-@ oddProduct  :: x:List Int -&gt; SparseN Int (llen x) -&gt; Int @-}
+oddProduct :: List Int -&gt; [(Int, Int)] -&gt; Int
+oddProduct x y  = foldl&#39; body 0 y
+  where
+    body sum (i, v) | i `mod` 2 == 1 = sum + (x !! i) * v
+                    | otherwise      = sum   </code></pre>
+</details>
 </section>
 <section id="data-invariants-sparse-vectors" class="level2">
 <h2>Data Invariants: Sparse Vectors</h2>
@@ -719,7 +860,7 @@ okSP = SP 5 [ (0, "cat")
             , (3, "dog") ]</div>
 </div>
 
-<p>but rejects, due to the invalid index:</p>
+<p>but rejects, due to the invalid index: (If you remove the <code>ignore</code> notation, you will get an error!)</p>
 <div id="program-pane-24" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -783,14 +924,13 @@ dotProd' x (SP _ y) = foldl' body 0 y
 </div>
 
 <p>As before, LiquidHaskell checks the above by <a href="#sparsetype">automatically instantiating refinements</a> for the type parameters of <code>foldl'</code>, saving us a fair bit of typing and enabling the use of the elegant polymorphic, higher-order combinators we know and love.</p>
-<div id="Sanitization" class="hwex">
+<div id="Addition" class="hwex">
 <p><br />
-<strong>Exercise: (Sanitization): </strong> Invariants are all well and good for data computed <em>inside</em> our programs. The only way to ensure the legality of data coming from <em>outside</em>, i.e. from the “real world”, is to write a sanitizer that will check the appropriate invariants before constructing a <code>Sparse</code> list. Write the specification and implementation of a sanitizer <code>fromList</code>, so that the following typechecks:</p>
+<strong>Exercise: (Addition): </strong>Write the specification and implementation of a function <code>plus</code> that performs the addition of two <code>Sparse</code> vectors of the <em>same</em> dimension, yielding an output of that dimension. When you are done, the following code should typecheck:</p>
 <br />
 <br />
 
 </div>
-<p><strong>Hint: </strong>You need to check that <em>all</em> the indices in <code>elts</code> are less than <code>dim</code>; the easiest way is to compute a new <code>Maybe [(Int, a)]</code> which is <code>Just</code> the original pairs if they are valid, and <code>Nothing</code> otherwise.</p>
 <div id="program-pane-28" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -799,30 +939,7 @@ dotProd' x (SP _ y) = foldl' body 0 y
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-28" class="programbox">fromList          :: Int   -> [(Int, a)] -> Maybe (Sparse a)
-fromList dim elts = undefined
-
-{- test :: SparseIN String 3 @-}
-test     :: Maybe (Sparse String)
-test     = fromList 3 [(0, "cat"), (2, "mouse")]</div>
-</div>
-
-<div id="Addition" class="hwex">
-<p><br />
-<strong>Exercise: (Addition): </strong>Write the specification and implementation of a function <code>plus</code> that performs the addition of two <code>Sparse</code> vectors of the <em>same</em> dimension, yielding an output of that dimension. When you are done, the following code should typecheck:</p>
-<br />
-<br />
-
-</div>
-<div id="program-pane-29" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-29" class="programbox">plus     :: (Num a) => Sparse a -> Sparse a -> Sparse a
+  <div id="program-28" class="programbox">plus     :: (Num a) => Sparse a -> Sparse a -> Sparse a
 plus x y = undefined
 
 {- testPlus :: SparseIN Int 3 @-}
@@ -833,6 +950,56 @@ testPlus    = plus vec1 vec2
     vec2 = SP 3 [(0, 8),  (1, 100)]</div>
 </div>
 
+<p><strong>Hint:</strong> Fold over the elements of the second vector, starting from the first. At each iteration <code>(i,x)</code>: if <code>i</code> is <em>element</em> of the first vector, <em>update</em> the value of the first vectot, otherwise <em>extend</em> a new element to the first vector. Now define these helper functions:</p>
+<div id="program-pane-29" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-29" class="programbox">
+elem :: Int -> Sparse a -> Bool 
+elem  = undefined 
+
+update :: Sparse a -> Int -> (a -> a) -> Sparse a
+update = undefined 
+
+extend :: Sparse a -> (Int, a) -> Sparse a 
+extend = undefined</div>
+</div>
+
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The function <code>plus</code> as well as the helper functions can be implemented as follows:</em>
+</p>
+<pre class="spec"><code>{-@ plus :: (Num a) =&gt; sp:Sparse a 
+         -&gt; SparseIN a (spDim sp) 
+         -&gt; SparseIN a (spDim sp) @-}
+plus     :: (Num a) =&gt; Sparse a -&gt; Sparse a -&gt; Sparse a
+plus x (SP _ y) = foldl&#39; body x y 
+  where body sp (i,v) | i `elem` sp = update sp i (+v) 
+                      | otherwise   = extend sp (i,v)
+
+
+elem :: Int -&gt; Sparse a -&gt; Bool 
+elem j (SP i x) = any (== j) (map fst x) 
+
+{-@ update :: sp:Sparse a -&gt; Btwn 0 (spDim sp) -&gt; (a -&gt; a)
+           -&gt; SparseIN a (spDim sp) @-}
+update :: Sparse a -&gt; Int -&gt; (a -&gt; a) -&gt; Sparse a
+update (SP d xs) i f = SP d (map go xs)
+  where go (j,v) = if i == j then (j,f v) else (j,v) 
+
+{-@ extend :: sp:Sparse a -&gt; (Btwn 0 (spDim sp), a) -&gt; SparseIN a (spDim sp) @-}
+extend :: Sparse a -&gt; (Int, a) -&gt; Sparse a 
+extend (SP d xs) iv = SP d (iv:xs)
+</code></pre>
+</details>
 </section>
 <section id="ordered-lists" class="level2">
 <h2>Ordered Lists</h2>
@@ -890,7 +1057,7 @@ badList = 2 :< 1 :< 3 :< Emp      -- rejected by LH</div>
 </div>
 
 <p> It’s all very well to <em>specify</em> ordered lists. Next, let’s see how it’s equally easy to <em>establish</em> these invariants by implementing several textbook sorting routines.</p>
-<p>First, let’s implement insertion sort, which converts an ordinary list <code>[a]</code> into an ordered list <code>IncList a</code>.</p>
+<p>First, let’s implement <a href="https://en.wikipedia.org/wiki/Insertion_sort#/media/File:Insertion-sort-example-300px.gif">insertion sort</a>, which converts an ordinary list <code>[a]</code> into an ordered list <code>IncList a</code>.</p>
 <div id="program-pane-33" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -922,7 +1089,7 @@ insert y (x :< xs)
 
 <div id="Insertion Sort" class="hwex">
 <p><br />
-<strong>Exercise: (Insertion Sort): </strong>Complete the implementation of the function below to use <code>foldr</code> to eliminate the explicit recursion in <code>insertSort</code>.</p>
+<strong>Exercise: (Insertion Sort): </strong>Complete the implementation of the function below to use <a href="https://hackage.haskell.org/package/base-4.18.0.0/docs/Data-List.html#v:foldr"><code>foldr</code></a> to eliminate the explicit recursion in <code>insertSort</code>.</p>
 <br />
 <br />
 
@@ -942,11 +1109,24 @@ insertSort' xs  = foldr f b xs
      b          = undefined    -- Fill this in</div>
 </div>
 
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em><code>f</code> is <code>insert</code> and <code>b</code> is <code>Emp</code></em>
+</p>
+</details>
 <p>We will come back to the concept of increasing lists and see how one can provide such a specification for Haskell’s lists. But for now, let’s study easier properties of lists.</p>
 </section>
 <section id="summary" class="level2">
 <h2>Summary</h2>
-<p>Today we saw how refinement interact with data types. Concretely we saw how to define <em>measures</em> to specify properties of user defined data and how to refine the definitions of data types to specify invariants. Finally, we saw how all these features interact with existing Haskell libraries, and concretely how to use LiquidHaskell to reason about Haskell’s lists.</p>
+<p>Today we saw how refinement interact with data types. Concretely we saw:</p>
+<ul>
+<li>how to define <em>measures</em> to specify properties of user defined data and</li>
+<li>how to <em>refine</em> the definitions of data types to specify <em>invariants</em>.</li>
+</ul>
+<p>Finally, we saw how all these features interact with existing Haskell libraries, and concretely how to use LiquidHaskell to reason about Haskell’s lists.</p>
 </section>
 </section>
 <section class="footnotes" role="doc-endnotes">

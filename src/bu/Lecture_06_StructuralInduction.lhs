@@ -72,6 +72,26 @@ As before, `ple` can be used to automate the proof.
 We essentially need to keep the case splitting and the induction hypothesis.
 
 
+**Question:** What is the ple simplified version of the proof? 
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _Just the inductive call! Where the base case is trivial: _</p>
+
+~~~~~{.spec}
+{-@ idMap :: xs:[a] -> {map id xs == id xs} @-}
+idMap :: [a] -> Proof
+idMap []     = () 
+idMap (x:xs) = idMap xs
+~~~~~
+
+</details>
+
+
+
+
 Map Fusion 
 -----------
 
@@ -95,11 +115,32 @@ mapFusion :: (b -> c) -> (a -> b) -> [a] -> Proof
 mapFusion f g xs = undefined 
 \end{code}
 
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The proof is the following:_</p>
+
+~~~~~{.spec}
+{-@ mapFusion :: f:(b -> c) -> g:(a -> b) -> xs:[a] 
+              -> {map (comp f g) xs == (map f) (map g xs)} @-}
+mapFusion :: (b -> c) -> (a -> b) -> [a] -> Proof
+mapFusion f g [] = ()
+mapFusion f g (x:xs) = mapFusion f g xs 
+~~~~~
+
+</details>
+
+
 Monoid Laws for Lists 
 ----------------------
-
-Lists form a monoid structure, in that they have an associative binary operation (list append)
-and a neutral element (empty list):
+A [monoid](https://en.wikipedia.org/wiki/Monoid) is a set equipped 
+with a binary operation that is associative and has an identity element.
+%
+Lists as monoids! Because  they have an associative binary operation (list append)
+and a neutral element (empty list). 
+Let's prove the monoid laws for lists.
 
 \begin{code}
 {-@ reflect ++ @-}
@@ -123,6 +164,19 @@ emptyLeftIdentity :: [a] -> Proof
 emptyLeftIdentity xs = undefined
 \end{code}
 
+<details>
+
+<summary>**Proof**</summary>
+
+<p> _The left identity proof is the following:_</p>
+
+~~~~~{.spec}
+emptyLeftIdentity xs = ()
+~~~~~
+
+</details>
+
+
 - Right Identity: `empty` is the right identity for `append`.
 
 \begin{code}
@@ -130,6 +184,20 @@ emptyRightIdentity :: [a] -> Proof
 {-@ emptyRightIdentity :: xs:[a] -> {xs ++ [] == xs} @-}
 emptyRightIdentity xs = undefined
 \end{code}
+
+<details>
+
+<summary>**Proof**</summary>
+
+<p> _The right identity proof is the following: _</p>
+
+~~~~~{.spec}
+emptyRightIdentity []     = () 
+emptyRightIdentity (x:xs) = emptyRightIdentity xs 
+~~~~~
+
+</details>
+
 
 - Associativity: `append` is associative.
 
@@ -139,6 +207,20 @@ appendAssoc :: [a] -> [a] -> [a] -> Proof
                  -> {xs ++ (ys ++ zs) == (xs ++ ys) ++ zs} @-}
 appendAssoc xs ys zs = undefined
 \end{code}
+
+
+<details>
+
+<summary>**Proof**</summary>
+
+<p> _The associativity proof is the following: _</p>
+
+~~~~~{.spec}
+appendAssoc []     ys zs = ()
+appendAssoc (x:xs) ys zs = appendAssoc xs ys zs
+~~~~~
+
+</details>
 
 
 Using Proved Lemma
@@ -165,6 +247,40 @@ distributivity :: [a] -> [a] -> ()
                    -> { reverse (xs ++ ys) == reverse ys ++ reverse xs }  @-}
 distributivity = undefined 
 \end{code}
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The complete proof is the following:_</p>
+
+~~~~~{.spec}
+distributivity :: [a] -> [a] -> () 
+{-@ distributivity :: xs:[a] -> ys:[a] 
+                   -> { reverse (xs ++ ys) == reverse ys ++ reverse xs }  @-}
+distributivity [] ys
+  =   reverse ([] ++ ys) 
+     ? emptyLeftIdentity ys 
+  === reverse ys 
+     ? emptyRightIdentity (reverse ys) 
+  === reverse ys ++ [] 
+  === reverse ys ++ reverse [] 
+  *** QED 
+  
+distributivity (x:xs) ys
+  =   reverse ((x:xs) ++ ys) 
+  === reverse (x:(xs ++ ys))
+  === reverse (xs ++ ys) ++ [x]
+    ? distributivity xs ys 
+  === (reverse ys ++ reverse xs) ++ [x]
+    ? appendAssoc (reverse ys) (reverse xs) [x]
+  === reverse ys ++ (reverse xs ++ [x])
+  === reverse ys ++ reverse (x:xs)
+  *** QED  
+~~~~~
+
+</details>
+
 
 Liquid Haskell has a (beta) tactic that allows the proof to get automated 
 using existing equations proved in lemmas. 

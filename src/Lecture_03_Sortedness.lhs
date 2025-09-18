@@ -73,7 +73,7 @@ these invariants by implementing several textbook
 sorting routines.
 
 \newthought{Insertion Sort}
-First, let's implement insertion sort, which converts an ordinary
+First, let's implement [insertion sort](https://en.wikipedia.org/wiki/Insertion_sort#/media/File:Insertion-sort-example-300px.gif), which converts an ordinary
 list `[a]` into an ordered list `IncList a`.
 
 \begin{code}
@@ -93,14 +93,57 @@ iinsert y Emp       = y :< Emp
 iinsert y (x :< xs) = undefined 
 \end{code}
 
-_Question:_ What should be the definition of `insert`?
+**Question:** What should be the definition of `iinsert`?
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The function `iinsert` can be defined as follows: _</p>
+
+~~~~~{.spec}
+iinsert             :: (Ord a) => a -> IncList a -> IncList a
+iinsert y Emp       = y :< Emp
+iinsert y (x :< xs) | y <= x    = y :< x :< xs 
+                    | otherwise = x :< iinsert y xs 
+~~~~~
+
+</details>
+
+**Question:** Can you update the definition of `insertSort` to use `foldr`?
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The updated definition of `insertSort` using `foldr` is as follows: _</p>
+
+~~~~~{.spec}
+insertSort    :: (Ord a) => [a] -> IncList a
+insertSort xs = foldr iinsert Emp xs
+~~~~~
+
+</details>
+
+
+**Question:** What do you need to do to define insertion of decreasing lists?
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _First you need to define a data type for decreasing lists.
+Next, adjust the definition of the sorting function to construct the new type._</p>
+
+</details>
+
 
 
 Abstraction over Sortedness
 ----------------------------
 
 Ideally, we would like to write a verified sorted function 
-that works over Haskell's lists. 
+that works for various sortedness properties and even over Haskell's lists. 
 Of course, we cannot constraint all lists to be sorted. 
 But, we can abstract the notion of sortedness over the data declaration. 
 
@@ -125,7 +168,7 @@ data PList a = Nil | Cons a (PList a)
 \end{code}
 
 
-_Refined Data Constructors_ The internal data constructors are refined to be parametric 
+**Refined Data Constructors** The internal data constructors are refined to be parametric 
 with respect to the predicate `p`:
 
 ~~~~~{.spec}
@@ -151,7 +194,26 @@ pl3 = Cons 1 (Cons 1 (Cons 1 Nil))
 pl4 = Nil
 \end{code}
 
-_Question:_ Give refinement types to the above four lists.
+**Question:** Give refinement types to the above four lists.
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The list `pl1` is increasing, `pl2` is decreasing, `pl3` is equal and `pl4` is empty, 
+which means that it could have any property._ </p>
+
+~~~~~{.spec}
+{-@ pl1 :: IPList Int @-}
+{-@ pl2 :: DPList Int @-}
+{-@ pl3 :: EPList Int @-}
+{-@ pl4 :: IPList Int @-}
+~~~~~
+
+</details>
+
+
+
 
 
 So, now the same Haskell lists can be refined to be either decreasing, increasing or equal. 
@@ -166,7 +228,25 @@ pinsert y (x `Cons` xs)
   | otherwise      = x `Cons` pinsert y xs
 \end{code}
 
-_Question:_ Can you adjust it to `insert` fointor decreasing lists?
+**Question:** Can you adjust it to `insert` for decreasing lists?
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _You need to 1) change the type and 2) change the guard condition:_</p>
+
+~~~~~{.spec}
+{-@ pinsert         :: (Ord a) => a -> DPList a -> DPList a @-}
+pinsert             :: (Ord a) => a -> PList a -> PList a
+pinsert y Nil       = y `Cons` Nil
+pinsert y (x `Cons` xs) 
+  | y >= x         = y `Cons` (x `Cons` xs)
+  | otherwise      = x `Cons` pinsert y xs
+~~~~~
+
+</details>
+
 
 
 Haskell's Lists 
@@ -208,13 +288,29 @@ isort []     = []
 isort (x:xs) = insert x (isort xs)
 \end{code}
 
-_Question:_ Let's also check if `isort` preserves the `len` of the list.
+**Question:** Let's also check if `isort` preserves the `len` of the list.
+(Where `len` is the buildin measure for Haskell's lists.)
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The updated types that ensure the length preservation are the following:_</p>
+
+~~~~~{.spec}
+{-@ insert :: (Ord a) => a -> x:IList a -> {v:IList a | len v = len x + 1 } @-}
+{-@ isort  :: (Ord a) => x:IList a -> {v:IList a | len x = len v} @-}
+~~~~~
+
+</details>
+
+
 
 
 This abstraction, called [Abstract Refinements][vazou13]
 is very powerful since it allows lists to turn from increasing to decreasing. 
 Because of this flexibility, Liquid Haskell can automatically verify 
-the below code, used as the official sorting function in Haskell, 
+the below code, used as the official [sorting function](https://hackage.haskell.org/package/base-4.21.0.0/docs/Data-List.html#v:sortBy) in Haskell, 
 that very smartly sorts lists by collecting 
 increasing and decreasing subsequences and merging them back together.
 
@@ -296,7 +392,24 @@ exGt x = (x+1, ())
 The above code says that for each natural number `x`, there exists one `y` that is greater than `x`, 
 taking us to a theorem proving territory, that we will return soon. 
 
-_Question:_ Is this property true for less than too? 
+**Question:** Is this property true for less than too? 
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _No, because it would encode that for every natural number, 
+there exists a smaller natural number, which is not true.
+But, it is true for integers:_</p>
+
+~~~~~{.spec}
+exLt :: Int -> (Int, ())
+{-@ exLt :: x:Int -> (Int, ()) < {\f s -> f < x} > @-}
+exLt x = (x-1, ())
+~~~~~
+
+</details>
+
 
 
 Summary
@@ -311,3 +424,4 @@ We saw three ways to specify sortedness of lists:
 The notion of abstract refinements is very powerful. 
 In Liquid Haskell it is also used to encode dependent pairs 
 and can be used in user defined data structures to specify various abstract dependencies.
+

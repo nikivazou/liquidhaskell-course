@@ -139,7 +139,6 @@ MathJax.Hub.Config({
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.10.</b> Putting it all together: Safe Indexing</a></li>
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.11.</b> Summary</a></li>
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.12.</b> Further Reading</a></li>
-<li><a href='Lecture_01_RefinementTypes.html#'><b>1.13.</b> Cheatsheet</a></li>
 </ul>
 <li><a href='Lecture_02_DataTypes.html'><b>2.</b>Data Types</a></li>
 <ul class='section'>
@@ -210,15 +209,10 @@ MathJax.Hub.Config({
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.2.</b> Native Terms</a></li>
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.3.</b> Conjunction</a></li>
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.4.</b> Disjunction</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Negation</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Forall</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Exists</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.9.</b> Example 1: existsAll</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.10.</b> Example 2: Distributing Qualifiers</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.11.</b> Example 3: List Properties</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.12.</b> Example 4: Natural Induction</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.13.</b> Summary</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication &amp; Negation</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Forall and Exists</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Examples</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Summary</a></li>
 </ul>
 <li><a href='Lecture_09_DataPropositions.html'><b>9.</b>Data Propositions</a></li>
 <ul class='section'>
@@ -231,6 +225,28 @@ MathJax.Hub.Config({
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.7.</b> Soundness = Progress + Preservation</a></li>
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.8.</b> Summary</a></li>
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.9.</b> Appendix: The rest of the Code</a></li>
+</ul>
+<li><a href='Task1.html'><b>10.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+</ul>
+<li><a href='Task1.pretty.html'><b>11.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+<li><a href='Task1.pretty.html#'><b>11.1.</b> 1. Lists</a></li>
+<li><a href='Task1.pretty.html#'><b>11.2.</b> 2. Insertion Sort</a></li>
+<li><a href='Task1.pretty.html#'><b>11.3.</b> 3. Merge Sort</a></li>
+</ul>
+<li><a href='Task1All.html'><b>12.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+</ul>
+<li><a href='Task2.html'><b>13.</b>Task 2: Proving Theorems</a></li>
+<ul class='section'>
+<li><a href='Task2.html#'><b>13.1.</b> 1. Fusions</a></li>
+</ul>
+<li><a href='Task2.pretty.html'><b>14.</b>Task 2: Proving Theorems</a></li>
+<ul class='section'>
+<li><a href='Task2.pretty.html#'><b>14.1.</b> 1. Fusions</a></li>
+<li><a href='Task2.pretty.html#'><b>14.2.</b> 2. Higher Order Properties</a></li>
+<li><a href='Task2.pretty.html#'><b>14.3.</b> 3. Encoding of Logical Properties</a></li>
 </ul>
 </ul>
 
@@ -347,6 +363,19 @@ idMap (x:xs)
 </ul>
 <p>Note that Liquid Haskell checks both that both cases are defined (by totality) and that the inductive call is well-founded (by termination).</p>
 <p>As before, <code>ple</code> can be used to automate the proof. We essentially need to keep the case splitting and the induction hypothesis.</p>
+<p><strong>Question:</strong> What is the ple simplified version of the proof?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>Just the inductive call! Where the base case is trivial: </em>
+</p>
+<pre class="spec"><code>{-@ idMap :: xs:[a] -&gt; {map id xs == id xs} @-}
+idMap :: [a] -&gt; Proof
+idMap []     = () 
+idMap (x:xs) = idMap xs</code></pre>
+</details>
 </section>
 <section id="map-fusion" class="level2">
 <h2>Map Fusion</h2>
@@ -380,10 +409,23 @@ mapFusion :: (b -> c) -> (a -> b) -> [a] -> Proof
 mapFusion f g xs = undefined </div>
 </div>
 
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The proof is the following:</em>
+</p>
+<pre class="spec"><code>{-@ mapFusion :: f:(b -&gt; c) -&gt; g:(a -&gt; b) -&gt; xs:[a] 
+              -&gt; {map (comp f g) xs == (map f) (map g xs)} @-}
+mapFusion :: (b -&gt; c) -&gt; (a -&gt; b) -&gt; [a] -&gt; Proof
+mapFusion f g [] = ()
+mapFusion f g (x:xs) = mapFusion f g xs </code></pre>
+</details>
 </section>
 <section id="monoid-laws-for-lists" class="level2">
 <h2>Monoid Laws for Lists</h2>
-<p>Lists form a monoid structure, in that they have an associative binary operation (list append) and a neutral element (empty list):</p>
+<p>A <a href="https://en.wikipedia.org/wiki/Monoid">monoid</a> is a set equipped with a binary operation that is associative and has an identity element. % Lists as monoids! Because they have an associative binary operation (list append) and a neutral element (empty list). Let’s prove the monoid laws for lists.</p>
 <div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -419,6 +461,15 @@ empty = []</div>
 emptyLeftIdentity xs = undefined</div>
 </div>
 
+<details>
+<summary>
+<strong>Proof</strong>
+</summary>
+<p>
+<em>The left identity proof is the following:</em>
+</p>
+<pre class="spec"><code>emptyLeftIdentity xs = ()</code></pre>
+</details>
 <ul>
 <li>Right Identity: <code>empty</code> is the right identity for <code>append</code>.</li>
 </ul>
@@ -435,6 +486,16 @@ emptyLeftIdentity xs = undefined</div>
 emptyRightIdentity xs = undefined</div>
 </div>
 
+<details>
+<summary>
+<strong>Proof</strong>
+</summary>
+<p>
+<em>The right identity proof is the following: </em>
+</p>
+<pre class="spec"><code>emptyRightIdentity []     = () 
+emptyRightIdentity (x:xs) = emptyRightIdentity xs </code></pre>
+</details>
 <ul>
 <li>Associativity: <code>append</code> is associative.</li>
 </ul>
@@ -452,6 +513,16 @@ emptyRightIdentity xs = undefined</div>
 appendAssoc xs ys zs = undefined</div>
 </div>
 
+<details>
+<summary>
+<strong>Proof</strong>
+</summary>
+<p>
+<em>The associativity proof is the following: </em>
+</p>
+<pre class="spec"><code>appendAssoc []     ys zs = ()
+appendAssoc (x:xs) ys zs = appendAssoc xs ys zs</code></pre>
+</details>
 </section>
 <section id="using-proved-lemma" class="level2">
 <h2>Using Proved Lemma</h2>
@@ -485,8 +556,36 @@ reverse (x:xs) = reverse xs ++ [x]</div>
 distributivity = undefined </div>
 </div>
 
-<p>Liquid Haskell has a (beta) tactic that allows the proof to get automated using existing equations proved in lemmas. Thus the proof can be automated as follows:</p>
-<pre class=".{spec}"><code>{-@ rewriteWith distributivity [appendAssoc, emptyRightIdentity] @-}</code></pre>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The complete proof is the following:</em>
+</p>
+<pre class="spec"><code>distributivity :: [a] -&gt; [a] -&gt; () 
+{-@ distributivity :: xs:[a] -&gt; ys:[a] 
+                   -&gt; { reverse (xs ++ ys) == reverse ys ++ reverse xs }  @-}
+distributivity [] ys
+  =   reverse ([] ++ ys) 
+     ? emptyLeftIdentity ys 
+  === reverse ys 
+     ? emptyRightIdentity (reverse ys) 
+  === reverse ys ++ [] 
+  === reverse ys ++ reverse [] 
+  *** QED 
+  
+distributivity (x:xs) ys
+  =   reverse ((x:xs) ++ ys) 
+  === reverse (x:(xs ++ ys))
+  === reverse (xs ++ ys) ++ [x]
+    ? distributivity xs ys 
+  === (reverse ys ++ reverse xs) ++ [x]
+    ? appendAssoc (reverse ys) (reverse xs) [x]
+  === reverse ys ++ (reverse xs ++ [x])
+  === reverse ys ++ reverse (x:xs)
+  *** QED  </code></pre>
+</details>
 </section>
 <section id="summary" class="level2">
 <h2>Summary</h2>

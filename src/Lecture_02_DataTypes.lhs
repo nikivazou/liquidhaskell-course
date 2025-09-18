@@ -8,7 +8,7 @@ Data Types
 module Lecture_02_DataTypes where
 
 import Data.List    (foldl')
-import Prelude hiding (head, tail, (!!), map, zipWith, zip, take, drop, reverse)
+import Prelude hiding (head, tail, (!!), elem, zip, take, drop, reverse)
 import Data.Maybe   (fromJust)
 
 main :: IO ()
@@ -135,15 +135,29 @@ Cons :: x:a -> l:List a -> {v:List a | llen v = 1 + llen l && not (isempty v)}
 head :: List a -> a
 head = undefined 
 
-\end{code}
-
-\begin{code}
 
 tail :: List a -> List a
 tail = undefined 
 
 \end{code}
 
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The functions `head` and `tail` can be defined as follows: _</p>
+
+~~~~~{.spec}
+head :: List a -> a
+{-@ head :: x:{List a | 0 < llen x} -> a @-}
+head (Cons x _ ) = x 
+
+{-@ tail :: x:{List a | 0 < llen x} -> {v:List a | llen v = llen x - 1 } @-}
+tail :: List a -> List a 
+tail (Cons _ x) = x 
+~~~~~
+
+</details>
 
 **Question:** Can you give a strong engouth type for tail 
 to verify length of result? 
@@ -157,6 +171,18 @@ oneElem = tail twoElems
 
 \end{code}
 
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The type provided before is strong enought 
+because its postcondition state that the result list 
+has the same length as the input list minus one.
+This strong postcondition is not required to define 
+the function tail, but it is required to verify the
+uses of the function._
+</p>
+</details>
 
 
 **Question:** Let's now define a safe indexing function for lists.
@@ -170,6 +196,26 @@ oneElem = tail twoElems
 
 \end{code}
 
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The function `(!!)` can be defined as follows:_ </p>
+
+~~~~~{.spec}
+{-@ (!!) :: xs:List a -> {i:Int | 0 <= i && i < llen xs } -> a @-}
+(!!) :: List a -> Int -> a
+(Cons x _)  !! 0 = x 
+(Cons _ xs) !! i = xs !! (i-1)
+~~~~~
+
+Note that because `!!` is named using symbols instead of letters,
+it can be use as an infix operator, and needs to be enclosed in parentheses
+when used in prefix notation. 
+That is, `xs !! i` is the same as `(!!) xs i`.
+
+</details>
+
 **Question:** Let's now define a safe lookup function for lists,
 using the case sensitivity of refinement types. 
 
@@ -178,6 +224,19 @@ safeLookup :: List a -> Int -> Maybe a
 safeLookup = undefined
 \end{code}
 
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The function `safeLookup` can be defined as follows:_ </p>
+
+~~~~~{.spec}
+safeLookup :: List a -> Int -> Maybe a
+safeLookup xs i = if 0 <= i && i < llen xs then Just (xs !! i) else Nothing
+~~~~~
+
+</details>
 
 Recursive Functions 
 ----------------------
@@ -195,14 +254,47 @@ listSum xs = go 0 0
 
 **Question:** What happens if you _replace_ the guard with `i <= llen xs`?
 
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The function will fail to typecheck because the indexing of lists is out of bounds._ </p>
+
+</details>
+
 **Question:** Write a variant of the above function that 
 computes the `absuluteSum` of the list, i.e., the sum of the absolute values of the elements.
 
 \begin{code}
-{-@ absSum :: List Int -> Int @-}
+{-@ absSum :: List Int -> Nat @-}
 absSum :: List Int -> Int
 absSum = undefined 
 \end{code}
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _In the body of `go` where the indexing happens, 
+apply an absolute value function that 
+returns the absolute value of the indexed element._
+ </p>
+
+~~~~~{.spec}
+{-@ absSum :: List Int -> Nat @-}
+absSum :: List Int -> Int
+absSum xs = go 0 0 
+  where 
+    go acc i  
+      | i < llen xs = go (acc + myAbs (xs !! i)) (i+1)
+      | otherwise   = acc
+      
+{-@ myAbs :: Int -> Nat @-} 
+myAbs :: Int -> Int 
+myAbs x = if x < 0 then -x else x 
+~~~~~
+
+</details>
 
 LiquidHaskell verifies `listSum`, or to be precise the safety of list indexing. 
 The verification works because Liquid Haskell is able to _automatically infer_
@@ -224,6 +316,15 @@ But for now, we can disable termination checking, but declaring functions as `la
 \end{code}
 
 **Question:** Why does the type of `go` has `v <= llen xs` and not `v < llen xs`?
+
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _Because `go` also needs to enter in the base case to exit the loop!_ </p>
+
+</details>
 
 
 Higher-Order Functions
@@ -264,7 +365,7 @@ listSum' xs  = loop 0 n 0 body
 \noindent In English, the above type states that
 
 - `lo` the loop *lower* bound is a non-negative integer
-- `hi` the loop *upper* bound is a greater then or equal to `lo`,
+- `hi` the loop *upper* bound is a greater than or equal to `lo`,
 - `f`  the loop *body* is only called with integers between `lo` and `hi`.
 
 \noindent
@@ -293,6 +394,32 @@ absoluteSum' xs = loop 0 n 0 body
 \end{code}
 
 
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The function `absoluteSum'` can be implemented as follows:_ </p>
+
+~~~~~{.spec}
+{-@ absoluteSum' :: List Int -> Nat @-}
+absoluteSum' :: List Int -> Int
+absoluteSum' xs = loop 0 n 0 body
+  where
+    body i acc   = acc + myAbs (xs!!i)
+    n            = llen xs
+~~~~~
+
+<p> _where `myAbs` is the absolute value function defined before.
+The type inferred for `body` is:_ </p>
+
+~~~~~{.spec}
+{-@ body :: Btwn 0 (llen xs) -> Nat -> Nat @-}
+~~~~~
+
+</details>
+
+
+
 **Question:**
 The following uses `loop` to compute
 `dotProduct`s. Why does LiquidHaskell flag an error?
@@ -310,6 +437,25 @@ dotProduct x y = loop 0 sz 0 body
     body i acc = acc + (x !! i)  *  (y !! i)
     sz         = llen x
 \end{code}
+
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> 
+_First, to see the error, you need to remove the `ignore` annotation.
+The error occurs because `loop` is defined over the length of the list 
+`x`, but the indexing is done over the length of the list `y`.
+To fix the error, you can refine the type of `dotProduct` to require that
+the length of the two lists is the same._
+ </p>
+
+~~~~~{.spec}
+{-@ dotProduct :: x:List Int -> y:{List Int | llen x == llen y}  -> Int @-}
+~~~~~
+
+</details>
 
 
 
@@ -379,11 +525,40 @@ The main trick is in how the polymorphism of
    signature of `foldl'` is instantiated to the Haskell type `(Int, a)`.
 
 2. Correspondingly, LiquidHaskell infers that in fact `b`
-   can be instantiated to the *refined* `(Btwn 0 (vlen x), a)`.
+   can be instantiated to the *refined* `(Btwn 0 (llen x), a)`.
 
 Thus, the inference mechanism saves us a fair bit of typing and
 allows us to reuse existing polymorphic functions over containers
 and such without ceremony.
+
+
+
+**Question:** Modify the `sparseProduct'` function to only add the elements 
+that are indexed by odd indices. 
+
+
+\begin{code}
+{-@ oddProduct  :: x:List Int -> SparseN Int (llen x) -> Int @-}
+oddProduct :: List Int -> [(Int, Int)] -> Int
+oddProduct x y  = undefined
+\end{code}
+
+<details>
+
+<summary>**Solution**</summary>
+
+_The function `oddProduct` can be implemented as follows:_ 
+
+~~~~~{.spec}
+{-@ oddProduct  :: x:List Int -> SparseN Int (llen x) -> Int @-}
+oddProduct :: List Int -> [(Int, Int)] -> Int
+oddProduct x y  = foldl' body 0 y
+  where
+    body sum (i, v) | i `mod` 2 == 1 = sum + (x !! i) * v
+                    | otherwise      = sum   
+~~~~~
+
+</details>
 
 
 
@@ -452,6 +627,7 @@ okSP = SP 5 [ (0, "cat")
 \end{code}
 
 \noindent but rejects, due to the invalid index:
+(If you remove the `ignore` notation, you will get an error!)
 
 \begin{code}
 {-@ ignore badSP @-}
@@ -506,31 +682,7 @@ for the type parameters of `foldl'`, saving us a fair
 bit of typing and enabling the use of the elegant
 polymorphic, higher-order combinators we know and love.
 
-<div class="hwex" id="Sanitization"> \singlestar
-Invariants are all well and good for data computed
-*inside* our programs. The only way to ensure the
-legality of data coming from *outside*, i.e. from
-the "real world", is to write a sanitizer that will
-check the appropriate invariants before constructing
-a `Sparse` list. Write the specification and
-implementation of a sanitizer `fromList`, so that
-the following typechecks:
-</div>
 
-\hint You need to check that *all* the indices in
-`elts` are less than `dim`; the easiest way is to
-compute a new `Maybe [(Int, a)]` which is `Just`
-the original pairs if they are valid, and `Nothing`
-otherwise.
-
-\begin{code}
-fromList          :: Int   -> [(Int, a)] -> Maybe (Sparse a)
-fromList dim elts = undefined
-
-{- test :: SparseIN String 3 @-}
-test     :: Maybe (Sparse String)
-test     = fromList 3 [(0, "cat"), (2, "mouse")]
-\end{code}
 
 <div class="hwex" id="Addition">
 Write the specification and implementation
@@ -550,6 +702,61 @@ testPlus    = plus vec1 vec2
     vec1 = SP 3 [(0, 12), (2, 9)]
     vec2 = SP 3 [(0, 8),  (1, 100)]
 \end{code}
+
+**Hint:** Fold over the elements of the second vector, starting from the first. 
+At each iteration `(i,x)`: 
+if `i` is _element_ of the first vector, 
+_update_ the value of the first vectot, 
+otherwise _extend_ a new element to the first vector.
+Now define these helper functions: 
+
+\begin{code}
+
+elem :: Int -> Sparse a -> Bool 
+elem  = undefined 
+
+update :: Sparse a -> Int -> (a -> a) -> Sparse a
+update = undefined 
+
+extend :: Sparse a -> (Int, a) -> Sparse a 
+extend = undefined
+
+\end{code}
+
+
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _The function `plus` as well as the helper functions can be implemented as follows:_ </p>
+
+~~~~~{.spec}
+{-@ plus :: (Num a) => sp:Sparse a 
+         -> SparseIN a (spDim sp) 
+         -> SparseIN a (spDim sp) @-}
+plus     :: (Num a) => Sparse a -> Sparse a -> Sparse a
+plus x (SP _ y) = foldl' body x y 
+  where body sp (i,v) | i `elem` sp = update sp i (+v) 
+                      | otherwise   = extend sp (i,v)
+
+
+elem :: Int -> Sparse a -> Bool 
+elem j (SP i x) = any (== j) (map fst x) 
+
+{-@ update :: sp:Sparse a -> Btwn 0 (spDim sp) -> (a -> a)
+           -> SparseIN a (spDim sp) @-}
+update :: Sparse a -> Int -> (a -> a) -> Sparse a
+update (SP d xs) i f = SP d (map go xs)
+  where go (j,v) = if i == j then (j,f v) else (j,v) 
+
+{-@ extend :: sp:Sparse a -> (Btwn 0 (spDim sp), a) -> SparseIN a (spDim sp) @-}
+extend :: Sparse a -> (Int, a) -> Sparse a 
+extend (SP d xs) iv = SP d (iv:xs)
+
+~~~~~
+
+</details>
+
 
 
 Ordered Lists 
@@ -609,7 +816,7 @@ these invariants by implementing several textbook
 sorting routines.
 
 \newthought{Insertion Sort}
-First, let's implement insertion sort, which converts an ordinary
+First, let's implement [insertion sort](https://en.wikipedia.org/wiki/Insertion_sort#/media/File:Insertion-sort-example-300px.gif), which converts an ordinary
 list `[a]` into an ordered list `IncList a`.
 
 \begin{code}
@@ -633,7 +840,7 @@ insert y (x :< xs)
 
 <div class="hwex" id="Insertion Sort">
 Complete the implementation of the function below to
-use `foldr` to eliminate the explicit recursion in `insertSort`.
+use [`foldr`](https://hackage.haskell.org/package/base-4.18.0.0/docs/Data-List.html#v:foldr) to eliminate the explicit recursion in `insertSort`.
 </div>
 
 \begin{code}
@@ -645,6 +852,14 @@ insertSort' xs  = foldr f b xs
 \end{code}
 
 
+<details>
+
+<summary>**Solution**</summary>
+
+<p> _`f` is `insert` and `b` is `Emp`_ </p>
+
+</details>
+
 We will come back to the concept of increasing lists 
 and see how one can provide such a specification for Haskell's 
 lists. But for now, let's study easier properties of lists.
@@ -655,7 +870,11 @@ lists. But for now, let's study easier properties of lists.
 Summary 
 ------
 Today we saw how refinement interact with data types. 
-Concretely we saw how to define _measures_ to specify properties of user defined 
-data and how to refine the definitions of data types to specify invariants.
+Concretely we saw:
+
+- how to define _measures_ to specify properties of user defined 
+data and 
+- how to _refine_ the definitions of data types to specify _invariants_.
+
 Finally, we saw how all these features interact with existing Haskell libraries, 
 and concretely how to use LiquidHaskell to reason about Haskell's lists. 

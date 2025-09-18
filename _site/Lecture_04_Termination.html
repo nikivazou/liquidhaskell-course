@@ -139,7 +139,6 @@ MathJax.Hub.Config({
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.10.</b> Putting it all together: Safe Indexing</a></li>
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.11.</b> Summary</a></li>
 <li><a href='Lecture_01_RefinementTypes.html#'><b>1.12.</b> Further Reading</a></li>
-<li><a href='Lecture_01_RefinementTypes.html#'><b>1.13.</b> Cheatsheet</a></li>
 </ul>
 <li><a href='Lecture_02_DataTypes.html'><b>2.</b>Data Types</a></li>
 <ul class='section'>
@@ -210,15 +209,10 @@ MathJax.Hub.Config({
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.2.</b> Native Terms</a></li>
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.3.</b> Conjunction</a></li>
 <li><a href='Lecture_08_NaturalDeduction.html#'><b>8.4.</b> Disjunction</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Negation</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Forall</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Exists</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.9.</b> Example 1: existsAll</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.10.</b> Example 2: Distributing Qualifiers</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.11.</b> Example 3: List Properties</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.12.</b> Example 4: Natural Induction</a></li>
-<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.13.</b> Summary</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.5.</b> Implication &amp; Negation</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.6.</b> Forall and Exists</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.7.</b> Examples</a></li>
+<li><a href='Lecture_08_NaturalDeduction.html#'><b>8.8.</b> Summary</a></li>
 </ul>
 <li><a href='Lecture_09_DataPropositions.html'><b>9.</b>Data Propositions</a></li>
 <ul class='section'>
@@ -231,6 +225,28 @@ MathJax.Hub.Config({
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.7.</b> Soundness = Progress + Preservation</a></li>
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.8.</b> Summary</a></li>
 <li><a href='Lecture_09_DataPropositions.html#'><b>9.9.</b> Appendix: The rest of the Code</a></li>
+</ul>
+<li><a href='Task1.html'><b>10.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+</ul>
+<li><a href='Task1.pretty.html'><b>11.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+<li><a href='Task1.pretty.html#'><b>11.1.</b> 1. Lists</a></li>
+<li><a href='Task1.pretty.html#'><b>11.2.</b> 2. Insertion Sort</a></li>
+<li><a href='Task1.pretty.html#'><b>11.3.</b> 3. Merge Sort</a></li>
+</ul>
+<li><a href='Task1All.html'><b>12.</b>Task 1: Program Verification</a></li>
+<ul class='section'>
+</ul>
+<li><a href='Task2.html'><b>13.</b>Task 2: Proving Theorems</a></li>
+<ul class='section'>
+<li><a href='Task2.html#'><b>13.1.</b> 1. Fusions</a></li>
+</ul>
+<li><a href='Task2.pretty.html'><b>14.</b>Task 2: Proving Theorems</a></li>
+<ul class='section'>
+<li><a href='Task2.pretty.html#'><b>14.1.</b> 1. Fusions</a></li>
+<li><a href='Task2.pretty.html#'><b>14.2.</b> 2. Higher Order Properties</a></li>
+<li><a href='Task2.pretty.html#'><b>14.3.</b> 3. Encoding of Logical Properties</a></li>
 </ul>
 </ul>
 
@@ -316,11 +332,20 @@ fib i | i == 0    = 0
 
 <p>Liquid Haskell will create an error in the above definition, even though it does not violate any refinement type specification.</p>
 <p><em>This is a termination error</em> and it will disappear if we turn off termination checking (either with <code>--no-termination</code> pragma or with <code>{-@ lazy fib@-}</code> annotation).</p>
-<p><em>Question:</em> Does <code>fib</code> terminate?</p>
+<p><strong>Question:</strong> Does <code>fib</code> terminate?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>Yes, but only when the input is a natural number. This would also require the result of <code>fib</code> to be a natural number. Thus, to ensure termination you need the following specification of <code>fib</code>:</em>
+</p>
+<pre class="spec"><code>{-@ fib :: i:Nat -&gt; Nat  @-}</code></pre>
+</details>
 <p>To ensure <code>fib</code> terminates we need to restrict the input to be non-negative. This is actually implied by the error message that requires the recursive argument to be <code>0 &lt;= v</code> and <code>v &lt; i</code>.</p>
 <p>This error was generated because Liquid Haskell was trying to prove termination of the function <code>fib</code> by applying its termination heuristic.</p>
-<p><em>Termination Heuristic:</em> The first argument that can be “sized”, i.e., turned into nat, should be decreasing in recursive calls and non negative.</p>
-<p><code>Int</code> is by default “sized” while later we will see how to make other types “sized”.</p>
+<p><em>Termination Heuristic:</em> The first argument that can be “sized”, i.e., turned into <code>Nat</code>, should be decreasing in recursive calls and non negative.</p>
+<p><code>Int</code> is by default “size” while later we will see how to make other types “sized”.</p>
 </section>
 <section id="termination-metrics" class="level2">
 <h2>Termination Metrics</h2>
@@ -340,7 +365,16 @@ range lo hi
  | otherwise = []</div>
 </div>
 
-<p><em>Question:</em> Does <code>range</code> terminate?</p>
+<p><strong>Question:</strong> Does <code>range</code> terminate?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>Yes, because the difference <code>hi - lo</code> is decreasing in recursive calls. Thus, to ensure termination you need the following specification of <code>range</code>:</em>
+</p>
+<pre class="spec"><code>{-@ range :: lo:Int -&gt; hi:Int -&gt; [Int] / [hi - lo] @-} </code></pre>
+</details>
 <p>The termination heuristic fails because the first argument is not decreasing in recursive calls. To specify that the value <code>hi - lo</code> is decreasing we need to introduce a termination metric:</p>
 <pre class=".{spec}"><code>{-@ range :: lo:Int -&gt; hi:Int -&gt; [Int] / [hi - lo]@-} </code></pre>
 <p>Termination metrics are integer expressions that can depend on the function arguments and once provided, Liquid Haskell will use them to check termination. Concretely, at each recursive call it will check that the termination metric is both decreasing and non-negative.</p>
@@ -364,13 +398,26 @@ ack m n
   | otherwise = ack (m-1) (ack m (n-1))</div>
 </div>
 
-<p><em>Question:</em> Does <code>ack</code> terminate?</p>
+<p><strong>Question:</strong> Does <code>ack</code> terminate?</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>Yes, because either <code>m</code> is decreasing, or <code>m</code> is the same and <code>n</code> is decreasing. This is a lexicographic termination metric and can be encoded as <code>[m,n]</code>. But, we need to ensure that <code>m</code> and <code>n</code> are non-negative, which in turn requires the result of <code>ack</code> to be non-negative. Thus, to ensure termination you need the following specification of <code>ack</code>:</em>
+</p>
+<pre class="spec"><code>{-@ ack :: m:Nat -&gt; n:Nat -&gt; Nat  / [m, n] @-} </code></pre>
+</details>
 <p>To show that <code>ack</code> terminates we need to provide a lexicographic termination metric. Now at each recursive call, Liquid Haskell will check that the first component of the metric is decreasing and if it is equal, it will check the second component, etc.</p>
 </section>
 <section id="the-gcd-example" class="level2">
 <h2>The GCD Example</h2>
 <p>The Greater Common Divisor (gcd) function is an interesting example, because it might or not require lexicographic termination.</p>
-<p><em>Question:</em> Refine properly the <code>gcd</code> and <code>mod</code> functions to ensure termination.</p>
+<p>The gcd of two numbers (which is not both zero) is the largest positive integer that divides both numbers. For example, the gcd of 8 and 12 is 4.</p>
+<ul>
+<li><strong>GCD with Lexicographic Termination:</strong></li>
+</ul>
+<p>The <a href="https://en.wikipedia.org/wiki/Euclidean_algorithm">Euclidean algorithm</a> for computing the gcd of two numbers is based on the principle that the greatest common divisor of two numbers does not change if the larger number is replaced by its difference with the smaller number:</p>
 <div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -379,10 +426,42 @@ ack m n
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-4" class="programbox">{-@ gcd :: a:Nat -> b:Nat -> Int @-}
+  <div id="program-4" class="programbox">{-@ gcd :: a:Int -> b:Int -> Int @-}
 gcd :: Int -> Int -> Int
-gcd a 0 = a
-gcd a b = gcd b (a `mod` b)
+gcd 0 b = 0 
+gcd a 0 = a 
+gcd a b | a == b = a
+        | a >  b = gcd (a - b) b 
+        | a <  b = gcd a (b - a) </div>
+</div>
+
+<p>For example, <code>gcd 8 12 = gcd 8 4 = gcd 4 4 = 4</code>.</p>
+<strong>Question:</strong> Provide the proper lexicographic termination metric for the below <code>gcd</code> function.
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The metric is <code>[a,b]</code>. Either <code>a</code> is decreasing or it remains the same and <code>b</code> is decreasing. Thus, to ensure termination you need the following specification of <code>gcd</code>:</em>
+</p>
+<pre class="spec"><code>{-@ gcd :: a:Nat -&gt; b:Nat -&gt; Nat / [a, b]@-}</code></pre>
+</details>
+<ul>
+<li><strong>GCD with Semantic Termination:</strong></li>
+</ul>
+<p>An alternative definition of <code>gcd</code> is using the modulo operator. Instead of directly use the difference of the two numbers, <code>ghc a b</code> is using the <code>mod</code> to remove from <code>a</code> as many <code>b</code>s as possible:</p>
+<div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-5" class="programbox">{-@ gcdMod :: a:Nat -> b:Nat -> Int @-}
+gcdMod :: Int -> Int -> Int
+gcdMod a 0 = a
+gcdMod a b = gcdMod b (a `mod` b)
 
 
 {-@ mod :: a:Nat -> b:Nat -> Nat @-}
@@ -392,24 +471,19 @@ mod a b
   | otherwise = mod (a - b) b</div>
 </div>
 
-<p><em>Question:</em> Provide the proper lexicographic termination metric for the below <code>gcd</code> function.</p>
-<div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-5" class="programbox">{-@ gcd' :: a:Int -> b:Int -> Int @-}
-gcd' :: Int -> Int -> Int
-gcd' 0 b = 0 
-gcd' a 0 = a 
-gcd' a b | a == b = a
-         | a >  b = gcd' (a - b) b 
-         | a <  b = gcd' a (b - a) </div>
-</div>
-
+<p>For example, <code>gcdMod 12 8 = gcdMod 8 4 = gcdMod 4 0 = 4</code>, because <code>mod 12 8 = 4</code> and <code>mod 8 4 = 0</code>.</p>
+<p>Interestingly, termination does not require any explicit metrics, but follows from the semantics of the functions. That means, that if you properly refine the functions, termination will be guaranteed.</p>
+<strong>Question:</strong> Refine properly the <code>gcd</code> and <code>mod</code> functions to ensure termination.
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>Termination is ensured by the following specifications:</em>
+</p>
+<pre class="spec"><code>{-@ gcdMod :: a:Nat -&gt; b:{Nat | b &lt; a} -&gt; Nat @-}
+{-@ mod :: a:Nat -&gt; b:{Nat | b /= 0} -&gt; {v:Nat | v &lt; b} @-}</code></pre>
+</details>
 </section>
 <section id="data-types" class="level2">
 <h2>Data Types</h2>
@@ -428,7 +502,7 @@ map _ []     = []
 map f (x:xs) = f x : map f xs </div>
 </div>
 
-<p>Of course, not all recursive functions on data types are structurally terminating. As an example consider the <code>merge</code> function below.</p>
+<p>Of course, not all recursive functions on data types are structurally terminating. As an example consider the <code>merge</code> function below, that is usually part of <a href="https://en.wikipedia.org/wiki/Merge_sort">merge sort</a> algorithm.</p>
 <div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -446,8 +520,17 @@ merge (x:xs) (y:ys)
   | otherwise = y:(merge ys (x:xs))</div>
 </div>
 
-<p><em>Question:</em> Let’s prove <code>merge</code> terminating using a termination metric.</p>
-<p><em>Question:</em> Let’s also show that <code>merge</code> propagates sortedness, by refining the inputs and output to be IList:</p>
+<p><strong>Question:</strong> Let’s prove <code>merge</code> terminating using a termination metric.</p>
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>Termination is ensured by the following specifications:</em>
+</p>
+<pre class="spec"><code>{-@ merge :: xs:[a] -&gt; ys:[a] -&gt; [a] / [len xs + len ys]@-}</code></pre>
+</details>
+<p><strong>Question:</strong> Let’s also show that <code>merge</code> propagates sortedness, by refining the inputs and output to be IList:</p>
 <div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -459,6 +542,15 @@ merge (x:xs) (y:ys)
   <div id="program-8" class="programbox">{-@ type IList a = [a]<{\h t -> h <= t}>  @-}</div>
 </div>
 
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>Sortedness is ensured by the following specifications:</em>
+</p>
+<pre class="spec"><code>{-@ merge :: xs:IList a -&gt; ys:IList a -&gt; IList a / [len xs + len ys]@-}</code></pre>
+</details>
 </section>
 <section id="user-defined-data-types" class="level2">
 <h2>User Defined Data Types</h2>
@@ -513,10 +605,12 @@ lmerge (Cons x xs) (Cons y ys)
   | otherwise = Cons y (lmerge (Cons x xs) ys)</div>
 </div>
 
+<p>Like with the Haskell’s lists, to ensure termination we need to provide a termination metric. In this case, the termination metric is the size of the <code>List</code> data type:</p>
+<pre class="spec"><code>{-@ lmerge :: xs:List a -&gt; ys:List a -&gt; List a / [llen xs + llen ys] @-}</code></pre>
 </section>
 <section id="mutual-recursion" class="level2">
 <h2>Mutual Recursion</h2>
-<p>On mutual recursion, the user needs to provide termination metrics. For example, consider the <code>isEven</code> and <code>isOdd</code> functions below.</p>
+<p>Two functions are mutually recursive if they call each other. In such cases, Liquid Haskell will not attempt to prove termination automatically. Instead, the user needs to provide termination metrics. For example, consider the <code>isEven</code> and <code>isOdd</code> functions below.</p>
 <div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -536,9 +630,20 @@ isOdd :: Int -> Bool
 isOdd m = not $ isEven m</div>
 </div>
 
-<p><em>Question:</em> Provide the proper termination metrics for the <code>isEven</code> and <code>isOdd</code> functions.</p>
+<strong>Question:</strong> Provide the proper termination metrics for the <code>isEven</code> and <code>isOdd</code> functions.
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The termination metrics can be the following:</em>
+</p>
+<pre class="spec"><code>{-@ isEven :: n:Nat -&gt; Bool / [n, 0]@-}
+{-@ isOdd  :: m:Nat -&gt; Bool / [m, 1]@-}</code></pre>
+</details>
+<p>Note that at the definition of <code>isOdd m</code>, the recursive argument remains the same. Thus, <em>something</em> should decrease! We define the termination metric <code>[m, 1]</code> for <code>isOdd</code> to ensure that the second component is decreasing. In the definition of <code>isEven n</code>, the recursive argument decreases, so the second component of the termination metric is irrelevant.</p>
 <p>This pattern of providing numeric values for lexicographic termination metrics appears very often in mutually recursive functions. For example, the below code is a simplification of a real world example and follows the same pattern.</p>
-<p><em>Question:</em> Provide the proper termination metrics for the <code>eval</code> and <code>evalAnd</code> functions?</p>
+<p><strong>Question:</strong> Provide the proper termination metrics for the <code>eval</code> and <code>evalAnd</code> functions?</p>
 <div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -566,6 +671,16 @@ evalAnd :: BExpr -> Bool -> Bool
 evalAnd b2 x1 = if x1 then (eval b2) else False </div>
 </div>
 
+<details>
+<summary>
+<strong>Solution</strong>
+</summary>
+<p>
+<em>The termination metrics can be the following:</em>
+</p>
+<pre class="spec"><code>{-@ eval :: e:BExpr -&gt; Bool / [size e, 0] @-}
+{-@ evalAnd :: e:BExpr -&gt; Bool -&gt; Bool / [size e, 1] @-}</code></pre>
+</details>
 </section>
 <section id="summary" class="level2">
 <h2>Summary</h2>

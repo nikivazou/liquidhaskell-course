@@ -36,7 +36,7 @@ Data propositions essentially axiomatize the behavior of
 predicates in the data type definitions, without actually giving 
 a Haskell definition.
 
-They are very similar to Coq's 
+They are very similar to Rocq's 
 [inductive predicates](http://adam.chlipala.net/cpdt/html/Predicates.html).
 Thus, let's look at the using the textbook example of even numbers.
 
@@ -77,8 +77,8 @@ There are two important points in this construction.
 there is _no termination check_, meaning, that using data propositions 
 one can encode non-terminating computations. 
 
-- Second, the data proposition `EVEN` is a proof object,
-thus an `Even` value, gives us information how the proof was constructed.
+- Second, the data proposition `EVEN` is a _proof object_,
+thus an `Even` value, gives us information _how_ the proof was constructed.
 
 
 
@@ -101,6 +101,18 @@ even4 = undefined
 
 **Question:** Fill in the above definitions to construct the even numbers `0`, `2`, and `4`.
 
+<details>
+<summary>**Solution**</summary>
+<p> _The terms are defined as follows:_</p>
+
+~~~{.spec}
+even0 = E0
+even2 = E2 Z even0
+even4 = E2 (S (S Z)) even2
+~~~
+</details>
+
+
 Since `EVEN` is a proof object one can inspect it, 
 to, for example, show contradictions. 
 
@@ -112,10 +124,22 @@ even1_false _ = undefined
 
 **Question:** Show that `S Z` is not even, by inspection. 
 
+<details>
+<summary>**Solution**</summary>
+<p> _The term is defined as follows:_</p>
+
+~~~{.spec}
+even1_false E0       = ()
+even1_false (E2 n p) = even1_false p
+~~~
+
+
 Functions on Even Numbers
 -------------------------
 
-Let's now show that each even number,
+As a fist function on even numbers, let's define a function that
+takes a non zero, even number and returns its predecessor.
+That is, each even number, 
 other than `0`, can be written as `2 + n`, for some `n`.
 
 \begin{code}
@@ -125,6 +149,16 @@ even_plus_2 :: N -> EVEN -> (N,())
                 -> (m::N, {v:() | n == S (S m)}) @-}
 even_plus_2 _ _ = undefined 
 \end{code}
+
+**Question:** Fill in the definition of the `even_plus_2` function.
+
+<details>
+<summary>**Solution**</summary>
+<p> _The term is defined as follows:_</p>
+
+~~~{.spec}
+even_plus_2 _ (E2 n _) = (n,()) 
+~~~
 
 As a final exercise, 
 let's show that the sum of two even numbers is also even.
@@ -149,11 +183,26 @@ even_plus _ _ _ _ = undefined
 \end{code}
 
 
+<details>
+<summary>**Solution**</summary>
+<p> _The term is defined as follows:_</p>
+
+~~~{.spec}
+even_plus Z m pn pm 
+  = pm 
+even_plus n m pn@(E2 _ pn') pm 
+  = E2 (plus n' m) (even_plus n' m pn' pm)
+  where (n',_) = even_plus_2 n pn 
+~~~
+
 Metatheory of Programming Languages
 -----------------------------------
 
 In the theory of programming languages, we often use 
-theorem provers, like Liquid Haskell or Coq, to mechanize the proof 
+theorem provers, like Liquid Haskell or 
+[Rock](https://rocq-prover.org/) or 
+[Agda](https://wiki.portal.chalmers.se/agda/pmwiki.php) or 
+[Lean](https://lean-lang.org/), to mechanize the proof 
 of properties of programs.
 
 Such proofs usually talk about _program evaluation_.  
@@ -291,11 +340,15 @@ Summary
 
 In this lecture, we saw data propositions, which are used to axiomatize
 the behavior of predicates in the data type definitions. 
-Data propositions have two major uses. 
-First, they are used to encode non-terminating functions,
+Data propositions have two major uses:
+
+
+- First, they are used to encode non-terminating functions,
 like the evaluation function of a programming language.
-Second, they construct proof objects, whose inspection can facilitate 
+
+- Second, they construct proof objects, whose inspection can facilitate 
 proof developments. 
+
 These two features allow the mechanization of sophisticated proofs, 
 like metatheory of programming languages, in theorem provers like Liquid Haskell.
 
